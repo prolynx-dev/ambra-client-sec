@@ -88,13 +88,13 @@ export default function InventoryView({
   // Status mapping to Polish label and colors
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'Healthy': return { text: 'Prawidłowy', color: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' };
-      case 'Approaching minimum': return { text: 'Blisko minimum', color: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20' };
-      case 'Below minimum': return { text: 'Poniżej minimum', color: 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/25 animate-pulse' };
-      case 'Out of stock': return { text: 'Brak zapasu', color: 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/25 animate-pulse' };
-      case 'Overstocked': return { text: 'Nadstan', color: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20' };
-      case 'Count outdated': return { text: 'Przedawniony', color: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700' };
-      case 'Needs verification': return { text: 'Weryfikacja', color: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20' };
+      case 'Healthy': return { text: 'Prawidłowy', color: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' };
+      case 'Approaching minimum': return { text: 'Blisko minimum', color: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400' };
+      case 'Below minimum': return { text: 'Poniżej minimum', color: 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 animate-pulse' };
+      case 'Out of stock': return { text: 'Brak zapasu', color: 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 animate-pulse' };
+      case 'Overstocked': return { text: 'Nadstan', color: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400' };
+      case 'Count outdated': return { text: 'Przedawniony', color: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300' };
+      case 'Needs verification': return { text: 'Weryfikacja', color: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400' };
       default: return { text: 'Brak odczytu', color: 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400' };
     }
   };
@@ -140,7 +140,7 @@ export default function InventoryView({
     <div className="space-y-4">
       
       {/* Upper header with title, settings, and view toggles */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#E1E3E6] dark:border-gray-800 pb-3 gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 gap-3">
         <div>
           <h2 className="text-base font-bold font-display text-gray-950 dark:text-white">Zarządzanie zapasami VMI</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">Oddział: <span className="text-blue-600 dark:text-blue-400 font-semibold">{activeLocationName}</span></p>
@@ -149,7 +149,7 @@ export default function InventoryView({
         {/* VIEW MODE TOGGLES AND CATALOG SETTINGS DROPDOWN */}
         <div className="flex items-center gap-2.5 self-end md:self-auto">
           {/* View Toggles */}
-          <div className="flex items-center bg-gray-100 dark:bg-gray-800/80 p-1 rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center bg-gray-100 dark:bg-gray-800/80 p-1 rounded-xl">
             <button
               onClick={() => setViewMode('table')}
               className={cn(
@@ -193,8 +193,8 @@ export default function InventoryView({
             <button
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
               className={cn(
-                "p-2 px-3.5 bg-white dark:bg-[#131A2E] hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl border flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 transition-all cursor-pointer shadow-sm",
-                isSettingsOpen ? "border-blue-500 dark:border-blue-600" : "border-[#E1E3E6] dark:border-gray-800"
+                "p-2 px-3.5 bg-white dark:bg-[#131A2E] hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 transition-all cursor-pointer shadow-sm",
+                isSettingsOpen ? "" : ""
               )}
             >
               <Settings className={cn("h-4 w-4 text-gray-500", isSettingsOpen && "animate-spin-slow")} />
@@ -204,8 +204,8 @@ export default function InventoryView({
             {isSettingsOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setIsSettingsOpen(false)} />
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl shadow-lg z-20 p-3.5 space-y-3 animate-fade-in text-xs text-[#1A1C1E] dark:text-white">
-                  <div className="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider border-b border-gray-100 dark:border-gray-800 pb-1.5">
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#131A2E] rounded-xl shadow-lg z-20 p-3.5 space-y-3 animate-fade-in text-xs text-[#1A1C1E] dark:text-white">
+                  <div className="font-bold text-gray-400 dark:text-gray-500 uppercase text-[10px] tracking-wider pb-1.5">
                     Konfiguracja katalogu
                   </div>
 
@@ -214,7 +214,7 @@ export default function InventoryView({
                       type="checkbox"
                       checked={hidePrices}
                       onChange={(e) => setHidePrices(e.target.checked)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4 cursor-pointer"
+                      className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4 cursor-pointer"
                     />
                     <div className="flex flex-col">
                       <span className="font-bold">Ukryj ceny towarów</span>
@@ -222,7 +222,7 @@ export default function InventoryView({
                     </div>
                   </label>
 
-                  <div className="text-[10px] text-gray-400 dark:text-gray-500 pt-1 leading-relaxed bg-gray-50 dark:bg-[#0E1321] p-2 rounded-lg border border-gray-100 dark:border-gray-850">
+                  <div className="text-[10px] text-gray-400 dark:text-gray-500 pt-1 leading-relaxed bg-gray-50 dark:bg-[#0E1321] p-2 rounded-lg">
                     Włącz ten parametr, aby zasymulować wizytę handlowca na tablecie u klienta końcowego, chroniąc marżę hurtową przed wzrokiem osób trzecich.
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export default function InventoryView({
       </div>
 
       {/* QUICK FILTERS BAR ABOVE SEARCHBAR */}
-      <div className="flex flex-wrap items-center gap-1.5 bg-gray-50 dark:bg-gray-900/20 p-2 rounded-xl border border-gray-200/80 dark:border-gray-800/60 shadow-sm text-xs">
+      <div className="flex flex-wrap items-center gap-1.5 bg-gray-50 dark:bg-gray-900/20 p-2 rounded-xl shadow-sm text-xs">
         <span className="font-bold text-gray-400 dark:text-gray-500 px-2 uppercase tracking-wide text-[10px]">Szybkie filtry:</span>
         <button
           onClick={() => setActiveQuickFilter('all')}
@@ -241,7 +241,7 @@ export default function InventoryView({
             "px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer whitespace-nowrap",
             activeQuickFilter === 'all'
               ? "bg-[#2A3B4C] dark:bg-blue-600 text-white"
-              : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#E1E3E6] dark:border-gray-800"
+              : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           )}
         >
           Wszystkie asortymenty ({inventoryBalances.filter(b => b.locationId === activeLocationId).length})
@@ -252,7 +252,7 @@ export default function InventoryView({
             "px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5",
             activeQuickFilter === 'ordered-past'
               ? "bg-[#2A3B4C] dark:bg-blue-600 text-white"
-              : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-[#E1E3E6] dark:border-gray-800"
+              : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           )}
         >
           <ShoppingBag className="h-3.5 w-3.5" />
@@ -264,7 +264,7 @@ export default function InventoryView({
             "px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5",
             activeQuickFilter === 'low-stock'
               ? "bg-red-600 text-white"
-              : "bg-white dark:bg-[#131A2E] text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 border border-red-200 dark:border-red-900/30"
+              : "bg-white dark:bg-[#131A2E] text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20"
           )}
         >
           <AlertTriangle className="h-3.5 w-3.5" />
@@ -276,7 +276,7 @@ export default function InventoryView({
             "px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5",
             activeQuickFilter === 'incoming'
               ? "bg-emerald-600 text-white"
-              : "bg-white dark:bg-[#131A2E] text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/30"
+              : "bg-white dark:bg-[#131A2E] text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
           )}
         >
           <CheckCircle className="h-3.5 w-3.5" />
@@ -285,7 +285,7 @@ export default function InventoryView({
       </div>
 
       {/* SEARCH AND ADVANCED SELECTORS BOX */}
-      <div className="bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-800 p-4 space-y-3 shadow-sm">
+      <div className="bg-white dark:bg-[#0E1321] rounded-xl p-4 space-y-3 shadow-sm">
         {/* Search Input */}
         <div className="relative">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
@@ -296,7 +296,7 @@ export default function InventoryView({
             placeholder="Szukaj po nazwie produktu, SKU dostawcy lub indeksie klienta..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-700 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            className="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-[#0C101A] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           />
         </div>
 
@@ -308,7 +308,7 @@ export default function InventoryView({
             <select
               value={selectedVendorId}
               onChange={(e) => setSelectedVendorId(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-750 text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
+              className="w-full bg-gray-50 dark:bg-[#0C101A] text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
             >
               <option value="all">Wszyscy dostawcy</option>
               {vendors.map(v => (
@@ -323,7 +323,7 @@ export default function InventoryView({
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-750 text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
+              className="w-full bg-gray-50 dark:bg-[#0C101A] text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
             >
               <option value="all">Wszystkie statusy</option>
               <option value="Healthy">Prawidłowy (Healthy)</option>
@@ -342,7 +342,7 @@ export default function InventoryView({
             <select
               value={selectedCategoryId}
               onChange={(e) => setSelectedCategoryId(e.target.value)}
-              className="w-full bg-gray-50 dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-750 text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
+              className="w-full bg-gray-50 dark:bg-[#0C101A] text-gray-900 dark:text-white py-1.5 px-2 rounded-lg cursor-pointer text-xs focus:outline-none"
             >
               <option value="all">Wszystkie kategorie</option>
               {categories.map(cat => (
@@ -371,12 +371,12 @@ export default function InventoryView({
 
       {/* 1. STANDARD TABLE VIEW (Only shown when viewMode === 'table') */}
       {viewMode === 'table' && (
-        <div className="bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-800 overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-[#0E1321] rounded-xl overflow-hidden shadow-sm">
           {/* Desktop Table */}
           <div className="hidden md:block">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-gray-50 dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-800 text-gray-500 dark:text-gray-400 font-semibold font-bold">
+                <tr className="bg-gray-50 dark:bg-[#131A2E] text-gray-500 dark:text-gray-400 font-semibold font-bold">
                   <th className="p-3">Produkt / Dostawca</th>
                   <th className="p-3">Kategoria</th>
                   <th className="p-3 text-center">Bieżący stan</th>
@@ -421,7 +421,7 @@ export default function InventoryView({
                             {/* Warehouse Available Qty Display */}
                             <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1.5">
                               <span>Magazyn centralny:</span>
-                              <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.2 rounded border border-emerald-100 dark:border-emerald-900/30">
+                              <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.2 rounded">
                                 {prod.warehouseQty} {prod.unitOfMeasure}
                               </span>
                             </div>
@@ -454,7 +454,7 @@ export default function InventoryView({
                         <td className="p-3 text-right space-x-1.5">
                           <button
                             onClick={() => onOpenStockCountForProduct(prod.id)}
-                            className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded font-semibold text-[10px] cursor-pointer transition-colors border border-gray-200 dark:border-gray-750"
+                            className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded font-semibold text-[10px] cursor-pointer transition-colors"
                           >
                             Przelicz
                           </button>
@@ -485,7 +485,7 @@ export default function InventoryView({
                 const status = getStatusLabel(balance.stockStatus);
 
                 return (
-                  <div key={balance.productId} className="bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-850 p-3.5 space-y-3.5 shadow-sm">
+                  <div key={balance.productId} className="bg-white dark:bg-[#0E1321] rounded-xl p-3.5 space-y-3.5 shadow-sm">
                     <div className="flex gap-2.5 items-start justify-between">
                       <div className="min-w-0">
                         <button
@@ -501,7 +501,7 @@ export default function InventoryView({
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 py-1.5 px-2 bg-gray-50 dark:bg-gray-950/40 border border-[#E1E3E6] dark:border-gray-850 rounded-lg text-center text-[11px]">
+                    <div className="grid grid-cols-3 gap-2 py-1.5 px-2 bg-gray-50 dark:bg-gray-950/40 rounded-lg text-center text-[11px]">
                       <div>
                         <span className="text-gray-400 dark:text-gray-500 block text-[10px]">Stan obecny</span>
                         <span className="font-extrabold text-gray-900 dark:text-white text-xs font-mono">{balance.currentStock} {prod.unitOfMeasure}</span>
@@ -517,13 +517,13 @@ export default function InventoryView({
                     </div>
 
                     {!hidePrices && (
-                      <div className="flex justify-between items-center text-xs font-mono border-t border-[#E1E3E6] dark:border-gray-850/60 pt-2 text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between items-center text-xs font-mono pt-2 text-gray-600 dark:text-gray-400">
                         <span>Cena netto:</span>
                         <span className="font-black text-gray-900 dark:text-white">{(prod.promoPrice || prod.price).toFixed(2)} zł</span>
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between pt-1 border-t border-[#E1E3E6] dark:border-gray-850/60">
+                    <div className="flex items-center justify-between pt-1">
                       <span className="text-[10px] text-gray-400 dark:text-gray-500">
                         {balance.incomingQty > 0 ? (
                           <span className="text-emerald-600 dark:text-emerald-400 font-semibold">W drodze: +{balance.incomingQty}</span>
@@ -534,7 +534,7 @@ export default function InventoryView({
                       <div className="flex gap-1.5">
                         <button
                           onClick={() => onOpenStockCountForProduct(prod.id)}
-                          className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-[10px] rounded font-bold cursor-pointer transition-colors border border-gray-200 dark:border-gray-750"
+                          className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-[10px] rounded font-bold cursor-pointer transition-colors"
                         >
                           Przelicz
                         </button>
@@ -558,7 +558,7 @@ export default function InventoryView({
       {viewMode === 'tile' && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {filteredBalances.length === 0 ? (
-            <div className="col-span-full text-center py-12 text-gray-500 text-xs bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl shadow-sm">
+            <div className="col-span-full text-center py-12 text-gray-500 text-xs bg-white dark:bg-[#0E1321] rounded-xl shadow-sm">
               Brak produktów pasujących do kryteriów wyszukiwania.
             </div>
           ) : (
@@ -571,11 +571,11 @@ export default function InventoryView({
               return (
                 <div
                   key={balance.productId}
-                  className="bg-white dark:bg-[#131A2E] rounded-xl border border-[#E1E3E6] dark:border-gray-800 p-2.5 flex flex-col justify-between hover:border-gray-300 dark:hover:border-gray-700 transition-all text-xs shadow-sm group"
+                  className="bg-white dark:bg-[#131A2E] rounded-xl p-2.5 flex flex-col justify-between dark:hover:border-gray-700 transition-all text-xs shadow-sm group"
                 >
                   <div className="space-y-2">
                     {/* Small thumbnail aspect cover */}
-                    <div className="relative w-full aspect-[4/3] bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden border border-gray-150 dark:border-gray-850 shrink-0">
+                    <div className="relative w-full aspect-[4/3] bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden shrink-0">
                       <img
                         src={prod.imageUrl}
                         alt={prod.name}
@@ -604,7 +604,7 @@ export default function InventoryView({
                   </div>
 
                   {/* Stock balances and warehouse qty display */}
-                  <div className="mt-2.5 pt-2 border-t border-gray-100 dark:border-gray-800 space-y-1">
+                  <div className="mt-2.5 pt-2 space-y-1">
                     {/* Warehouse Available Qty */}
                     <div className="flex justify-between items-center text-[9px] text-gray-500 dark:text-gray-400">
                       <span>Magazyn centralny:</span>
@@ -623,7 +623,7 @@ export default function InventoryView({
 
                     {/* Net Price */}
                     {!hidePrices && (
-                      <div className="flex justify-between items-center pt-1 border-t border-dashed border-gray-100 dark:border-gray-800">
+                      <div className="flex justify-between items-center pt-1">
                         <span className="text-[9px] text-gray-400">Netto:</span>
                         <span className="font-mono font-black text-[#2A3B4C] dark:text-blue-400 text-xs">
                           {(prod.promoPrice || prod.price).toFixed(2)} zł
@@ -635,7 +635,7 @@ export default function InventoryView({
                     <div className="pt-2 flex gap-1">
                       <button
                         onClick={() => onOpenStockCountForProduct(prod.id)}
-                        className="flex-1 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 text-gray-600 dark:text-gray-300 text-[9px] font-bold rounded cursor-pointer transition-colors border border-gray-200 dark:border-gray-700"
+                        className="flex-1 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 text-gray-600 dark:text-gray-300 text-[9px] font-bold rounded cursor-pointer transition-colors"
                         title="Zgłoś spis"
                       >
                         Spis
@@ -658,7 +658,7 @@ export default function InventoryView({
 
       {/* 3. COMPACT LIST VIEW (ViewMode === 'list') */}
       {viewMode === 'list' && (
-        <div className="flex flex-col gap-2 bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-800 p-2 shadow-sm">
+        <div className="flex flex-col gap-2 bg-white dark:bg-[#0E1321] rounded-xl p-2 shadow-sm">
           {filteredBalances.length === 0 ? (
             <div className="text-center py-8 text-gray-500 text-xs">
               Brak produktów pasujących do kryteriów wyszukiwania.
@@ -673,14 +673,14 @@ export default function InventoryView({
               return (
                 <div
                   key={balance.productId}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800/40 rounded-lg transition-colors text-xs"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 bg-white dark:bg-[#131A2E] hover:bg-gray-50 dark:hover:bg-gray-800/40 rounded-lg transition-colors text-xs"
                 >
                   {/* Left part: image miniature, name, category, SKU */}
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <img
                       src={prod.imageUrl}
                       alt={prod.name}
-                      className="w-11 h-11 object-cover rounded bg-gray-100 border border-gray-150 dark:border-gray-800 shrink-0"
+                      className="w-11 h-11 object-cover rounded bg-gray-100 shrink-0"
                       referrerPolicy="no-referrer"
                     />
                     <div className="min-w-0">
@@ -701,7 +701,7 @@ export default function InventoryView({
                   </div>
 
                   {/* Middle part: stock levels */}
-                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-between sm:justify-end shrink-0 py-1 sm:py-0 border-t border-b border-gray-100 dark:border-gray-800 sm:border-0">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-between sm:justify-end shrink-0 py-1 sm:py-0 sm:border-0">
                     {/* Warehouse central qty */}
                     <div className="text-left font-sans">
                       <span className="text-[9px] text-gray-400 block sm:text-right">Magazyn centralny</span>
@@ -740,7 +740,7 @@ export default function InventoryView({
                   <div className="flex items-center gap-1.5 justify-end shrink-0">
                     <button
                       onClick={() => onOpenStockCountForProduct(prod.id)}
-                      className="px-2.5 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded font-bold text-[10px] cursor-pointer transition-colors border border-gray-200 dark:border-gray-700"
+                      className="px-2.5 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded font-bold text-[10px] cursor-pointer transition-colors"
                     >
                       Przelicz
                     </button>
@@ -760,7 +760,7 @@ export default function InventoryView({
       )}
 
       {/* FOOTER TIPS BAR */}
-      <div className="bg-blue-50/50 dark:bg-blue-950/10 border border-blue-100/50 dark:border-blue-900/30 rounded-xl p-3 flex gap-2.5 items-start text-xs text-blue-800 dark:text-blue-300">
+      <div className="bg-blue-50/50 dark:bg-blue-950/10 rounded-xl p-3 flex gap-2.5 items-start text-xs text-blue-800 dark:text-blue-300">
         <Info className="h-4.5 w-4.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
         <p className="leading-relaxed">
           Wskazówka: System VMI stale monitoruje stany magazynowe w Twojej sieci i sugeruje optymalne dostawy. Kliknij <strong className="text-blue-700 dark:text-blue-400">&quot;Kup&quot;</strong> lub <strong className="text-blue-700 dark:text-blue-400">&quot;Zamów&quot;</strong>, aby ręcznie zasilić brakujące zapasy przed planowanym kursem dostawcy.

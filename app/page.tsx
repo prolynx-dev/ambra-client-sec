@@ -42,6 +42,7 @@ import DashboardView from '../components/DashboardView';
 import InventoryView from '../components/InventoryView';
 import OrdersView from '../components/OrdersView';
 import VendorDashboardView from '../components/VendorDashboardView';
+import MarketplaceContainer from '../components/marketplace/MarketplaceContainer';
 
 import { 
   Bell, 
@@ -95,6 +96,14 @@ const VENDOR_CONTACTS: Record<string, { name: string; role: string; phone: strin
 
 export default function MainPage() {
   const isMobile = useIsMobile();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(handle);
+  }, []);
   
   // Theme State
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -119,6 +128,7 @@ export default function MainPage() {
   // Authentication State
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<UserProfile>(currentUser);
+  const [showLogin, setShowLogin] = useState<boolean>(false);
 
   // App Navigation Routing State
   const [currentTab, setCurrentTab] = useState<'home' | 'vendors' | 'inventory' | 'orders' | 'messages' | 'settings'>('home');
@@ -257,10 +267,8 @@ export default function MainPage() {
   };
 
   const handleLogout = () => {
-    if (confirm('Czy chcesz wylogować się z systemu?')) {
-      setIsLoggedIn(false);
-      localStorage.removeItem('vmi_is_logged_in');
-    }
+    setIsLoggedIn(false);
+    localStorage.removeItem('vmi_is_logged_in');
   };
 
   const triggerLocalNotification = (title: string, content: string, type: any = 'Low-stock warning') => {
@@ -629,10 +637,8 @@ export default function MainPage() {
   };
 
   const handleClearDemoCache = () => {
-    if (confirm('Czy chcesz zresetować demo i załadować oryginalne dane testowe Ambra?')) {
-      localStorage.clear();
-      window.location.reload();
-    }
+    localStorage.clear();
+    window.location.reload();
   };
 
   // Filter conversations
@@ -678,7 +684,7 @@ export default function MainPage() {
       case 'vendors':
         return (
           <div className="space-y-4 text-xs">
-            <div className="border-b border-[#E1E3E6] dark:border-gray-800 pb-2">
+            <div className="pb-2">
               <h2 className="text-base font-bold text-gray-950 dark:text-white font-display">Twoi certyfikowani partnerzy VMI</h2>
               <p className="text-gray-500 dark:text-gray-400">Dostęp do katalogów, cen, propozycji dostaw i bezpośredniej komunikacji</p>
             </div>
@@ -690,11 +696,11 @@ export default function MainPage() {
                 return (
                   <div
                     key={v.id}
-                    className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-850 hover:border-gray-350 dark:hover:border-gray-800 rounded-xl overflow-hidden flex flex-col justify-between gap-0 transition-all shadow-sm group hover:-translate-y-0.5 hover:shadow-md"
+                    className="bg-white dark:bg-[#0E1321] dark:hover:border-gray-800 rounded-xl overflow-hidden flex flex-col justify-between gap-0 transition-all shadow-sm group hover:-translate-y-0.5 hover:shadow-md"
                   >
                     {/* Branded card header with custom background, patterns, and mock logo */}
                     <div className={cn(
-                      "h-20 relative px-5 py-3 flex items-center justify-between border-b border-[#E1E3E6] dark:border-gray-850 overflow-hidden",
+                      "h-20 relative px-5 py-3 flex items-center justify-between overflow-hidden",
                       v.id === 'v-1' ? "bg-gradient-to-r from-blue-500/10 to-blue-600/5 dark:from-blue-550/20 dark:to-blue-900/10" :
                       v.id === 'v-2' ? "bg-gradient-to-r from-amber-500/10 to-orange-600/5 dark:from-amber-550/20 dark:to-orange-900/10" :
                       v.id === 'v-3' ? "bg-gradient-to-r from-emerald-500/10 to-teal-600/5 dark:from-emerald-550/20 dark:to-teal-900/10" :
@@ -708,23 +714,23 @@ export default function MainPage() {
                       <div className="z-10 flex items-center gap-3">
                         {/* Branded Logo badge with initials */}
                         <div className={cn(
-                          "w-11 h-11 rounded-xl flex items-center justify-center font-black text-white text-sm shadow-sm border",
-                          v.id === 'v-1' ? "bg-gradient-to-br from-blue-600 to-indigo-700 border-blue-400" :
-                          v.id === 'v-2' ? "bg-gradient-to-br from-amber-500 to-orange-600 border-amber-400" :
-                          v.id === 'v-3' ? "bg-gradient-to-br from-emerald-500 to-teal-600 border-emerald-400" :
-                          "bg-gradient-to-br from-rose-600 to-red-700 border-rose-400"
+                          "w-11 h-11 rounded-xl flex items-center justify-center font-black text-white text-sm shadow-sm",
+                          v.id === 'v-1' ? "bg-gradient-to-br from-blue-600 to-indigo-700" :
+                          v.id === 'v-2' ? "bg-gradient-to-br from-amber-500 to-orange-600" :
+                          v.id === 'v-3' ? "bg-gradient-to-br from-emerald-500 to-teal-600" :
+                          "bg-gradient-to-br from-rose-600 to-red-700"
                         )}>
                           {v.id === 'v-1' ? 'AF' : v.id === 'v-2' ? 'EH' : v.id === 'v-3' ? 'PK' : 'SC'}
                         </div>
                         <div>
                           <h3 className="text-xs font-black text-gray-950 dark:text-white leading-tight">{v.name}</h3>
-                          <span className="text-[8px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-100/30 dark:border-emerald-900/30 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">
+                          <span className="text-[8px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">
                             {v.connectionStatus}
                           </span>
                         </div>
                       </div>
 
-                      <span className="z-10 text-[8px] font-black text-gray-500 dark:text-gray-400 uppercase font-mono tracking-widest bg-white/80 dark:bg-black/40 px-2 py-1 rounded border border-[#E1E3E6]/60 dark:border-gray-800">
+                      <span className="z-10 text-[8px] font-black text-gray-500 dark:text-gray-400 uppercase font-mono tracking-widest bg-white/80 dark:bg-black/40 px-2 py-1 rounded">
                         {v.industry}
                       </span>
                     </div>
@@ -747,7 +753,7 @@ export default function MainPage() {
                               {/* Interactive contact selector */}
                               <div 
                                 onClick={() => setExpandedContactsVendorId(isExpanded ? null : v.id)}
-                                className="p-3 bg-[#F8F9FA] dark:bg-[#121729] hover:bg-gray-100 dark:hover:bg-[#181F38] rounded-xl border border-gray-100 dark:border-gray-850/60 flex items-center justify-between cursor-pointer transition-all shadow-sm"
+                                className="p-3 bg-[#F8F9FA] dark:bg-[#121729] hover:bg-gray-100 dark:hover:bg-[#181F38] rounded-xl flex items-center justify-between cursor-pointer transition-all shadow-sm"
                               >
                                 <div className="flex items-center gap-2">
                                   <span className={cn(
@@ -784,9 +790,9 @@ export default function MainPage() {
 
                               {/* Expanded staff list */}
                               {isExpanded && (
-                                <div className="space-y-1.5 pt-1 border-t border-dashed border-gray-100 dark:border-gray-800 text-left">
+                                <div className="space-y-1.5 pt-1 text-left">
                                   {contacts.map((contact, idx) => (
-                                    <div key={idx} className="p-2 bg-white dark:bg-[#0A0D18] border border-gray-100 dark:border-gray-850 rounded-lg flex items-center justify-between">
+                                    <div key={idx} className="p-2 bg-white dark:bg-[#0A0D18] rounded-lg flex items-center justify-between">
                                       <div className="flex items-center gap-1.5">
                                         <span className={cn(
                                           "w-1.5 h-1.5 rounded-full shrink-0",
@@ -814,21 +820,21 @@ export default function MainPage() {
                               {/* Status indicators board */}
                               <div className="space-y-1.5">
                                 {vendorProposalsCount > 0 && (
-                                  <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/20 px-2.5 py-1.5 rounded-lg text-blue-700 dark:text-blue-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
+                                  <div className="bg-blue-50 dark:bg-blue-950/20 px-2.5 py-1.5 rounded-lg text-blue-700 dark:text-blue-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
                                     <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping shrink-0" />
                                     <span>Czeka propozycja dostawy VMI ({vendorProposalsCount})</span>
                                   </div>
                                 )}
 
                                 {unreadMsgs > 0 && (
-                                  <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-100/30 dark:border-amber-900/20 px-2.5 py-1.5 rounded-lg text-amber-700 dark:text-amber-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
+                                  <div className="bg-amber-50 dark:bg-amber-950/20 px-2.5 py-1.5 rounded-lg text-amber-700 dark:text-amber-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
                                     <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse shrink-0" />
                                     <span>Masz nieprzeczytaną odpowiedź ({unreadMsgs})</span>
                                   </div>
                                 )}
 
                                 {pendingOrdersCount > 0 && (
-                                  <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100/30 dark:border-emerald-900/20 px-2.5 py-1.5 rounded-lg text-emerald-700 dark:text-emerald-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
+                                  <div className="bg-emerald-50 dark:bg-emerald-950/20 px-2.5 py-1.5 rounded-lg text-emerald-700 dark:text-emerald-400 font-bold text-[10px] flex items-center gap-1.5 text-left">
                                     <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0 animate-pulse" />
                                     <span>Aktywne zamówienie w realizacji ({pendingOrdersCount})</span>
                                   </div>
@@ -841,7 +847,7 @@ export default function MainPage() {
 
                       <button
                         onClick={() => setActiveVendorId(v.id)}
-                        className="w-full py-2.5 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-750 text-gray-700 dark:text-white font-bold rounded-lg text-center cursor-pointer transition-colors border border-[#E1E3E6] dark:border-transparent text-xs"
+                        className="w-full py-2.5 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-750 text-gray-700 dark:text-white font-bold rounded-lg text-center cursor-pointer transition-colors text-xs"
                       >
                         Otwórz panel partnera
                       </button>
@@ -882,11 +888,11 @@ export default function MainPage() {
       case 'messages':
         return (
           <div className="space-y-4">
-            <div className="border-b border-[#E1E3E6] dark:border-gray-850 pb-2">
+            <div className="pb-2">
               <h2 className="text-base font-bold text-gray-950 dark:text-white font-display">Centrum Wiadomości VMI</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400">Bezpośredni, bezpieczny kanał komunikacji z dedykowanymi opiekunami handlowymi Twoich dostawców</p>
             </div>
-            <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-850 rounded-xl overflow-hidden h-[74vh]">
+            <div className="bg-white dark:bg-[#0E1321] rounded-xl overflow-hidden h-[74vh]">
               <MessagesCenter
                 conversations={conversations}
                 vendors={mockVendors}
@@ -904,7 +910,7 @@ export default function MainPage() {
       case 'settings':
         return (
           <div className="space-y-6 text-xs text-gray-600 dark:text-gray-300">
-            <div className="border-b border-[#E1E3E6] dark:border-gray-850 pb-2">
+            <div className="pb-2">
               <h2 className="text-base font-bold text-gray-950 dark:text-white font-display">Ustawienia Systemowe i Piaskownica</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400">Konfiguracja profilu, symulacja warunków sieciowych oraz historia powiadomień</p>
             </div>
@@ -912,7 +918,7 @@ export default function MainPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 animate-fade-in">
               <div className="lg:col-span-4 space-y-4">
                 {/* Profile Panel */}
-                <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-850 rounded-xl p-5 space-y-3.5 shadow-sm">
+                <div className="bg-white dark:bg-[#0E1321] rounded-xl p-5 space-y-3.5 shadow-sm">
                   <h5 className="font-bold text-gray-950 dark:text-white uppercase tracking-wider text-[10px]">Twój Profil Klienta</h5>
                   <div className="flex items-center gap-3">
                     <div className="p-3 bg-blue-600/10 text-blue-500 dark:text-blue-400 rounded-full">
@@ -924,7 +930,7 @@ export default function MainPage() {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-gray-100 dark:border-gray-850 space-y-1.5 text-[11px]">
+                  <div className="pt-3 space-y-1.5 text-[11px]">
                     <p className="flex justify-between"><span className="text-gray-500 dark:text-gray-400">Rola w oddziale:</span> <span className="font-bold text-blue-600 dark:text-blue-400">Kierownik Oddziału VMI</span></p>
                     <p className="flex justify-between"><span className="text-gray-500 dark:text-gray-400">Uprawnienia:</span> <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Zatwierdzający B2B</span></p>
                     <p className="flex justify-between"><span className="text-gray-500 dark:text-gray-400">Klucz szyfrowania:</span> <span className="font-mono text-gray-500 dark:text-gray-600">AMBRA-7821-X</span></p>
@@ -934,7 +940,7 @@ export default function MainPage() {
                 {/* Logout trigger */}
                 <button
                   onClick={handleLogout}
-                  className="w-full py-3 bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border border-red-200 dark:border-red-900/20 rounded-xl font-bold text-center flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                  className="w-full py-3 bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 rounded-xl font-bold text-center flex items-center justify-center gap-2 cursor-pointer transition-colors"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Wyloguj się z sesji VMI</span>
@@ -943,7 +949,7 @@ export default function MainPage() {
 
               <div className="lg:col-span-8 space-y-4">
                 {/* Developer Network settings (Offline count simulator) */}
-                <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-850 rounded-xl p-5 space-y-3 shadow-sm">
+                <div className="bg-white dark:bg-[#0E1321] rounded-xl p-5 space-y-3 shadow-sm">
                   <h5 className="font-bold text-gray-950 dark:text-white uppercase tracking-wider text-[10px] flex items-center gap-1.5">
                     <Globe className="h-4 w-4 text-[#2A3B4C] dark:text-blue-400" />
                     <span>Tryb deweloperski (VMI Sandbox)</span>
@@ -957,10 +963,10 @@ export default function MainPage() {
                     <button
                       onClick={() => setIsOnline(true)}
                       className={cn(
-                        "flex-1 py-2.5 rounded-lg font-bold text-center flex items-center justify-center gap-1.5 cursor-pointer transition-all border",
+                        "flex-1 py-2.5 rounded-lg font-bold text-center flex items-center justify-center gap-1.5 cursor-pointer transition-all",
                         isOnline 
-                          ? "bg-emerald-600 border-emerald-600 text-white shadow-sm" 
-                          : "bg-gray-100 dark:bg-gray-850 text-gray-500 border-[#E1E3E6] dark:border-transparent hover:bg-gray-200"
+                          ? "bg-emerald-600 text-white shadow-sm" 
+                          : "bg-gray-100 dark:bg-gray-850 text-gray-500 hover:bg-gray-200"
                       )}
                     >
                       <Wifi className="h-3.5 w-3.5" />
@@ -970,10 +976,10 @@ export default function MainPage() {
                     <button
                       onClick={() => setIsOnline(false)}
                       className={cn(
-                        "flex-1 py-2.5 rounded-lg font-bold text-center flex items-center justify-center gap-1.5 cursor-pointer transition-all border",
+                        "flex-1 py-2.5 rounded-lg font-bold text-center flex items-center justify-center gap-1.5 cursor-pointer transition-all",
                         !isOnline 
-                          ? "bg-amber-600 border-amber-600 text-white shadow-sm" 
-                          : "bg-gray-100 dark:bg-gray-850 text-gray-500 border-[#E1E3E6] dark:border-transparent hover:bg-gray-200"
+                          ? "bg-amber-600 text-white shadow-sm" 
+                          : "bg-gray-100 dark:bg-gray-850 text-gray-500 hover:bg-gray-200"
                       )}
                     >
                       <WifiOff className="h-3.5 w-3.5" />
@@ -982,7 +988,7 @@ export default function MainPage() {
                   </div>
 
                   {offlineDraftsCount > 0 && (
-                    <div className="p-3 bg-amber-50 dark:bg-amber-950/15 border border-amber-200 dark:border-amber-900/30 rounded-xl space-y-2 text-amber-700 dark:text-amber-300">
+                    <div className="p-3 bg-amber-50 dark:bg-amber-950/15 rounded-xl space-y-2 text-amber-700 dark:text-amber-300">
                       <p className="font-semibold text-[10px]">Masz {offlineDraftsCount} spisów oczekujących na wysyłkę!</p>
                       <button
                         onClick={handleSyncOfflineDrafts}
@@ -996,14 +1002,14 @@ export default function MainPage() {
 
                   <button
                     onClick={handleClearDemoCache}
-                    className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-850 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 text-[10px] rounded-lg hover:text-gray-800 dark:hover:text-white transition-all cursor-pointer font-bold text-center border border-[#E1E3E6] dark:border-gray-800"
+                    className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-850 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 text-[10px] rounded-lg hover:text-gray-800 dark:hover:text-white transition-all cursor-pointer font-bold text-center"
                   >
                     Resetuj całe demo (Wyczyść Cache i przeładuj)
                   </button>
                 </div>
 
                 {/* Notifications list trigger */}
-                <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-850 rounded-xl p-5 space-y-3.5 shadow-sm">
+                <div className="bg-white dark:bg-[#0E1321] rounded-xl p-5 space-y-3.5 shadow-sm">
                   <div className="flex items-center justify-between">
                     <h5 className="font-bold text-gray-950 dark:text-white uppercase tracking-wider text-[10px]">Archiwum Powiadomień Systemowych ({unreadNotificationsCount})</h5>
                     {unreadNotificationsCount > 0 && (
@@ -1052,12 +1058,39 @@ export default function MainPage() {
     setActiveVendorId(null);
   };
 
-  // If not logged in, render LoginScreen (with prefilled credentials for Michał)
-  if (!isLoggedIn) {
+  // Guard against Next.js hydration mismatches by returning a consistent loading screen on the server & first client render
+  if (!mounted) {
     return (
-      <LoginScreen
-        preFilledUser={currentUser}
-        onLoginSuccess={handleLogin}
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0A0D16] flex items-center justify-center transition-colors">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium font-sans">Ładowanie...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not logged in, render the Public Marketplace or LoginScreen
+  if (!isLoggedIn) {
+    if (showLogin) {
+      return (
+        <LoginScreen
+          preFilledUser={currentUser}
+          onLoginSuccess={(profile) => {
+            handleLogin(profile);
+            setShowLogin(false);
+          }}
+          onBackToMarketplace={() => setShowLogin(false)}
+        />
+      );
+    }
+    return (
+      <MarketplaceContainer
+        onLoginClick={() => setShowLogin(true)}
+        isLoggedIn={false}
+        onGoToPortal={() => setShowLogin(true)}
+        theme={theme}
+        setTheme={setTheme}
       />
     );
   }
@@ -1070,7 +1103,7 @@ export default function MainPage() {
     <div className="min-h-screen bg-[#F8F9FA] dark:bg-[#0A0D16] text-[#1A1C1E] dark:text-white font-sans flex flex-col md:flex-row relative transition-colors duration-200">
       
       {/* MOBILE TOP HEADER BAR */}
-      <header className="md:hidden bg-white dark:bg-[#0E1321] border-b border-[#E1E3E6] dark:border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-40 transition-colors">
+      <header className="md:hidden bg-white dark:bg-[#0E1321] px-4 py-3 flex items-center justify-between sticky top-0 z-40 transition-colors">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[#2A3B4C] dark:bg-blue-600 flex items-center justify-center font-extrabold text-white text-sm shadow-md">
             A
@@ -1083,7 +1116,7 @@ export default function MainPage() {
         
         <div className="flex items-center gap-3">
           {/* Active location summary badge */}
-          <span className="text-[9px] font-bold bg-[#F0F2F5] dark:bg-[#131A2E] text-[#2A3B4C] dark:text-white py-1 px-2 rounded-lg border border-[#E1E3E6] dark:border-gray-800 transition-colors">
+          <span className="text-[9px] font-bold bg-[#F0F2F5] dark:bg-[#131A2E] text-[#2A3B4C] dark:text-white py-1 px-2 rounded-lg transition-colors">
             {mockLocations.find(l => l.id === activeLocationId)?.name || 'Oddział'}
           </span>
           
@@ -1107,9 +1140,9 @@ export default function MainPage() {
       )}
 
       {/* 1. DESKTOP NAVIGATION SIDEBAR - Breakpoint 768px */}
-      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#0E1321] border-r border-[#E1E3E6] dark:border-gray-800 shrink-0 select-none transition-colors">
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#0E1321] shrink-0 select-none transition-colors">
         {/* App Title */}
-        <div className="p-5 border-b border-[#E1E3E6] dark:border-gray-800 flex items-center justify-between">
+        <div className="p-5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#2A3B4C] dark:bg-blue-600 flex items-center justify-center font-extrabold text-white text-sm shadow-md">
               A
@@ -1131,7 +1164,7 @@ export default function MainPage() {
         </div>
 
         {/* Location display */}
-        <div className="p-4 mx-3 my-4 bg-[#F0F2F5] dark:bg-[#131A2E] rounded-xl border border-[#E1E3E6] dark:border-gray-800 flex items-center gap-2.5 transition-colors">
+        <div className="p-4 mx-3 my-4 bg-[#F0F2F5] dark:bg-[#131A2E] rounded-xl flex items-center gap-2.5 transition-colors">
           <div className="p-1.5 rounded-lg bg-[#2A3B4C]/10 dark:bg-white/10 text-[#2A3B4C] dark:text-blue-400">
             <Database className="h-4 w-4" />
           </div>
@@ -1173,7 +1206,7 @@ export default function MainPage() {
                 className={cn(
                   "w-full px-3.5 py-3 rounded-xl text-xs font-bold flex items-center justify-between transition-all cursor-pointer",
                   isActive 
-                    ? "bg-[#F0F2F5] dark:bg-[#131A2E] text-[#2A3B4C] dark:text-white border-l-4 border-[#2A3B4C] dark:border-blue-500" 
+                    ? "bg-[#F0F2F5] dark:bg-[#131A2E] text-[#2A3B4C] dark:text-white" 
                     : "text-gray-500 hover:text-[#2A3B4C] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5"
                 )}
               >
@@ -1195,7 +1228,7 @@ export default function MainPage() {
         </nav>
 
         {/* Primary Action Button */}
-        <div className="p-4 border-t border-[#E1E3E6] dark:border-gray-800">
+        <div className="p-4">
           <button
             onClick={() => setIsCountWorkflowOpen(true)}
             className="w-full py-3 bg-[#2A3B4C] dark:bg-blue-600 hover:bg-[#1E2B38] dark:hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-[0.98]"
@@ -1256,7 +1289,7 @@ export default function MainPage() {
       </main>
 
       {/* 2. MOBILE NAVIGATION BOTTOM BAR - Breakpoint 768px */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0E1321]/95 backdrop-blur-md border-t border-[#E1E3E6] dark:border-gray-800 flex items-center justify-around py-2 shrink-0 select-none transition-colors">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0E1321]/95 backdrop-blur-md flex items-center justify-around py-2 shrink-0 select-none transition-colors">
         {[
           { id: 'home', name: 'Pulpit', icon: Home },
           { id: 'vendors', name: 'Dostawcy', icon: Layers },
@@ -1305,7 +1338,7 @@ export default function MainPage() {
         {/* Mobile floating fast inwentaryzacja helper trigger */}
         <button
           onClick={() => setIsCountWorkflowOpen(true)}
-          className="w-10 h-10 rounded-full bg-[#2A3B4C] dark:bg-blue-600 text-white flex items-center justify-center -translate-y-4 shadow-lg border-4 border-[#F8F9FA] dark:border-[#0A0D16] cursor-pointer active:scale-95 transition-all"
+          className="w-10 h-10 rounded-full bg-[#2A3B4C] dark:bg-blue-600 text-white flex items-center justify-center -translate-y-4 shadow-lg cursor-pointer active:scale-95 transition-all"
           title="Inwentaryzacja VMI"
         >
           <Plus className="h-5 w-5" />

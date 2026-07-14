@@ -118,14 +118,12 @@ export default function ProposalDetail({
 
   // Mass action: reject all lines
   const handleRejectAll = () => {
-    if (confirm('Czy na pewno chcesz odrzucić całą propozycję dostawy VMI?')) {
-      const updated = lines.map(line => ({
-        ...line,
-        finalProposedQty: 0,
-        status: 'rejected' as const
-      }));
-      setLines(updated);
-    }
+    const updated = lines.map(line => ({
+      ...line,
+      finalProposedQty: 0,
+      status: 'rejected' as const
+    }));
+    setLines(updated);
   };
 
   // Calculate stats for sticky footer
@@ -141,11 +139,6 @@ export default function ProposalDetail({
   // Submit back to main VMI order system
   const handleFormSubmit = () => {
     const approvedLines = lines.filter(l => l.finalProposedQty > 0);
-    if (approvedLines.length === 0) {
-      if (!confirm('Zatwierdzasz 0 pozycji (całkowite odrzucenie). Kontynuować?')) {
-        return;
-      }
-    }
     onSubmitApproval(proposal.id, approvedLines, generalComment);
   };
 
@@ -153,7 +146,7 @@ export default function ProposalDetail({
     <div className="flex flex-col h-full bg-[#F8F9FA] dark:bg-[#0A0D16] text-[#1A1C1E] dark:text-white">
       
       {/* Detail Header */}
-      <div className="px-4 py-3 bg-white dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-800 flex items-center justify-between shrink-0">
+      <div className="px-4 py-3 bg-white dark:bg-[#131A2E] flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button 
             onClick={onBack}
@@ -168,14 +161,14 @@ export default function ProposalDetail({
         </div>
         
         <div className="flex items-center gap-2">
-          <span className="text-[10px] px-2.5 py-1 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/30 font-bold font-mono">
+          <span className="text-[10px] px-2.5 py-1 rounded bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 font-bold font-mono">
             {proposal.status}
           </span>
         </div>
       </div>
 
       {/* Info Warning Bar */}
-      <div className="bg-amber-50 dark:bg-amber-950/15 border-b border-amber-200 dark:border-amber-900/30 px-4 py-2.5 shrink-0 flex items-center gap-2 text-xs text-amber-800 dark:text-amber-400">
+      <div className="bg-amber-50 dark:bg-amber-950/15 px-4 py-2.5 shrink-0 flex items-center gap-2 text-xs text-amber-800 dark:text-amber-400">
         <Info className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 animate-pulse" />
         <p className="leading-normal">
           Algorytm VMI Ambra wyliczył zapotrzebowanie na podstawie progów minimalnych. Możesz zmodyfikować ilości lub uzupełnić komentarze dla handlowca.
@@ -185,7 +178,7 @@ export default function ProposalDetail({
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-24 bg-[#F8F9FA] dark:bg-[#0A0D16]">
         {/* Vendor Contact details & Expiry Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white dark:bg-[#0E1321]/60 rounded-xl border border-[#E1E3E6] dark:border-gray-800 p-4 shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white dark:bg-[#0E1321]/60 rounded-xl p-4 shadow-sm">
           <div className="space-y-1">
             <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Odpowiedzialny Dostawca</h4>
             <div className="flex items-center gap-2 mt-1">
@@ -211,12 +204,12 @@ export default function ProposalDetail({
         </div>
 
         {/* Global actions block */}
-        <div className="flex items-center justify-between border-b border-[#E1E3E6] dark:border-gray-800 pb-2">
+        <div className="flex items-center justify-between pb-2">
           <h4 className="font-bold text-sm text-[#2A3B4C] dark:text-white">Pozycje w propozycji ({lines.length})</h4>
           <div className="flex gap-2">
             <button
               onClick={handleApproveAll}
-              className="px-3 py-1.5 bg-white dark:bg-[#0E1321]/50 border border-[#E1E3E6] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 text-[#2A3B4C] dark:text-gray-300 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+              className="px-3 py-1.5 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50 dark:hover:bg-gray-800 text-[#2A3B4C] dark:text-gray-300 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
             >
               <ThumbsUp className="h-3.5 w-3.5 text-emerald-600" />
               <span>Zatwierdź wszystkie</span>
@@ -245,18 +238,18 @@ export default function ProposalDetail({
               <div 
                 key={line.productId}
                 className={cn(
-                  "p-4 rounded-xl border transition-all flex flex-col gap-4 relative",
+                  "p-4 rounded-xl transition-all flex flex-col gap-4 relative",
                   isRejected 
-                    ? "border-red-200 dark:border-red-900/30 bg-red-50/40 dark:bg-red-950/10 opacity-60" 
+                    ? "bg-red-50/40 dark:bg-red-950/10 opacity-60" 
                     : isModified 
-                      ? "border-amber-200 dark:border-amber-900/30 bg-amber-50/40 dark:bg-amber-950/10" 
-                      : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 shadow-sm"
+                      ? "bg-amber-50/40 dark:bg-amber-950/10" 
+                      : "bg-white dark:bg-[#0E1321]/50 shadow-sm"
                 )}
               >
                 {/* Line Header */}
                 <div className="flex gap-3 items-start justify-between">
                   <div className="flex gap-3 items-center min-w-0">
-                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0 border border-gray-200 dark:border-gray-700">
+                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0">
                       <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="min-w-0">
@@ -274,7 +267,7 @@ export default function ProposalDetail({
                     {isRejected ? (
                       <button
                         onClick={() => handleToggleStatus(line.productId, 'approve')}
-                        className="p-1 text-xs font-bold bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/30 text-emerald-700 dark:text-emerald-450 rounded-lg cursor-pointer flex items-center gap-1"
+                        className="p-1 text-xs font-bold bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-450 rounded-lg cursor-pointer flex items-center gap-1"
                       >
                         <ThumbsUp className="h-3.5 w-3.5" />
                         <span className="hidden sm:inline">Przywróć</span>
@@ -292,7 +285,7 @@ export default function ProposalDetail({
                 </div>
 
                 {/* VMI Formulas & Math logic behind suggestion */}
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 py-2 px-3 bg-[#F0F2F5] dark:bg-gray-800/50 rounded-xl border border-[#E1E3E6] dark:border-gray-800 text-center text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 py-2 px-3 bg-[#F0F2F5] dark:bg-gray-800/50 rounded-xl text-center text-xs">
                   <div>
                     <span className="text-gray-500 dark:text-gray-400 block text-[11px]">Stan obecny</span>
                     <span className="font-bold text-gray-800 dark:text-gray-200 font-mono">{line.currentStock} szt.</span>
@@ -316,7 +309,7 @@ export default function ProposalDetail({
                 </div>
 
                 {/* VMI AI reason text explaining WHY */}
-                <div className="bg-[#F8F9FA] dark:bg-[#0E1321]/45 p-2.5 rounded-lg border border-[#E1E3E6] dark:border-gray-800 text-[11px] text-gray-600 dark:text-gray-400 leading-normal">
+                <div className="bg-[#F8F9FA] dark:bg-[#0E1321]/45 p-2.5 rounded-lg text-[11px] text-gray-600 dark:text-gray-400 leading-normal">
                   <span className="font-semibold text-[#2A3B4C] dark:text-white">Algorytm VMI: </span>
                   {line.reason}
                 </div>
@@ -337,7 +330,7 @@ export default function ProposalDetail({
                           <Minus className="h-4 w-4" />
                         </button>
 
-                        <div className="px-3 py-1 bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded text-sm font-bold font-mono text-[#2A3B4C] dark:text-white text-center min-w-[50px]">
+                        <div className="px-3 py-1 bg-white dark:bg-[#0E1321] rounded text-sm font-bold font-mono text-[#2A3B4C] dark:text-white text-center min-w-[50px]">
                           {line.finalProposedQty}
                         </div>
 
@@ -360,12 +353,12 @@ export default function ProposalDetail({
                         placeholder="Komentarz klienta (np. nadmiar)..."
                         value={line.clientComment || ''}
                         onChange={(e) => handleLineComment(line.productId, e.target.value)}
-                        className="flex-1 sm:w-60 bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-lg px-2.5 py-1.5 text-xs text-gray-900 dark:text-white placeholder-gray-405 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="flex-1 sm:w-60 bg-white dark:bg-[#0E1321] rounded-lg px-2.5 py-1.5 text-xs text-gray-900 dark:text-white placeholder-gray-405 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                       />
 
                       <button
                         onClick={() => onAskQuestion(line.productId, `Zapytanie o pozycję VMI: ${prod.name} (Propozycja ${proposal.proposalNumber})`)}
-                        className="p-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-[#2A3B4C] dark:hover:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg shrink-0 flex items-center gap-1 cursor-pointer transition-colors border border-gray-200 dark:border-gray-800"
+                        className="p-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-[#2A3B4C] dark:hover:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg shrink-0 flex items-center gap-1 cursor-pointer transition-colors"
                         title="Skonsultuj tę pozycję z opiekunem dostawcy"
                       >
                         <MessageSquare className="h-4 w-4" />
@@ -380,19 +373,19 @@ export default function ProposalDetail({
         </div>
 
         {/* General remarks from customer */}
-        <div className="bg-white dark:bg-[#0E1321]/60 border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 space-y-2 shadow-sm">
+        <div className="bg-white dark:bg-[#0E1321]/60 rounded-xl p-4 space-y-2 shadow-sm">
           <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block uppercase tracking-wider">Komentarz ogólny do dostawy</label>
           <textarea
             placeholder="Dodaj opcjonalne uwagi dla doradcy, np. godziny przyjmowania dostaw lub numer PO..."
             value={generalComment}
             onChange={(e) => setGeneralComment(e.target.value)}
-            className="w-full bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-3 text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[60px]"
+            className="w-full bg-white dark:bg-[#0E1321] rounded-xl p-3 text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[60px]"
           />
         </div>
       </div>
 
       {/* STICKY BOTTOM SUMMARY PANEL */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#131A2E] border-t border-[#E1E3E6] dark:border-gray-850 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shrink-0 z-10 shadow-md">
+      <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#131A2E] px-4 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shrink-0 z-10 shadow-md">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2 text-xs">
             <span className="text-gray-500 dark:text-gray-400">Podsumowanie propozycji:</span>

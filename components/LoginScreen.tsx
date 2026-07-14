@@ -8,9 +8,10 @@ import { UserProfile } from '../lib/types';
 interface LoginScreenProps {
   preFilledUser: UserProfile;
   onLoginSuccess: (profile: UserProfile) => void;
+  onBackToMarketplace?: () => void;
 }
 
-export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScreenProps) {
+export default function LoginScreen({ preFilledUser, onLoginSuccess, onBackToMarketplace }: LoginScreenProps) {
   const [email, setEmail] = useState('m.stepien@autoservice-komorniki.pl');
   const [password, setPassword] = useState('••••••••••••');
   const [rememberMe, setRememberMe] = useState(true);
@@ -23,6 +24,14 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
 
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[#F8F9FA] dark:bg-[#0A0D16] text-[#1A1C1E] dark:text-white overflow-hidden relative">
+      {onBackToMarketplace && (
+        <button
+          onClick={onBackToMarketplace}
+          className="absolute top-6 left-6 py-2 px-4 bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-gray-850 text-[#2A3B4C] dark:text-white rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 transition-all z-20"
+        >
+          ← Powrót do giełdy
+        </button>
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         {/* Brand Identity */}
         <div className="flex flex-col items-center">
@@ -30,7 +39,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="w-16 h-16 bg-[#2A3B4C] dark:bg-blue-600 rounded-2xl flex items-center justify-center shadow-md border border-[#2A3B4C]/10 dark:border-transparent"
+            className="w-16 h-16 bg-[#2A3B4C] dark:bg-blue-600 rounded-2xl flex items-center justify-center shadow-md"
           >
             <span className="text-3xl font-extrabold tracking-wider text-white font-display">A</span>
           </motion.div>
@@ -59,7 +68,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
         transition={{ delay: 0.3, duration: 0.6 }}
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
       >
-        <div className="bg-white dark:bg-[#0E1321] py-8 px-6 shadow-sm rounded-2xl border border-[#E1E3E6] dark:border-gray-800 sm:px-10">
+        <div className="bg-white dark:bg-[#0E1321] py-8 px-6 shadow-sm rounded-2xl sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -75,7 +84,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-750 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:border-[#2A3B4C] dark:focus:border-blue-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-[#0C101A] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:border-[#2A3B4C] dark:focus:border-blue-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors"
                   placeholder="nazwa@firma.pl"
                 />
               </div>
@@ -95,7 +104,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-750 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:border-[#2A3B4C] dark:focus:border-blue-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 bg-white dark:bg-[#0C101A] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:border-[#2A3B4C] dark:focus:border-blue-500 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors"
                   placeholder="Wpisz hasło"
                 />
               </div>
@@ -109,7 +118,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-[#2A3B4C] dark:text-blue-500 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 bg-white dark:bg-gray-850 border-gray-300 dark:border-gray-700 rounded transition-colors cursor-pointer"
+                  className="h-4 w-4 text-[#2A3B4C] dark:text-blue-500 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 bg-white dark:bg-gray-850 rounded transition-colors cursor-pointer"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600 dark:text-gray-400 cursor-pointer select-none">
                   Zapamiętaj mnie
@@ -127,7 +136,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="bg-red-50 dark:bg-red-950/10 border border-red-200 dark:border-red-900/30 rounded-xl p-3 text-xs text-red-600 dark:text-red-400 flex items-start gap-2"
+                className="bg-red-50 dark:bg-red-950/10 rounded-xl p-3 text-xs text-red-600 dark:text-red-400 flex items-start gap-2"
               >
                 <ShieldAlert className="h-4 w-4 shrink-0 mt-0.5" />
                 <span>{error}</span>
@@ -137,7 +146,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-[#2A3B4C] hover:bg-[#1E2B38] dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:ring-offset-gray-50 transition-all transform active:scale-95 cursor-pointer"
+                className="w-full flex justify-center py-3 px-4 rounded-xl shadow-sm text-sm font-medium text-white bg-[#2A3B4C] hover:bg-[#1E2B38] dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2A3B4C] dark:focus:ring-blue-500 focus:ring-offset-gray-50 transition-all transform active:scale-95 cursor-pointer"
               >
                 Zaloguj się
               </button>
@@ -145,8 +154,8 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
           </form>
 
           {/* Demo info card */}
-          <div className="mt-8 pt-6 border-t border-[#E1E3E6] dark:border-gray-850">
-            <div className="bg-[#F0F2F5] dark:bg-[#0C101A] rounded-xl p-4 border border-[#E1E3E6] dark:border-gray-800">
+          <div className="mt-8 pt-6">
+            <div className="bg-[#F0F2F5] dark:bg-[#0C101A] rounded-xl p-4">
               <div className="flex gap-3">
                 <UserCheck className="h-5 w-5 text-[#2A3B4C] dark:text-blue-400 shrink-0 mt-0.5" />
                 <div>
@@ -154,7 +163,7 @@ export default function LoginScreen({ preFilledUser, onLoginSuccess }: LoginScre
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
                     Aplikacja jest wstępnie skonfigurowana dla konta:
                   </p>
-                  <div className="mt-2 text-xs font-mono text-gray-600 dark:text-gray-300 space-y-0.5 bg-white dark:bg-gray-900 border border-[#E1E3E6] dark:border-gray-800 p-2 rounded-lg">
+                  <div className="mt-2 text-xs font-mono text-gray-600 dark:text-gray-300 space-y-0.5 bg-white dark:bg-gray-900 p-2 rounded-lg">
                     <div><span className="text-gray-400 dark:text-gray-500">Użytkownik:</span> Michał Stępień</div>
                     <div><span className="text-gray-400 dark:text-gray-500">Rola:</span> Kierownik Oddziału (Branch Manager)</div>
                     <div><span className="text-gray-400 dark:text-gray-500">Firma:</span> AutoService Komorniki</div>

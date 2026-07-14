@@ -250,13 +250,13 @@ function ProductCartControl({
             e.stopPropagation();
             setTempPacks((p) => Math.max(0, p - 1));
           }}
-          className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-250 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center cursor-pointer font-bold border border-gray-200 dark:border-gray-700 select-none shrink-0"
+          className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-250 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center cursor-pointer font-bold select-none shrink-0"
           title="-1 paczka"
         >
           <Minus className="h-3 w-3" />
         </button>
 
-        <div className="flex-1 text-center font-bold text-gray-800 dark:text-blue-300 font-mono text-[10px] bg-gray-50 dark:bg-gray-900/80 py-1 rounded-lg border border-gray-200 dark:border-gray-800 leading-tight">
+        <div className="flex-1 text-center font-bold text-gray-800 dark:text-blue-300 font-mono text-[10px] bg-gray-50 dark:bg-gray-900/80 py-1 rounded-lg leading-tight">
           <div className="font-extrabold">{tempPacks} op.</div>
           <div className="text-[8px] text-gray-400 font-normal">({tempPacks * packSize} szt.)</div>
         </div>
@@ -290,7 +290,7 @@ function ProductCartControl({
           e.stopPropagation();
           handleStartEditing();
         }}
-        className="w-full py-2 px-2.5 rounded-xl font-extrabold text-[10px] sm:text-xs bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/40 transition-all cursor-pointer shadow-sm flex items-center justify-center gap-1.5"
+        className="w-full py-2 px-2.5 rounded-xl font-extrabold text-[10px] sm:text-xs bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/40 transition-all cursor-pointer shadow-sm flex items-center justify-center gap-1.5"
       >
         <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span className="truncate">{activePacks} op. ({itemInCart?.requestedQty} szt.)</span>
@@ -455,29 +455,29 @@ export default function VendorDashboardView({
   }, [cart]);
 
   // Accent color classes mapping (Updated for clean high-contrast light theme)
-  const getAccentClass = (type: 'text' | 'bg' | 'border' | 'hoverBg') => {
+  const getAccentClass = (type: 'text' | 'bg' | '' | 'hoverBg') => {
     if (vendor.accentColor === 'blue') {
       if (type === 'text') return 'text-blue-700';
       if (type === 'bg') return 'bg-blue-700';
-      if (type === 'border') return 'border-blue-200';
+      if (type === '') return '';
       return 'hover:bg-blue-800';
     }
     if (vendor.accentColor === 'orange') {
       if (type === 'text') return 'text-orange-700';
       if (type === 'bg') return 'bg-orange-600';
-      if (type === 'border') return 'border-orange-200';
+      if (type === '') return '';
       return 'hover:bg-orange-700';
     }
     if (vendor.accentColor === 'green') {
       if (type === 'text') return 'text-emerald-700';
       if (type === 'bg') return 'bg-emerald-700';
-      if (type === 'border') return 'border-emerald-200';
+      if (type === '') return '';
       return 'hover:bg-emerald-800';
     }
     // Red / others
     if (type === 'text') return 'text-red-700';
     if (type === 'bg') return 'bg-red-700';
-    if (type === 'border') return 'border-red-200';
+    if (type === '') return '';
     return 'hover:bg-red-800';
   };
 
@@ -533,7 +533,7 @@ export default function VendorDashboardView({
       
       {/* BRANDED HEADER */}
       <div className={cn(
-        "p-5 rounded-2xl border bg-white dark:bg-[#131A2E] shadow-sm relative overflow-hidden flex flex-col sm:flex-row justify-between gap-4 border-[#E1E3E6] dark:border-gray-800"
+        "p-5 rounded-2xl bg-white dark:bg-[#131A2E] shadow-sm relative overflow-hidden flex flex-col sm:flex-row justify-between gap-4"
       )}>
         <div className="flex gap-4 items-center">
           <button 
@@ -590,10 +590,10 @@ export default function VendorDashboardView({
               key={tab.id}
               onClick={() => { setActiveSubTab(tab.id as any); setIsCheckoutSuccess(false); }}
               className={cn(
-                "px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer whitespace-nowrap transition-all shrink-0 border",
+                "px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer whitespace-nowrap transition-all shrink-0",
                 isActive 
-                  ? "bg-[#2A3B4C] dark:bg-blue-600 text-white border-[#2A3B4C] dark:border-blue-600" 
-                  : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 border-[#E1E3E6] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-[#2A3B4C] dark:bg-blue-600 text-white" 
+                  : "bg-white dark:bg-[#131A2E] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
               )}
             >
               <Icon className={cn("h-4 w-4", isActive ? "text-white" : "text-gray-500 dark:text-gray-400")} />
@@ -658,7 +658,7 @@ export default function VendorDashboardView({
               return (
                 <div 
                   onClick={() => currentSlide?.ctaAction()}
-                  className="relative group w-full bg-gradient-to-br from-[#1E2B38] to-slate-900 border border-slate-800 rounded-2xl shadow-lg overflow-hidden h-[240px] sm:h-[190px] md:h-[170px] flex flex-col justify-between cursor-pointer transition-all hover:shadow-xl"
+                  className="relative group w-full bg-gradient-to-br from-[#1E2B38] to-slate-900 rounded-2xl shadow-lg overflow-hidden h-[240px] sm:h-[190px] md:h-[170px] flex flex-col justify-between cursor-pointer transition-all hover:shadow-xl"
                 >
                   {/* Decorative glowing background elements */}
                   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full translate-x-12 -translate-y-12 group-hover:scale-110 transition-transform duration-500 pointer-events-none" />
@@ -701,7 +701,7 @@ export default function VendorDashboardView({
                             {currentSlide.badge}
                           </span>
                           {currentSlide.badgeText && (
-                            <span className="px-2 py-0.5 bg-white/10 border border-white/10 text-gray-300 font-bold text-[8px] rounded uppercase font-mono tracking-wider">
+                            <span className="px-2 py-0.5 bg-white/10 text-gray-300 font-bold text-[8px] rounded uppercase font-mono tracking-wider">
                               {currentSlide.badgeText}
                             </span>
                           )}
@@ -753,7 +753,7 @@ export default function VendorDashboardView({
               
               {/* Left box: account details */}
               <div className="lg:col-span-5 space-y-4">
-                <div className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-5 space-y-4 text-xs shadow-sm text-left">
+                <div className="bg-white dark:bg-[#131A2E] rounded-xl p-5 space-y-4 text-xs shadow-sm text-left">
                   <h4 className="font-bold text-sm text-[#1A1C1E] dark:text-white uppercase tracking-wider">Informacje o dostawcy</h4>
                   
                   <div className="space-y-3">
@@ -789,11 +789,11 @@ export default function VendorDashboardView({
                   </div>
 
                   {/* Available Persons Online for Contact section */}
-                  <div className="space-y-3 border-t border-gray-150 dark:border-gray-800 pt-4">
+                  <div className="space-y-3 pt-4">
                     <p className="text-[10px] font-black uppercase tracking-wider text-gray-400">Opiekunowie i wsparcie online</p>
                     <div className="grid grid-cols-1 gap-2">
                       {(VENDOR_CONTACTS[vendor.id] || []).map((contact, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-2.5 bg-[#F8F9FA] dark:bg-gray-900 border border-gray-100 dark:border-gray-850 rounded-xl">
+                        <div key={idx} className="flex items-center justify-between p-2.5 bg-[#F8F9FA] dark:bg-gray-900 rounded-xl">
                           <div className="flex items-center gap-2">
                             <span className={cn(
                               "w-2 h-2 rounded-full shrink-0",
@@ -819,9 +819,9 @@ export default function VendorDashboardView({
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-100 dark:border-gray-800 space-y-2">
+                  <div className="pt-4 space-y-2">
                     <p className="text-gray-500 dark:text-gray-400 font-medium">Harmonogram dostaw VMI:</p>
-                    <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-100 dark:border-blue-900/30 text-center font-bold text-blue-700 dark:text-blue-400">
+                    <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg text-center font-bold text-blue-700 dark:text-blue-400">
                       Sugerowane dni dostaw: Poniedziałek i Czwartek
                     </div>
                   </div>
@@ -829,7 +829,7 @@ export default function VendorDashboardView({
 
               {/* Showroom list */}
               {vendorShowrooms.length > 0 && (
-                <div className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 space-y-4 text-xs shadow-sm">
+                <div className="bg-white dark:bg-[#131A2E] rounded-xl p-4 space-y-4 text-xs shadow-sm">
                   <h5 className="font-bold text-[#1A1C1E] dark:text-white uppercase tracking-wider">Nowości i Wystawka (Showroom)</h5>
                   {vendorShowrooms.map(showroom => {
                     const productIds = showroom.sections?.[0]?.productIds || [];
@@ -840,14 +840,14 @@ export default function VendorDashboardView({
 
                     return (
                       <div key={showroom.id} className="space-y-2">
-                        <div className="border-b border-gray-100 dark:border-gray-800 pb-1">
+                        <div className="pb-1">
                           <h6 className="font-bold text-[#2A3B4C] dark:text-blue-400">{showroom.title}</h6>
                           <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-1">{showroom.description}</p>
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           {showroomProducts.map(prod => (
-                            <div key={prod.id} className="bg-gray-50 dark:bg-gray-800/40 p-2 rounded-lg border border-gray-100 dark:border-gray-850 text-center flex flex-col justify-between">
-                              <span className="px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30 rounded text-[8px] font-bold uppercase tracking-wide block w-fit mx-auto mb-1 truncate">
+                            <div key={prod.id} className="bg-gray-50 dark:bg-gray-800/40 p-2 rounded-lg text-center flex flex-col justify-between">
+                              <span className="px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 rounded text-[8px] font-bold uppercase tracking-wide block w-fit mx-auto mb-1 truncate">
                                 {prod.category}
                               </span>
                               <p className="font-semibold text-[#1A1C1E] dark:text-white line-clamp-1 text-[11px]">{prod.name}</p>
@@ -871,7 +871,7 @@ export default function VendorDashboardView({
             {/* Right box: statistics & proposals */}
             <div className="lg:col-span-7 space-y-4">
               {vendorProposals.length > 0 && (
-                <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-xl p-4 space-y-3 text-xs text-blue-800 dark:text-blue-300 shadow-sm">
+                <div className="bg-blue-50 dark:bg-blue-950/20 rounded-xl p-4 space-y-3 text-xs text-blue-800 dark:text-blue-300 shadow-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                     <h5 className="font-bold text-[#2A3B4C] dark:text-blue-400">Aktywna propozycja VMI</h5>
@@ -888,16 +888,16 @@ export default function VendorDashboardView({
                 </div>
               )}
 
-              <div className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-5 space-y-4 text-xs shadow-sm">
+              <div className="bg-white dark:bg-[#131A2E] rounded-xl p-5 space-y-4 text-xs shadow-sm">
                 <h4 className="font-bold text-sm text-[#1A1C1E] dark:text-white uppercase tracking-wider">Historia i statystyki</h4>
                 
                 <div className="grid grid-cols-2 gap-3 text-center">
-                  <div className="p-4 bg-[#F8F9FA] dark:bg-gray-800/40 rounded-xl border border-[#E1E3E6] dark:border-gray-800">
+                  <div className="p-4 bg-[#F8F9FA] dark:bg-gray-800/40 rounded-xl">
                     <span className="text-gray-500 dark:text-gray-400 block">Złożone zamówienia</span>
                     <span className="text-2xl font-bold text-[#2A3B4C] dark:text-blue-400 font-mono">{vendorOrders.length}</span>
                   </div>
 
-                  <div className="p-4 bg-[#F8F9FA] dark:bg-gray-800/40 rounded-xl border border-[#E1E3E6] dark:border-gray-800">
+                  <div className="p-4 bg-[#F8F9FA] dark:bg-gray-800/40 rounded-xl">
                     <span className="text-gray-500 dark:text-gray-400 block">Aktywne wyceny (B2B)</span>
                     <span className="text-2xl font-bold text-[#2A3B4C] dark:text-blue-400 font-mono">{vendorQuotations.length}</span>
                   </div>
@@ -908,7 +908,7 @@ export default function VendorDashboardView({
                   {vendorOrders.length === 0 ? (
                     <p className="text-gray-400 dark:text-gray-550 italic">Brak wcześniejszych zamówień.</p>
                   ) : (
-                    <div className="p-3 bg-gray-50 dark:bg-gray-800/40 rounded-lg border border-gray-250 dark:border-gray-850 flex justify-between items-center">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-800/40 rounded-lg flex justify-between items-center">
                       <div>
                         <p className="font-bold text-[#1A1C1E] dark:text-white font-mono">{vendorOrders[0].orderNumber}</p>
                         <p className="text-[10px] text-gray-400 dark:text-gray-500">{vendorOrders[0].date}</p>
@@ -929,7 +929,7 @@ export default function VendorDashboardView({
           <div className="space-y-4">
             
             {/* 1. Quick Filters above search bar */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 p-3 rounded-xl text-xs shadow-sm">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#131A2E] p-3 rounded-xl text-xs shadow-sm">
               <div className="flex items-center gap-1 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
                 <span className="text-gray-400 font-black uppercase tracking-wider text-[8px] mr-2 flex items-center gap-1 shrink-0 font-mono">
                   <Filter className="h-3 w-3 text-gray-400" /> Szybki filtr:
@@ -945,10 +945,10 @@ export default function VendorDashboardView({
                       key={f.id}
                       onClick={() => setActiveQuickFilter(f.id as any)}
                       className={cn(
-                        "px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all whitespace-nowrap cursor-pointer border",
+                        "px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all whitespace-nowrap cursor-pointer",
                         isActive 
-                          ? "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-[#1A1C1E] dark:text-white" 
-                          : "border-transparent text-gray-500 hover:text-gray-950 dark:hover:text-white"
+                          ? "bg-gray-100 dark:bg-gray-800 text-[#1A1C1E] dark:text-white" 
+                          : "text-gray-500 hover:text-gray-950 dark:hover:text-white"
                       )}
                     >
                       {f.name}
@@ -964,7 +964,7 @@ export default function VendorDashboardView({
                   <button
                     onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                     className={cn(
-                      "p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-750 text-gray-600 dark:text-gray-300 transition-colors cursor-pointer border border-[#E1E3E6] dark:border-gray-700 flex items-center gap-1",
+                      "p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-750 text-gray-600 dark:text-gray-300 transition-colors cursor-pointer flex items-center gap-1",
                       isSettingsOpen ? "bg-gray-250 dark:bg-gray-700 text-gray-950" : ""
                     )}
                     title="Ustawienia widoku"
@@ -975,18 +975,18 @@ export default function VendorDashboardView({
                   {isSettingsOpen && (
                     <>
                       <div className="fixed inset-0 z-40" onClick={() => setIsSettingsOpen(false)} />
-                      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl shadow-xl p-3.5 z-50 space-y-2.5 text-xs">
+                      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#0E1321] rounded-xl shadow-xl p-3.5 z-50 space-y-2.5 text-xs">
                         <p className="font-bold text-[9px] uppercase tracking-wider text-gray-400 font-mono">Parametry katalogu</p>
                         <label className="flex items-center gap-2.5 cursor-pointer text-gray-700 dark:text-gray-300 hover:text-gray-950 dark:hover:text-white font-bold">
                           <input 
                             type="checkbox" 
                             checked={hidePrices} 
                             onChange={(e) => setHidePrices(e.target.checked)}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                            className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
                           />
                           <span>Ukryj ceny netto</span>
                         </label>
-                        <p className="text-[9px] text-gray-400 dark:text-gray-550 leading-normal border-t border-gray-100 dark:border-gray-800 pt-2">
+                        <p className="text-[9px] text-gray-400 dark:text-gray-550 leading-normal pt-2">
                           Aktywuj tę funkcję, aby zasymulować prezentację oferty bezpośrednio u klienta bez zdradzania cen bazowych.
                         </p>
                       </div>
@@ -997,7 +997,7 @@ export default function VendorDashboardView({
                 <div className="h-5 w-px bg-gray-200 dark:bg-gray-800" />
 
                 {/* View Toggles */}
-                <div className="flex bg-gray-50 dark:bg-gray-800 rounded-lg p-0.5 border border-[#E1E3E6] dark:border-gray-700">
+                <div className="flex bg-gray-50 dark:bg-gray-800 rounded-lg p-0.5">
                   {[
                     { id: 'tile', label: 'Małe kafelki', icon: Grid },
                     { id: 'list', label: 'Lista', icon: List },
@@ -1024,7 +1024,7 @@ export default function VendorDashboardView({
                 </div>
 
                 {viewMode === 'tile' && (
-                  <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-2.5 py-1.5 rounded-lg border border-[#E1E3E6] dark:border-gray-700 text-[10px]">
+                  <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-2.5 py-1.5 rounded-lg text-[10px]">
                     <span className="text-gray-450 dark:text-gray-450 font-mono font-bold">Kafle:</span>
                     <input 
                       type="range" 
@@ -1051,14 +1051,14 @@ export default function VendorDashboardView({
                   placeholder="Wyszukaj produkt po nazwie lub SKU..."
                   value={catalogSearch}
                   onChange={(e) => setCatalogSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2A3B4C] dark:focus:ring-blue-600 text-[#1A1C1E] dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  className="w-full pl-9 pr-3 py-2 bg-white dark:bg-[#131A2E] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2A3B4C] dark:focus:ring-blue-600 text-[#1A1C1E] dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 />
               </div>
 
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 text-[#1A1C1E] dark:text-white px-3 py-2 rounded-xl text-xs cursor-pointer focus:outline-none shrink-0"
+                className="bg-white dark:bg-[#131A2E] text-[#1A1C1E] dark:text-white px-3 py-2 rounded-xl text-xs cursor-pointer focus:outline-none shrink-0"
               >
                 <option value="all">Wszystkie kategorie</option>
                 {categories.map(cat => (
@@ -1069,7 +1069,7 @@ export default function VendorDashboardView({
 
             {/* 3. Render Views dynamically based on selection */}
             {filteredProducts.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-xs bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-xl">
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-xs bg-white dark:bg-[#131A2E] rounded-xl">
                 Brak produktów pasujących do filtrów w tym katalogu.
               </div>
             ) : (
@@ -1087,10 +1087,10 @@ export default function VendorDashboardView({
                       return (
                         <div 
                           key={prod.id} 
-                          className="bg-white dark:bg-[#131A2E] rounded-xl border border-[#E1E3E6] dark:border-gray-850 p-3 flex flex-col justify-between hover:border-gray-350 dark:hover:border-gray-750 transition-all text-xs shadow-sm"
+                          className="bg-white dark:bg-[#131A2E] rounded-xl p-3 flex flex-col justify-between dark:hover:border-gray-750 transition-all text-xs shadow-sm"
                         >
                           <div>
-                            <div className="w-full aspect-[4/3] bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden border border-gray-150 dark:border-gray-800 relative shrink-0">
+                            <div className="w-full aspect-[4/3] bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden relative shrink-0">
                               <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
                             </div>
                             
@@ -1101,7 +1101,7 @@ export default function VendorDashboardView({
                               <p className="text-[9px] text-gray-400 dark:text-gray-500 font-mono">SKU: {prod.vendorSku}</p>
                               
                               {/* Warehouse quantity */}
-                              <div className="flex items-center justify-between text-[9px] text-gray-400 pt-1 border-t border-dashed border-gray-100 dark:border-gray-800/80 mt-1.5">
+                              <div className="flex items-center justify-between text-[9px] text-gray-400 pt-1 mt-1.5">
                                 <span>W magazynie:</span>
                                 <span className={cn(
                                   "font-extrabold font-mono",
@@ -1112,7 +1112,7 @@ export default function VendorDashboardView({
                               </div>
 
                               {/* Package size info */}
-                              <div className="flex items-center justify-between text-[9px] text-gray-400 pt-1 mt-1 border-t border-dashed border-gray-100 dark:border-gray-800/80">
+                              <div className="flex items-center justify-between text-[9px] text-gray-400 pt-1 mt-1">
                                 <span>Opakowanie:</span>
                                 <span className="font-extrabold font-mono text-blue-600 dark:text-blue-400">
                                   1 paczka = {pack} {prod.unitOfMeasure}
@@ -1121,7 +1121,7 @@ export default function VendorDashboardView({
                             </div>
                           </div>
 
-                          <div className="mt-3 pt-2.5 border-t border-gray-100 dark:border-gray-800/60 space-y-2">
+                          <div className="mt-3 pt-2.5 space-y-2">
                             {!hidePrices && (
                               <div className="flex items-baseline justify-between font-mono">
                                 <span className="text-[9px] text-gray-400">Netto:</span>
@@ -1160,10 +1160,10 @@ export default function VendorDashboardView({
                       return (
                         <div 
                           key={prod.id} 
-                          className="bg-white dark:bg-[#131A2E] rounded-xl border border-[#E1E3E6] dark:border-gray-850 p-3 flex items-center justify-between gap-4 hover:border-gray-350 dark:hover:border-gray-750 transition-all text-xs shadow-sm"
+                          className="bg-white dark:bg-[#131A2E] rounded-xl p-3 flex items-center justify-between gap-4 dark:hover:border-gray-750 transition-all text-xs shadow-sm"
                         >
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden border border-gray-150 dark:border-gray-800 shrink-0 relative">
+                            <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800/40 rounded-lg overflow-hidden shrink-0 relative">
                               <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
                             </div>
                             
@@ -1218,10 +1218,10 @@ export default function VendorDashboardView({
 
                 {/* Mode C: table (Table View) */}
                 {viewMode === 'table' && (
-                  <div className="bg-white dark:bg-[#131A2E] rounded-xl border border-[#E1E3E6] dark:border-gray-800 overflow-x-auto shadow-sm">
+                  <div className="bg-white dark:bg-[#131A2E] rounded-xl overflow-x-auto shadow-sm">
                     <table className="w-full border-collapse text-left text-xs text-gray-700 dark:text-gray-300">
                       <thead>
-                        <tr className="bg-gray-50/50 dark:bg-gray-800/50 border-b border-[#E1E3E6] dark:border-gray-800 font-extrabold text-gray-400 uppercase tracking-widest text-[8px] font-mono">
+                        <tr className="bg-gray-50/50 dark:bg-gray-800/50 font-extrabold text-gray-400 uppercase tracking-widest text-[8px] font-mono">
                           <th className="p-3 pl-4">Foto</th>
                           <th className="p-3">Produkt i SKU</th>
                           <th className="p-3">Kategoria</th>
@@ -1239,7 +1239,7 @@ export default function VendorDashboardView({
                           return (
                             <tr key={prod.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
                               <td className="p-3 pl-4 shrink-0">
-                                <div className="w-8 h-8 bg-gray-50 dark:bg-gray-850 rounded overflow-hidden border border-gray-200 dark:border-gray-800">
+                                <div className="w-8 h-8 bg-gray-50 dark:bg-gray-850 rounded overflow-hidden">
                                   <img src={prod.imageUrl} alt="" className="w-full h-full object-cover" />
                                 </div>
                               </td>
@@ -1309,7 +1309,7 @@ export default function VendorDashboardView({
                   <div 
                     key={flyer.id}
                     onClick={() => onOpenFlyer(flyer)}
-                    className="bg-white border border-[#E1E3E6] hover:border-gray-350 p-5 rounded-xl cursor-pointer flex items-center justify-between gap-4 transition-all shadow-sm"
+                    className="bg-white p-5 rounded-xl cursor-pointer flex items-center justify-between gap-4 transition-all shadow-sm"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-1.5 text-orange-700 font-semibold uppercase tracking-wider text-[10px]">
@@ -1321,7 +1321,7 @@ export default function VendorDashboardView({
                     </div>
 
                     <div className="shrink-0 text-right">
-                      <span className="text-[10px] bg-red-50 text-red-700 font-extrabold uppercase px-2.5 py-1 rounded border border-red-200 font-mono tracking-wider animate-pulse">
+                      <span className="text-[10px] bg-red-50 text-red-700 font-extrabold uppercase px-2.5 py-1 rounded font-mono tracking-wider animate-pulse">
                         ZOBACZ
                       </span>
                     </div>
@@ -1338,7 +1338,7 @@ export default function VendorDashboardView({
             <h4 className="font-bold text-sm text-[#1A1C1E] uppercase tracking-wider">Specjalne oferty cenowe (B2B)</h4>
 
             {vendorQuotations.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 bg-[#F8F9FA] border border-[#E1E3E6] rounded-xl">
+              <div className="p-8 text-center text-gray-500 bg-[#F8F9FA] rounded-xl">
                 Brak przypisanych ofert cenowych dla tego dostawcy.
               </div>
             ) : (
@@ -1346,12 +1346,12 @@ export default function VendorDashboardView({
                 {vendorQuotations.map(quote => (
                   <div 
                     key={quote.id}
-                    className="bg-white border border-[#E1E3E6] rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-sm"
+                    className="bg-white rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-sm"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-xs text-[#1A1C1E] font-mono">{quote.quotationNumber}</span>
-                        <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded font-bold uppercase">
+                        <span className="text-[9px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-bold uppercase">
                           {quote.status}
                         </span>
                       </div>
@@ -1359,7 +1359,7 @@ export default function VendorDashboardView({
                       <p className="text-[10px] text-gray-500">Oferta ważna do: <strong className="text-gray-700 font-semibold">{quote.validTo}</strong></p>
                     </div>
 
-                    <div className="flex sm:flex-col justify-between sm:justify-center items-center sm:items-end shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-100">
+                    <div className="flex sm:flex-col justify-between sm:justify-center items-center sm:items-end shrink-0 sm:border-t-0 pt-2 sm:pt-0">
                       <p className="text-sm font-black font-mono text-[#1A1C1E]">{quote.totalValue.toFixed(2)} zł</p>
                       <button 
                         onClick={() => onAskVendorQuestion(quote.id, `Pytanie o warunki oferty cenowej ${quote.quotationNumber}`)}
@@ -1380,7 +1380,7 @@ export default function VendorDashboardView({
         {activeSubTab === 'cart' && (
           <div className="space-y-5 text-xs">
             {isCheckoutSuccess ? (
-              <div className="p-8 text-center bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 space-y-2 shadow-sm">
+              <div className="p-8 text-center bg-emerald-50 rounded-xl text-emerald-800 space-y-2 shadow-sm">
                 <Check className="h-10 w-10 mx-auto animate-bounce" />
                 <h5 className="font-extrabold text-sm text-[#1A1C1E]">Zamówienie zostało pomyślnie złożone!</h5>
                 <p className="text-xs text-gray-500">
@@ -1388,7 +1388,7 @@ export default function VendorDashboardView({
                 </p>
               </div>
             ) : cart.length === 0 ? (
-              <div className="p-8 text-center bg-[#F8F9FA] border border-[#E1E3E6] rounded-xl text-gray-500 shadow-sm">
+              <div className="p-8 text-center bg-[#F8F9FA] rounded-xl text-gray-500 shadow-sm">
                 <ShoppingBag className="h-8 w-8 mx-auto text-gray-400 mb-2" />
                 <p>Twój koszyk dla tego dostawcy jest pusty.</p>
                 <button
@@ -1402,8 +1402,8 @@ export default function VendorDashboardView({
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                 
                 {/* Left: Cart Items list (Span 7) */}
-                <div className="lg:col-span-7 bg-white border border-[#E1E3E6] rounded-xl overflow-hidden h-fit shadow-sm">
-                  <div className="px-4 py-3 bg-[#F8F9FA] border-b border-[#E1E3E6] flex justify-between items-center">
+                <div className="lg:col-span-7 bg-white rounded-xl overflow-hidden h-fit shadow-sm">
+                  <div className="px-4 py-3 bg-[#F8F9FA] flex justify-between items-center">
                     <span className="font-bold text-xs text-[#1A1C1E] uppercase tracking-wider">Pozycje w koszyku ({cart.length})</span>
                     <span className="text-[10px] text-gray-500">Dostawca: {vendor.name}</span>
                   </div>
@@ -1435,7 +1435,7 @@ export default function VendorDashboardView({
 
                           {/* Packing warning multiplier constraint */}
                           {hasPackWarning && (
-                            <div className="bg-amber-50 border border-amber-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 text-[10px] text-amber-850">
+                            <div className="bg-amber-50 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 text-[10px] text-amber-850">
                               <Info className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                               <span>Zamawiana ilość ({item.requestedQty}) nie jest wielokrotnością paczki zbiorczej ({pack}). Skoryguj ilość!</span>
                             </div>
@@ -1445,11 +1445,11 @@ export default function VendorDashboardView({
                             <div className="flex items-center gap-1">
                               <button
                                 onClick={() => handleQtyChangeInCart(item.productId, item.requestedQty, -pack, pack)}
-                                className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-bold flex items-center justify-center cursor-pointer border border-gray-250"
+                                className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-bold flex items-center justify-center cursor-pointer"
                               >
                                 <Minus className="h-3.5 w-3.5" />
                               </button>
-                              <div className="w-12 text-center font-bold font-mono text-[#1A1C1E] text-xs py-0.5 bg-white border border-[#E1E3E6] rounded">
+                              <div className="w-12 text-center font-bold font-mono text-[#1A1C1E] text-xs py-0.5 bg-white rounded">
                                 {item.requestedQty}
                               </div>
                               <button
@@ -1469,7 +1469,7 @@ export default function VendorDashboardView({
                   </div>
 
                   {/* Totals panel */}
-                  <div className="p-4 bg-[#F8F9FA] border-t border-[#E1E3E6] flex justify-between items-center">
+                  <div className="p-4 bg-[#F8F9FA] flex justify-between items-center">
                     <span className="font-semibold text-gray-500">Wartość netto:</span>
                     <div className="text-right">
                       <p className="text-base font-black font-mono text-[#1A1C1E]">{cartTotalValue.toFixed(2)} zł</p>
@@ -1479,8 +1479,8 @@ export default function VendorDashboardView({
                 </div>
 
                 {/* Right: Checkout settings form (Span 5) */}
-                <form onSubmit={submitCartOrder} className="lg:col-span-5 bg-white border border-[#E1E3E6] rounded-xl p-5 space-y-4 shadow-sm">
-                  <h4 className="font-bold text-xs text-[#1A1C1E] uppercase tracking-wider block border-b border-gray-100 pb-2">Dane i warunki dostawy</h4>
+                <form onSubmit={submitCartOrder} className="lg:col-span-5 bg-white rounded-xl p-5 space-y-4 shadow-sm">
+                  <h4 className="font-bold text-xs text-[#1A1C1E] uppercase tracking-wider block pb-2">Dane i warunki dostawy</h4>
 
                   {/* Location switcher */}
                   <div className="space-y-1">
@@ -1488,7 +1488,7 @@ export default function VendorDashboardView({
                     <select
                       value={deliveryLocId}
                       onChange={(e) => setDeliveryLocId(e.target.value)}
-                      className="w-full bg-white border border-[#E1E3E6] text-gray-900 py-2 px-2.5 rounded-lg text-xs cursor-pointer focus:outline-none"
+                      className="w-full bg-white text-gray-900 py-2 px-2.5 rounded-lg text-xs cursor-pointer focus:outline-none"
                     >
                       {locations.map(loc => (
                         <option key={loc.id} value={loc.id}>{loc.name}</option>
@@ -1503,7 +1503,7 @@ export default function VendorDashboardView({
                       type="date"
                       value={deliveryDate}
                       onChange={(e) => setDeliveryDate(e.target.value)}
-                      className="w-full bg-white border border-[#E1E3E6] text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none font-mono"
+                      className="w-full bg-white text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none font-mono"
                     />
                   </div>
 
@@ -1515,7 +1515,7 @@ export default function VendorDashboardView({
                       placeholder="Nieduży np. PO-2026-95"
                       value={poReference}
                       onChange={(e) => setPoReference(e.target.value)}
-                      className="w-full bg-white border border-[#E1E3E6] text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none"
+                      className="w-full bg-white text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none"
                     />
                   </div>
 
@@ -1526,7 +1526,7 @@ export default function VendorDashboardView({
                       placeholder="Np. dostawa tylko w godz. 8:00 - 14:00"
                       value={checkoutComments}
                       onChange={(e) => setCheckoutComments(e.target.value)}
-                      className="w-full bg-white border border-[#E1E3E6] text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none min-h-[50px]"
+                      className="w-full bg-white text-gray-900 py-2 px-2.5 rounded-lg text-xs focus:outline-none min-h-[50px]"
                     ></textarea>
                   </div>
 
@@ -1551,8 +1551,8 @@ export default function VendorDashboardView({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-xs text-[#1A1C1E] dark:text-gray-250">
             {/* Left Col: Contact business cards */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-2xl p-5 shadow-sm space-y-4 text-left">
-                <h4 className="font-extrabold text-sm uppercase tracking-wider text-gray-900 dark:text-white pb-2 border-b border-gray-100 dark:border-gray-800">
+              <div className="bg-white dark:bg-[#131A2E] rounded-2xl p-5 shadow-sm space-y-4 text-left">
+                <h4 className="font-extrabold text-sm uppercase tracking-wider text-gray-900 dark:text-white pb-2">
                   Kontakt i Wsparcie
                 </h4>
                 
@@ -1562,7 +1562,7 @@ export default function VendorDashboardView({
 
                 <div className="space-y-3 pt-2">
                   {(VENDOR_CONTACTS[vendor.id] || []).map((contact, idx) => (
-                    <div key={idx} className="p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-850 flex flex-col gap-3 relative overflow-hidden">
+                    <div key={idx} className="p-4 rounded-xl bg-gray-50 dark:bg-gray-900 flex flex-col gap-3 relative overflow-hidden">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className={cn(
@@ -1577,15 +1577,15 @@ export default function VendorDashboardView({
                         </div>
                         <span className={cn(
                           "px-2 py-0.5 rounded text-[8px] font-black uppercase font-mono tracking-wider",
-                          contact.status === 'online' ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" :
-                          contact.status === 'busy' ? "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30" :
+                          contact.status === 'online' ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400" :
+                          contact.status === 'busy' ? "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400" :
                           "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                         )}>
                           {contact.status === 'online' ? 'Dostępny' : contact.status === 'busy' ? 'Zajęty' : 'Offline'}
                         </span>
                       </div>
 
-                      <div className="space-y-1.5 text-[11px] font-mono border-t border-dashed border-gray-200 dark:border-gray-800 pt-2.5">
+                      <div className="space-y-1.5 text-[11px] font-mono pt-2.5">
                         <div className="flex items-center gap-2 text-gray-750 dark:text-gray-300">
                           <Phone className="h-3.5 w-3.5 text-gray-400" />
                           <a href={`tel:${contact.phone}`} className="hover:underline">{contact.phone}</a>
@@ -1603,7 +1603,7 @@ export default function VendorDashboardView({
 
             {/* Right Col: About & Brand Portfolio */}
             <div className="lg:col-span-8 space-y-4">
-              <div className="bg-white dark:bg-[#131A2E] border border-[#E1E3E6] dark:border-gray-800 rounded-2xl p-6 shadow-sm space-y-6 text-left">
+              <div className="bg-white dark:bg-[#131A2E] rounded-2xl p-6 shadow-sm space-y-6 text-left">
                 {(() => {
                   const portfolio = VENDOR_PORTFOLIOS[vendor.id];
                   if (!portfolio) {
@@ -1620,7 +1620,7 @@ export default function VendorDashboardView({
                           <h3 className="font-black text-lg text-gray-950 dark:text-white tracking-tight">
                             {vendor.name}
                           </h3>
-                          <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 font-bold rounded-lg border border-blue-100 dark:border-blue-900/30">
+                          <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 font-bold rounded-lg">
                             Partner od {portfolio.since}
                           </span>
                         </div>
@@ -1630,14 +1630,14 @@ export default function VendorDashboardView({
                       </div>
 
                       {/* Brand Specialties & Certs */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-3 border-t border-gray-100 dark:border-gray-800">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-3">
                         <div className="space-y-2">
                           <h4 className="font-extrabold text-[10px] text-gray-400 uppercase tracking-wider font-mono">
                             Specjalizacje i Linie Produktowe
                           </h4>
                           <div className="flex flex-wrap gap-1.5">
                             {portfolio.specialties.map((spec, i) => (
-                              <span key={i} className="px-2 py-1 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30 rounded-lg text-[10px] font-bold">
+                              <span key={i} className="px-2 py-1 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 rounded-lg text-[10px] font-bold">
                                 {spec}
                               </span>
                             ))}
@@ -1650,7 +1650,7 @@ export default function VendorDashboardView({
                           </h4>
                           <div className="flex flex-wrap gap-1.5">
                             {portfolio.certifications.map((cert, i) => (
-                              <span key={i} className="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 rounded-lg text-[10px] font-bold">
+                              <span key={i} className="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 rounded-lg text-[10px] font-bold">
                                 {cert}
                               </span>
                             ))}
@@ -1659,7 +1659,7 @@ export default function VendorDashboardView({
                       </div>
 
                       {/* Corporate Details */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 dark:bg-gray-900/40 p-4 rounded-xl border border-gray-100 dark:border-gray-800/80">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 dark:bg-gray-900/40 p-4 rounded-xl">
                         <div className="space-y-1">
                           <p className="text-[9px] text-gray-400 uppercase tracking-wider font-mono">Siedziba główna</p>
                           <p className="font-bold text-gray-800 dark:text-white">{portfolio.headquarters}</p>
@@ -1685,7 +1685,7 @@ export default function VendorDashboardView({
                           </h4>
                           <div className="grid grid-cols-3 gap-2.5">
                             {portfolio.gallery.map((img, i) => (
-                              <div key={i} className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 relative group">
+                              <div key={i} className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden relative group">
                                 <img 
                                   src={img} 
                                   alt={`Product Showcase ${i + 1}`} 
@@ -1711,10 +1711,10 @@ export default function VendorDashboardView({
         <div className="fixed inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-6">
           
           {/* Main modal card */}
-          <div className="bg-white dark:bg-[#0E1321] w-full max-w-5xl h-[90vh] rounded-2xl border border-gray-250 dark:border-gray-800 shadow-2xl flex flex-col overflow-hidden">
+          <div className="bg-white dark:bg-[#0E1321] w-full max-w-5xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
             
             {/* Header */}
-            <div className="bg-gray-50 dark:bg-[#131A2E] border-b border-gray-150 dark:border-gray-800 px-6 py-4 flex items-center justify-between">
+            <div className="bg-gray-50 dark:bg-[#131A2E] px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping" />
                 <div>
@@ -1734,7 +1734,7 @@ export default function VendorDashboardView({
             <div className="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
               
               {/* Left pane: Active Announcement detail */}
-              <div className="flex-1 p-6 md:p-8 flex flex-col justify-between overflow-y-auto border-r border-gray-150 dark:border-gray-800 bg-[#F8F9FA]/30 dark:bg-[#0E1321]">
+              <div className="flex-1 p-6 md:p-8 flex flex-col justify-between overflow-y-auto bg-[#F8F9FA]/30 dark:bg-[#0E1321]">
                 {(() => {
                   const activeNews = newsList.find(n => n.id === activeNewsId) || newsList[0];
                   if (!activeNews) return <div className="text-gray-400">Brak aktywnego ogłoszenia</div>;
@@ -1752,7 +1752,7 @@ export default function VendorDashboardView({
                              activeNews.type === 'announcement' ? 'OGŁOSZENIE' : 'KOMUNIKAT'}
                           </span>
                           {activeNews.badgeText && (
-                            <span className="px-2 py-0.5 bg-gray-150 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-bold text-[8px] rounded uppercase font-mono tracking-wider">
+                            <span className="px-2 py-0.5 bg-gray-150 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold text-[8px] rounded uppercase font-mono tracking-wider">
                               {activeNews.badgeText}
                             </span>
                           )}
@@ -1767,11 +1767,11 @@ export default function VendorDashboardView({
                         </p>
                       </div>
 
-                      <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed bg-white dark:bg-gray-850 p-5 rounded-2xl border border-gray-100 dark:border-gray-800/60 whitespace-pre-line shadow-sm">
+                      <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed bg-white dark:bg-gray-850 p-5 rounded-2xl whitespace-pre-line shadow-sm">
                         {activeNews.content}
                       </p>
 
-                      <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/20 rounded-xl flex items-center justify-between">
+                      <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-xl flex items-center justify-between">
                         <div>
                           <p className="text-[10px] font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest">Zainteresowany?</p>
                           <p className="text-[11px] text-gray-550 dark:text-gray-400">Wyślij natychmiastowe zapytanie o szczegóły tej kampanii.</p>
@@ -1793,7 +1793,7 @@ export default function VendorDashboardView({
               </div>
 
               {/* Right pane: List of other news + Form to post news */}
-              <div className="w-full md:w-80 border-t md:border-t-0 md:border-l border-gray-150 dark:border-gray-800 bg-gray-50/50 dark:bg-[#121729] flex flex-col justify-between overflow-hidden">
+              <div className="w-full md:w-80 md:border-t-0 md:border-l bg-gray-50/50 dark:bg-[#121729] flex flex-col justify-between overflow-hidden">
                 
                 {/* News list */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -1806,10 +1806,10 @@ export default function VendorDashboardView({
                           key={item.id}
                           onClick={() => setActiveNewsId(item.id)}
                           className={cn(
-                            "p-3 rounded-xl border transition-all cursor-pointer text-left",
+                            "p-3 rounded-xl transition-all cursor-pointer text-left",
                             isActive 
-                              ? "bg-white dark:bg-[#131A2E] border-blue-500 dark:border-blue-500 shadow-sm" 
-                              : "bg-[#F8F9FA]/40 dark:bg-transparent border-transparent hover:border-gray-200 dark:hover:border-gray-800"
+                              ? "bg-white dark:bg-[#131A2E] shadow-sm" 
+                              : "bg-[#F8F9FA]/40 dark:bg-transparent dark:hover:border-gray-800"
                           )}
                         >
                           <div className="flex items-center gap-1.5 mb-1 flex-wrap">
@@ -1832,7 +1832,7 @@ export default function VendorDashboardView({
                 </div>
 
                 {/* Form to Post New Announcement */}
-                <div className="p-4 border-t border-gray-200 dark:border-gray-850 bg-white dark:bg-[#0E1321]">
+                <div className="p-4 bg-white dark:bg-[#0E1321]">
                   <p className="text-[9px] font-black uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1">
                     <span>✍️ Dodaj ogłoszenie VMI</span>
                     <span className="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-400 px-1 py-0.5 rounded text-[7px] font-black tracking-normal lowercase">specjalista</span>
@@ -1845,7 +1845,7 @@ export default function VendorDashboardView({
                         placeholder="Tytuł oferty lub ogłoszenia..."
                         value={newNewsTitle}
                         onChange={(e) => setNewNewsTitle(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400"
+                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400"
                       />
                     </div>
                     
@@ -1853,7 +1853,7 @@ export default function VendorDashboardView({
                       <select
                         value={newNewsType}
                         onChange={(e: any) => setNewNewsType(e.target.value)}
-                        className="flex-1 bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 p-1.5 rounded-lg text-[10px] focus:outline-none text-gray-900 dark:text-white"
+                        className="flex-1 bg-gray-50 dark:bg-gray-850 p-1.5 rounded-lg text-[10px] focus:outline-none text-gray-900 dark:text-white"
                       >
                         <option value="announcement">Ogłoszenie</option>
                         <option value="offer">Oferta limitowana</option>
@@ -1865,7 +1865,7 @@ export default function VendorDashboardView({
                         placeholder="Tag (np. -15%)"
                         value={newNewsBadge}
                         onChange={(e) => setNewNewsBadge(e.target.value)}
-                        className="w-16 px-1.5 py-1 bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 rounded-lg text-[9px] font-mono text-center focus:outline-none text-gray-900 dark:text-white"
+                        className="w-16 px-1.5 py-1 bg-gray-50 dark:bg-gray-850 rounded-lg text-[9px] font-mono text-center focus:outline-none text-gray-900 dark:text-white"
                       />
                     </div>
 
@@ -1875,7 +1875,7 @@ export default function VendorDashboardView({
                         rows={2}
                         value={newNewsContent}
                         onChange={(e) => setNewNewsContent(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none leading-relaxed text-gray-900 dark:text-white placeholder-gray-400"
+                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none leading-relaxed text-gray-900 dark:text-white placeholder-gray-400"
                       ></textarea>
                     </div>
 

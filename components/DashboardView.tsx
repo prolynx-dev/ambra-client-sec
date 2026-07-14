@@ -96,7 +96,7 @@ export default function DashboardView({
     <div className="space-y-6">
       
       {/* Upper banner: Greeting & Location Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 bg-[#2A3B4C] rounded-2xl border border-[#2A3B4C]/10 shadow-sm relative overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 bg-[#2A3B4C] rounded-2xl shadow-sm relative overflow-hidden">
         <div className="space-y-1 relative z-10">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -109,7 +109,7 @@ export default function DashboardView({
         </div>
 
         {/* Location selector */}
-        <div className="flex items-center gap-2.5 shrink-0 relative z-10 bg-[#1E2B38] p-2 rounded-xl border border-[#2A3B4C]/20">
+        <div className="flex items-center gap-2.5 shrink-0 relative z-10 bg-[#1E2B38] p-2 rounded-xl">
           <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-300">
             <MapPin className="h-4 w-4" />
           </div>
@@ -135,7 +135,7 @@ export default function DashboardView({
         {/* Metric 1 */}
         <div 
           onClick={() => onNavigateTab('vendors')}
-          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
+          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Dostawcy</span>
@@ -150,7 +150,7 @@ export default function DashboardView({
         {/* Metric 2 */}
         <div 
           onClick={() => onNavigateTab('inventory')}
-          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
+          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Monitowane</span>
@@ -165,7 +165,7 @@ export default function DashboardView({
         {/* Metric 3 */}
         <div 
           onClick={() => onNavigateTab('inventory')}
-          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
+          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Niski stan</span>
@@ -181,7 +181,7 @@ export default function DashboardView({
 
         {/* Metric 4 */}
         <div 
-          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
+          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-4 transition-all cursor-pointer group shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Dostawy VMI</span>
@@ -198,7 +198,7 @@ export default function DashboardView({
         {/* Metric 5 */}
         <div 
           onClick={() => onNavigateTab('orders')}
-          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 transition-all cursor-pointer group col-span-2 lg:col-span-1 shadow-sm"
+          className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-4 transition-all cursor-pointer group col-span-2 lg:col-span-1 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">W realizacji</span>
@@ -221,7 +221,7 @@ export default function DashboardView({
               <AlertTriangle className="h-4 w-4 text-red-500" />
               <span>Wymaga uwagi (Pilne akcje)</span>
             </h3>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 font-bold border border-red-200 dark:border-red-900/40">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 font-bold">
               Krytyczne
             </span>
           </div>
@@ -232,7 +232,7 @@ export default function DashboardView({
             {lowStockCount > 0 && (
               <div 
                 onClick={() => onNavigateTab('inventory')}
-                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 border-l-4 border-l-red-500 rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
+                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/25 text-red-600 dark:text-red-400 shrink-0 mt-0.5">
@@ -256,7 +256,7 @@ export default function DashboardView({
             {proposals.find(p => p.vendorId === 'v-1' && p.status === 'Oczekuje na zatwierdzenie') && (
               <div 
                 onClick={() => onOpenProposal('rp-1')}
-                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 border-l-4 border-l-blue-500 rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
+                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/25 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
@@ -280,7 +280,7 @@ export default function DashboardView({
             {activeQuotation && (
               <div 
                 onClick={() => onOpenQuotation('q-1')}
-                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 border-l-4 border-l-amber-500 rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
+                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/25 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5">
@@ -304,7 +304,7 @@ export default function DashboardView({
             {orders.find(o => o.id === 'o-2') && (
               <div 
                 onClick={() => onOpenOrder('o-2')}
-                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 border-l-4 border-l-orange-500 rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
+                className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2.5 rounded-lg bg-orange-50 dark:bg-orange-950/25 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5">
@@ -327,7 +327,7 @@ export default function DashboardView({
             {/* 5. Stock count requested */}
             <div 
               onClick={onOpenStockCount}
-              className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-800 border-l-4 border-l-indigo-500 rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
+              className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] rounded-xl p-3.5 transition-all flex items-start justify-between gap-3 cursor-pointer shadow-sm"
             >
               <div className="flex items-start gap-3">
                 <div className="p-2.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/25 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5">
@@ -367,7 +367,7 @@ export default function DashboardView({
               </button>
             </div>
 
-            <div className="bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-800 shadow-sm divide-y divide-[#E1E3E6] dark:divide-gray-850">
+            <div className="bg-white dark:bg-[#0E1321] rounded-xl shadow-sm divide-y divide-[#E1E3E6] dark:divide-gray-850">
               {unreadNotifications.length === 0 ? (
                 <div className="p-4 text-center text-xs text-gray-400 dark:text-gray-500">
                   Brak nieprzeczytanych powiadomień.
@@ -405,7 +405,7 @@ export default function DashboardView({
               <span>Ostatnia aktywność VMI</span>
             </h3>
 
-            <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 shadow-sm rounded-xl p-4 space-y-4 text-xs text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-[#0E1321] shadow-sm rounded-xl p-4 space-y-4 text-xs text-gray-600 dark:text-gray-400">
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 bg-blue-500 rounded-full shrink-0 mt-1.5" />
                 <div className="space-y-0.5">

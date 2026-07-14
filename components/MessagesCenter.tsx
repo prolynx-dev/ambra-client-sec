@@ -115,7 +115,7 @@ export default function MessagesCenter({
       const order = orders.find(o => o.id === relatedObjectId);
       if (!order) return null;
       return (
-        <div className="bg-blue-50/50 dark:bg-[#111625] border border-blue-200/60 dark:border-blue-500/20 rounded-xl p-3 text-xs flex items-center justify-between gap-3">
+        <div className="bg-blue-50/50 dark:bg-[#111625] rounded-xl p-3 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
               <ShoppingBag className="h-4 w-4" />
@@ -139,9 +139,9 @@ export default function MessagesCenter({
       const product = products.find(p => p.id === relatedObjectId);
       if (!product) return null;
       return (
-        <div className="bg-orange-50/50 dark:bg-[#111625] border border-orange-200/60 dark:border-orange-500/20 rounded-xl p-3 text-xs flex items-center justify-between gap-3">
+        <div className="bg-orange-50/50 dark:bg-[#111625] rounded-xl p-3 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0 border border-gray-200 dark:border-gray-700">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0">
               <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
             </div>
             <div className="min-w-0">
@@ -161,7 +161,7 @@ export default function MessagesCenter({
       const quote = quotations.find(q => q.id === relatedObjectId);
       if (!quote) return null;
       return (
-        <div className="bg-emerald-50/50 dark:bg-[#111625] border border-emerald-200/60 dark:border-emerald-500/20 rounded-xl p-3 text-xs flex items-center justify-between gap-3">
+        <div className="bg-emerald-50/50 dark:bg-[#111625] rounded-xl p-3 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <Tag className="h-4 w-4" />
@@ -183,7 +183,7 @@ export default function MessagesCenter({
       const prop = proposals.find(p => p.id === relatedObjectId);
       if (!prop) return null;
       return (
-        <div className="bg-indigo-50/50 dark:bg-[#111625] border border-indigo-200/60 dark:border-indigo-500/20 rounded-xl p-3 text-xs flex items-center justify-between gap-3">
+        <div className="bg-indigo-50/50 dark:bg-[#111625] rounded-xl p-3 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
               <FileCheck className="h-4 w-4" />
@@ -220,10 +220,10 @@ export default function MessagesCenter({
       
       {/* LEFT COLUMN: LIST OF CONVERSATIONS - Span 4 on desktop, hidden on mobile if conversation is active */}
       <div className={cn(
-        "col-span-12 md:col-span-4 border-r border-[#E1E3E6] dark:border-gray-850 flex flex-col h-full bg-gray-50 dark:bg-[#0E1321] min-w-0",
+        "col-span-12 md:col-span-4 flex flex-col h-full bg-gray-50 dark:bg-[#0E1321] min-w-0",
         activeConvId ? "hidden md:flex" : "flex"
       )}>
-        <div className="px-4 py-3 bg-white dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-850 flex items-center justify-between">
+        <div className="px-4 py-3 bg-white dark:bg-[#131A2E] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-blue-500" />
             <h4 className="font-bold font-display text-sm tracking-wide text-gray-950 dark:text-white">Komunikacja B2B</h4>
@@ -255,10 +255,10 @@ export default function MessagesCenter({
                   key={conv.id}
                   onClick={() => setActiveConvId(conv.id)}
                   className={cn(
-                    "w-full text-left p-3.5 rounded-xl border transition-all flex flex-col gap-1.5 cursor-pointer shadow-sm",
+                    "w-full text-left p-3.5 rounded-xl transition-all flex flex-col gap-1.5 cursor-pointer shadow-sm",
                     isSelected 
-                      ? "border-blue-500 dark:border-blue-500 bg-blue-50/50 dark:bg-blue-950/20" 
-                      : "border-[#E1E3E6] dark:border-transparent bg-white dark:bg-gray-900/30 hover:bg-gray-100 dark:hover:bg-gray-900/60"
+                      ? "bg-blue-50/50 dark:bg-blue-950/20" 
+                      : "bg-white dark:bg-gray-900/30 hover:bg-gray-100 dark:hover:bg-gray-900/60"
                   )}
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -278,7 +278,7 @@ export default function MessagesCenter({
                     {lastMsg ? `${lastMsg.sender === 'client' ? 'Ja' : 'Opiekun'}: ${lastMsg.content}` : ''}
                   </p>
 
-                  <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-gray-150 dark:border-gray-850/60">
+                  <div className="flex items-center justify-between mt-1 pt-1.5">
                     <span className="text-[9px] px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded uppercase tracking-wide font-medium font-mono">
                       {getObjectTypeLabel(conv.relatedObjectType)}
                     </span>
@@ -303,7 +303,7 @@ export default function MessagesCenter({
         {activeConv && activeVendor ? (
           <>
             {/* Context view header */}
-            <div className="px-4 py-3 bg-white dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-850 flex items-center justify-between gap-3 shrink-0">
+            <div className="px-4 py-3 bg-white dark:bg-[#131A2E] flex items-center justify-between gap-3 shrink-0">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setActiveConvId(null)}
@@ -321,13 +321,13 @@ export default function MessagesCenter({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-gray-900" title="Dostawca dostępny online" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" title="Dostawca dostępny online" />
                 <span className="text-xs text-gray-500 dark:text-gray-400">Aktywny</span>
               </div>
             </div>
 
             {/* Business Context Above Thread */}
-            <div className="p-3 bg-gray-50 dark:bg-gray-950/40 border-b border-gray-150 dark:border-gray-850 shrink-0">
+            <div className="p-3 bg-gray-50 dark:bg-gray-950/40 shrink-0">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 tracking-wider uppercase">Połączony kontekst biznesowy</span>
                 <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">Ambra Link™</span>
@@ -338,7 +338,7 @@ export default function MessagesCenter({
             {/* Conversation Messages Flow */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-55/30 dark:bg-gradient-to-b dark:from-[#0A0D16] dark:to-[#070A11]">
               <div className="text-center py-2 shrink-0">
-                <span className="text-[10px] bg-white dark:bg-gray-900/60 text-gray-500 px-2 py-1 rounded border border-[#E1E3E6] dark:border-gray-850 shadow-sm">
+                <span className="text-[10px] bg-white dark:bg-gray-900/60 text-gray-500 px-2 py-1 rounded shadow-sm">
                   Rozpoczęto szyfrowany czat handlowy • {formatDate(activeConv.messages[0]?.timestamp || '')}
                 </span>
               </div>
@@ -364,7 +364,7 @@ export default function MessagesCenter({
                       "p-3 rounded-2xl text-xs leading-relaxed shadow-sm",
                       isMe 
                         ? "bg-blue-600 text-white rounded-tr-none shadow-md shadow-blue-600/5" 
-                        : "bg-white dark:bg-gray-850 text-gray-950 dark:text-gray-300 rounded-tl-none border border-[#E1E3E6] dark:border-gray-800"
+                        : "bg-white dark:bg-gray-850 text-gray-950 dark:text-gray-300 rounded-tl-none"
                     )}>
                       {msg.content}
                     </div>
@@ -381,7 +381,7 @@ export default function MessagesCenter({
             </div>
 
             {/* Context Message Composer */}
-            <form onSubmit={handleSend} className="p-3 bg-white dark:bg-[#0E1321] border-t border-[#E1E3E6] dark:border-gray-850 shrink-0">
+            <form onSubmit={handleSend} className="p-3 bg-white dark:bg-[#0E1321] shrink-0">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
@@ -396,7 +396,7 @@ export default function MessagesCenter({
                   placeholder="Wpisz oficjalną wiadomość handlową..."
                   value={newMessageText}
                   onChange={(e) => setNewMessageText(e.target.value)}
-                  className="flex-1 bg-gray-50 dark:bg-gray-900 border border-[#E1E3E6] dark:border-gray-700 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  className="flex-1 bg-gray-50 dark:bg-gray-900 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 />
                 <button
                   type="submit"
@@ -411,7 +411,7 @@ export default function MessagesCenter({
         ) : (
           /* Empty state when no conversation is selected on desktop */
           <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3 bg-gray-50/50 dark:bg-[#0A0D16]">
-            <div className="p-4 rounded-full bg-white dark:bg-gray-900 border border-[#E1E3E6] dark:border-gray-850 text-gray-400 dark:text-gray-550 shadow-sm">
+            <div className="p-4 rounded-full bg-white dark:bg-gray-900 text-gray-400 dark:text-gray-550 shadow-sm">
               <MessageSquare className="h-8 w-8" />
             </div>
             <h5 className="font-bold text-gray-950 dark:text-white text-sm">Wybierz wątek z dostawcą</h5>

@@ -76,10 +76,10 @@ export default function DigitalFlyerViewer({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[#1A1C1E]/40 backdrop-blur-sm p-4 md:p-8 items-center justify-center">
-      <div className="w-full max-w-4xl bg-white rounded-2xl border border-[#E1E3E6] flex flex-col h-[90vh] md:h-[85vh] overflow-hidden shadow-2xl relative">
+      <div className="w-full max-w-4xl bg-white rounded-2xl flex flex-col h-[90vh] md:h-[85vh] overflow-hidden shadow-2xl relative">
         
         {/* Flyer Header */}
-        <div className="px-4 py-3 bg-[#F8F9FA] border-b border-[#E1E3E6] flex items-center justify-between shrink-0">
+        <div className="px-4 py-3 bg-[#F8F9FA] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-[#2A3B4C]" />
             <div>
@@ -109,7 +109,7 @@ export default function DigitalFlyerViewer({
           <button
             onClick={handlePrevPage}
             disabled={currentPageIndex === 0}
-            className="absolute left-2 md:left-4 z-10 w-10 h-10 rounded-full bg-white border border-[#E1E3E6] hover:bg-gray-50 text-gray-700 disabled:opacity-20 disabled:pointer-events-none transition-all cursor-pointer shadow-md flex items-center justify-center"
+            className="absolute left-2 md:left-4 z-10 w-10 h-10 rounded-full bg-white hover:bg-gray-50 text-gray-700 disabled:opacity-20 disabled:pointer-events-none transition-all cursor-pointer shadow-md flex items-center justify-center"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -117,7 +117,7 @@ export default function DigitalFlyerViewer({
           <button
             onClick={handleNextPage}
             disabled={currentPageIndex === totalPages - 1}
-            className="absolute right-2 md:right-4 z-10 w-10 h-10 rounded-full bg-white border border-[#E1E3E6] hover:bg-gray-50 text-gray-700 disabled:opacity-20 disabled:pointer-events-none transition-all cursor-pointer shadow-md flex items-center justify-center"
+            className="absolute right-2 md:right-4 z-10 w-10 h-10 rounded-full bg-white hover:bg-gray-50 text-gray-700 disabled:opacity-20 disabled:pointer-events-none transition-all cursor-pointer shadow-md flex items-center justify-center"
           >
             <ArrowRight className="h-5 w-5" />
           </button>
@@ -132,14 +132,14 @@ export default function DigitalFlyerViewer({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 0.3 }}
-                className="w-full max-w-sm aspect-[3/4] bg-white rounded-xl border border-[#E1E3E6] overflow-hidden shadow-xl flex flex-col justify-between p-6 relative cursor-pointer"
+                className="w-full max-w-sm aspect-[3/4] bg-white rounded-xl overflow-hidden shadow-xl flex flex-col justify-between p-6 relative cursor-pointer"
                 onClick={handleNextPage}
               >
                 {/* Background graphic */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent pointer-events-none" />
                 
                 <div className="flex justify-between items-start z-10">
-                  <span className="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-extrabold uppercase rounded-full tracking-wider animate-pulse">
+                  <span className="px-3 py-1 bg-amber-50 text-amber-700 text-[10px] font-extrabold uppercase rounded-full tracking-wider animate-pulse">
                     GAZETKA PROMOCYJNA B2B
                   </span>
                   <Tag className="h-5 w-5 text-[#2A3B4C]" />
@@ -154,7 +154,7 @@ export default function DigitalFlyerViewer({
                 </div>
 
                 <div className="space-y-4 z-10">
-                  <div className="bg-[#F0F2F5] p-4 rounded-xl border border-[#E1E3E6] text-center text-xs space-y-1">
+                  <div className="bg-[#F0F2F5] p-4 rounded-xl text-center text-xs space-y-1">
                     <p className="text-gray-550">Okres ważności oferty:</p>
                     <p className="font-bold text-[#1A1C1E] font-mono">{flyer.validFrom} — {flyer.validTo}</p>
                     <p className="text-[10px] text-gray-400 mt-1">Ceny tylko dla partnerów programu Ambra VMI</p>
@@ -182,7 +182,7 @@ export default function DigitalFlyerViewer({
                 className="w-full h-full flex flex-col justify-between"
               >
                 <div className="text-center mb-4 shrink-0">
-                  <span className="text-xs font-semibold px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full border border-gray-200">
+                  <span className="text-xs font-semibold px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full">
                     Strona {currentPageIndex} z {totalPages - 1}
                   </span>
                 </div>
@@ -196,12 +196,12 @@ export default function DigitalFlyerViewer({
                       {getPageProducts(currentPageIndex).map(prod => (
                         <div 
                           key={prod.id} 
-                          className="bg-white rounded-xl border border-[#E1E3E6] p-4 flex flex-col justify-between hover:border-gray-300 transition-colors h-full shadow-sm"
+                          className="bg-white rounded-xl p-4 flex flex-col justify-between transition-colors h-full shadow-sm"
                         >
                           <div className="space-y-3">
-                            <div className="w-full aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden relative border border-gray-200">
+                            <div className="w-full aspect-[4/3] bg-gray-50 rounded-lg overflow-hidden relative">
                               <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
-                              <span className="absolute top-2 left-2 px-2.5 py-0.5 bg-red-50 text-red-700 border border-red-200 text-[10px] font-extrabold rounded-full uppercase tracking-wider">
+                              <span className="absolute top-2 left-2 px-2.5 py-0.5 bg-red-50 text-red-700 text-[10px] font-extrabold rounded-full uppercase tracking-wider">
                                 PROMOCJA
                               </span>
                             </div>
@@ -211,7 +211,7 @@ export default function DigitalFlyerViewer({
                             </div>
                           </div>
 
-                          <div className="mt-4 pt-3 border-t border-gray-100 space-y-3">
+                          <div className="mt-4 pt-3 space-y-3">
                             {/* Price labels */}
                             <div className="flex items-baseline justify-between">
                               <span className="text-[10px] text-gray-500 font-medium">Cena promocyjna:</span>
@@ -254,7 +254,7 @@ export default function DigitalFlyerViewer({
                                 </button>
                                 <button
                                   onClick={() => onAskVendor(prod.id, `Pytanie o ofertę z gazetki: ${prod.name}`)}
-                                  className="py-1.5 text-xs text-gray-600 hover:text-[#1A1C1E] bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center gap-1 cursor-pointer transition-all"
+                                  className="py-1.5 text-xs text-gray-600 hover:text-[#1A1C1E] bg-gray-50 hover:bg-gray-100 rounded-lg flex items-center justify-center gap-1 cursor-pointer transition-all"
                                 >
                                   <MessageSquare className="h-3 w-3" />
                                   <span>Zapytaj</span>
@@ -273,12 +273,12 @@ export default function DigitalFlyerViewer({
                       {getPageProducts(currentPageIndex).map(prod => (
                         <div 
                           key={prod.id} 
-                          className="bg-white rounded-xl border border-[#E1E3E6] p-3 flex flex-col justify-between hover:border-gray-300 transition-colors shadow-sm"
+                          className="bg-white rounded-xl p-3 flex flex-col justify-between transition-colors shadow-sm"
                         >
                           <div>
-                            <div className="w-full aspect-square bg-gray-50 rounded-lg overflow-hidden relative border border-gray-200 shrink-0">
+                            <div className="w-full aspect-square bg-gray-50 rounded-lg overflow-hidden relative shrink-0">
                               <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
-                              <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-red-50 text-red-700 border border-red-200 text-[8px] font-extrabold rounded uppercase tracking-wider">
+                              <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-red-50 text-red-700 text-[8px] font-extrabold rounded uppercase tracking-wider">
                                 PROMOCJA
                               </span>
                             </div>
@@ -288,7 +288,7 @@ export default function DigitalFlyerViewer({
                             </div>
                           </div>
 
-                          <div className="mt-3 pt-2 border-t border-gray-100 space-y-2">
+                          <div className="mt-3 pt-2 space-y-2">
                             <div className="flex flex-col text-right">
                               <span className="text-[9px] text-gray-400 line-through font-mono">{(prod.price).toFixed(2)} zł</span>
                               <span className="text-sm font-black text-amber-700 font-mono">{(prod.promoPrice || prod.price * 0.85).toFixed(2)} zł</span>
@@ -328,7 +328,7 @@ export default function DigitalFlyerViewer({
                 </div>
 
                 {/* Horizontal Swipe Indicator for Mobile */}
-                <div className="mt-4 flex justify-between items-center text-xs text-gray-400 shrink-0 border-t border-[#E1E3E6] pt-3">
+                <div className="mt-4 flex justify-between items-center text-xs text-gray-400 shrink-0 pt-3">
                   <span>WSKAZÓWKA: Klikaj strzałki lub pozycje w bocznej nawigacji.</span>
                   <div className="flex gap-1">
                     {Array.from({ length: totalPages }).map((_, idx) => (

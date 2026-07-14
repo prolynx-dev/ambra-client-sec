@@ -54,19 +54,19 @@ export default function OrdersView({
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Złożone':
-        return { text: 'Nadesłane', color: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20' };
+        return { text: 'Nadesłane', color: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400' };
       case 'Potwierdzone':
-        return { text: 'Zatwierdzone', color: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20' };
+        return { text: 'Zatwierdzone', color: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' };
       case 'Częściowo potwierdzone':
-        return { text: 'Częściowe (Brak)', color: 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/20' };
+        return { text: 'Częściowe (Brak)', color: 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400' };
       case 'W transporcie':
-        return { text: 'W transporcie', color: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 animate-pulse' };
+        return { text: 'W transporcie', color: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 animate-pulse' };
       case 'Dostarczone':
-        return { text: 'Odebrane', color: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' };
+        return { text: 'Odebrane', color: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' };
       case 'Anulowane':
-        return { text: 'Anulowane', color: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700' };
+        return { text: 'Anulowane', color: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400' };
       default:
-        return { text: status, color: 'bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800' };
+        return { text: status, color: 'bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300' };
     }
   };
 
@@ -103,7 +103,7 @@ export default function OrdersView({
 
     if (status === 'Anulowane') {
       return (
-        <div className="bg-red-50 dark:bg-red-950/15 border border-red-200 dark:border-red-900/20 rounded-xl p-3 text-xs text-red-600 dark:text-red-400 flex items-center gap-2">
+        <div className="bg-red-50 dark:bg-red-950/15 rounded-xl p-3 text-xs text-red-600 dark:text-red-400 flex items-center gap-2">
           <span>Zamówienie zostało anulowane przez koordynatora. Skontaktuj się z obsługą w celu wyjaśnienia.</span>
         </div>
       );
@@ -121,12 +121,12 @@ export default function OrdersView({
               <div key={idx} className="relative flex items-start gap-4 text-xs">
                 {/* Step circle */}
                 <span className={cn(
-                  "absolute -left-6 top-1 w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 transition-colors",
+                  "absolute -left-6 top-1 w-4.5 h-4.5 rounded-full flex items-center justify-center transition-colors",
                   isCompleted 
                     ? isCurrent 
-                      ? "bg-blue-600 border-blue-500 text-white animate-pulse" 
-                      : "bg-emerald-50 dark:bg-emerald-950 border-emerald-500 text-emerald-600 dark:text-emerald-400" 
-                    : "bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-850 text-gray-400 dark:text-gray-600"
+                      ? "bg-blue-600 text-white animate-pulse" 
+                      : "bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400" 
+                    : "bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-600"
                 )}>
                   {isCompleted && !isCurrent && <Check className="h-2.5 w-2.5" />}
                   {isCurrent && <Clock className="h-2.5 w-2.5" />}
@@ -155,11 +155,11 @@ export default function OrdersView({
         
         /* ORDER DETAIL SCREEN */
         <div className="space-y-5">
-          <div className="flex items-center justify-between border-b border-[#E1E3E6] dark:border-gray-800 pb-3">
+          <div className="flex items-center justify-between pb-3">
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setSelectedOrderId(null)}
-                className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer border border-[#E1E3E6] dark:border-transparent"
+                className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -176,7 +176,7 @@ export default function OrdersView({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Left column: Timeline tracker (Span 4) */}
-            <div className="lg:col-span-4 bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl p-4 h-fit shadow-sm">
+            <div className="lg:col-span-4 bg-white dark:bg-[#0E1321] rounded-xl p-4 h-fit shadow-sm">
               {renderTimeline(activeOrder.status)}
             </div>
 
@@ -184,7 +184,7 @@ export default function OrdersView({
             <div className="lg:col-span-8 space-y-4">
               
               {/* Vendor & Delivery info card */}
-              <div className="bg-gray-50 dark:bg-gray-900/40 rounded-xl border border-[#E1E3E6] dark:border-gray-850 p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs shadow-sm">
+              <div className="bg-gray-50 dark:bg-gray-900/40 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs shadow-sm">
                 <div className="space-y-1">
                   <span className="text-gray-400 dark:text-gray-500 block">Dostawca VMI</span>
                   <span className="font-bold text-sm text-gray-950 dark:text-white">{activeOrderVendor.name}</span>
@@ -198,8 +198,8 @@ export default function OrdersView({
               </div>
 
               {/* Order Lines items */}
-              <div className="bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
-                <div className="px-4 py-3 bg-gray-50 dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-800 flex justify-between items-center">
+              <div className="bg-white dark:bg-[#0E1321] rounded-xl overflow-hidden shadow-sm">
+                <div className="px-4 py-3 bg-gray-50 dark:bg-[#131A2E] flex justify-between items-center">
                   <span className="font-bold text-xs text-gray-950 dark:text-white uppercase tracking-wider">Pozycje zamówienia ({activeOrder.lines.length})</span>
                   <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">Ambra Inventory Code</span>
                 </div>
@@ -228,7 +228,7 @@ export default function OrdersView({
                 </div>
 
                 {/* Totals footer */}
-                <div className="p-4 bg-gray-50/60 dark:bg-gray-950/40 border-t border-[#E1E3E6] dark:border-gray-800/80 flex justify-between items-center text-xs">
+                <div className="p-4 bg-gray-50/60 dark:bg-gray-950/40 flex justify-between items-center text-xs">
                   <span className="font-semibold text-gray-500 dark:text-gray-400">Łączna wartość zamówienia:</span>
                   <div className="text-right">
                     <p className="text-base font-black font-mono text-gray-950 dark:text-white">
@@ -246,7 +246,7 @@ export default function OrdersView({
                   activeOrder.vendorId, 
                   `Pytanie o stan zamówienia ${activeOrder.orderNumber}`
                 )}
-                className="w-full py-3.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-950 dark:text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors border border-[#E1E3E6] dark:border-gray-750 shadow-sm"
+                className="w-full py-3.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-950 dark:text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
               >
                 <MessageSquare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 <span>Napisz do dostawcy w sprawie tego zamówienia</span>
@@ -260,18 +260,18 @@ export default function OrdersView({
         <div className="space-y-4">
           
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#E1E3E6] dark:border-gray-850 pb-2">
+          <div className="flex items-center justify-between pb-2">
             <div>
               <h2 className="text-base font-bold font-display text-gray-950 dark:text-white">Spis zamówień VMI</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400">Monitorowane dostawy do oddziału Poznańska</p>
             </div>
-            <span className="text-[10px] bg-white dark:bg-gray-900 border border-[#E1E3E6] dark:border-gray-850 px-2.5 py-0.5 rounded font-mono text-gray-500 dark:text-gray-400 shadow-sm">
+            <span className="text-[10px] bg-white dark:bg-gray-900 px-2.5 py-0.5 rounded font-mono text-gray-500 dark:text-gray-400 shadow-sm">
               Łącznie: {filteredOrders.length}
             </span>
           </div>
 
           {/* Search/Filter tabs */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#0E1321] rounded-xl border border-[#E1E3E6] dark:border-gray-850 p-3 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#0E1321] rounded-xl p-3 shadow-sm">
             {/* Search */}
             <div className="relative flex-1">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
@@ -282,18 +282,18 @@ export default function OrdersView({
                 placeholder="Szukaj po numerze zamówienia, dostawcy..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-gray-50 dark:bg-[#0C101A] border border-[#E1E3E6] dark:border-gray-700 rounded-lg text-xs focus:outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                className="w-full pl-9 pr-3 py-1.5 bg-gray-50 dark:bg-[#0C101A] rounded-lg text-xs focus:outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             {/* Status tabs segment */}
-            <div className="flex bg-gray-55 dark:bg-gray-950 p-1 rounded-lg border border-[#E1E3E6] dark:border-gray-800 text-xs shrink-0 self-start sm:self-auto">
+            <div className="flex bg-gray-55 dark:bg-gray-950 p-1 rounded-lg text-xs shrink-0 self-start sm:self-auto">
               <button
                 onClick={() => setStatusFilter('all')}
                 className={cn(
                   "px-3 py-1 rounded-md font-medium cursor-pointer transition-colors text-xs",
                   statusFilter === 'all' 
-                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm border border-[#E1E3E6] dark:border-transparent font-bold" 
+                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm font-bold" 
                     : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                 )}
               >
@@ -304,7 +304,7 @@ export default function OrdersView({
                 className={cn(
                   "px-3 py-1 rounded-md font-medium cursor-pointer transition-colors text-xs",
                   statusFilter === 'active' 
-                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm border border-[#E1E3E6] dark:border-transparent font-bold" 
+                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm font-bold" 
                     : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                 )}
               >
@@ -315,7 +315,7 @@ export default function OrdersView({
                 className={cn(
                   "px-3 py-1 rounded-md font-medium cursor-pointer transition-colors text-xs",
                   statusFilter === 'archived' 
-                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm border border-[#E1E3E6] dark:border-transparent font-bold" 
+                    ? "bg-white dark:bg-gray-800 text-gray-950 dark:text-white shadow-sm font-bold" 
                     : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                 )}
               >
@@ -327,7 +327,7 @@ export default function OrdersView({
           {/* Orders list loop */}
           <div className="grid grid-cols-1 gap-2.5">
             {filteredOrders.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 text-xs bg-gray-55 dark:bg-gray-900/10 border border-[#E1E3E6] dark:border-gray-850 rounded-xl shadow-sm">
+              <div className="p-8 text-center text-gray-500 text-xs bg-gray-55 dark:bg-gray-900/10 rounded-xl shadow-sm">
                 Brak zamówień w wybranej kategorii.
               </div>
             ) : (
@@ -340,7 +340,7 @@ export default function OrdersView({
                   <div
                     key={order.id}
                     onClick={() => setSelectedOrderId(order.id)}
-                    className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] border border-[#E1E3E6] dark:border-gray-850 hover:border-gray-300 dark:hover:border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 cursor-pointer transition-all shadow-sm"
+                    className="bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-[#111728] dark:hover:border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 cursor-pointer transition-all shadow-sm"
                   >
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export default function OrdersView({
                       </div>
                     </div>
 
-                    <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-100 dark:border-gray-850/60">
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 sm:border-t-0 pt-2 sm:pt-0">
                       <p className="text-sm font-black font-mono text-gray-950 dark:text-white">{totalVal.toFixed(2)} zł</p>
                       <span className="text-[10px] text-gray-400 dark:text-gray-500 flex items-center gap-0.5">
                         <span>Szczegóły</span>

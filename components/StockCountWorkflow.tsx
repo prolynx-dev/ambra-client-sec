@@ -331,16 +331,14 @@ export default function StockCountWorkflow({
       <div className="w-full h-full md:max-w-5xl md:h-[90vh] md:rounded-2xl md:border md:border-[#E1E3E6] md:dark:border-gray-800 bg-white dark:bg-[#0E1321] flex flex-col overflow-hidden shadow-2xl relative">
         
         {/* Header with active states */}
-        <div className="px-4 py-3 bg-white dark:bg-[#131A2E] border-b border-[#E1E3E6] dark:border-gray-800 flex items-center justify-between shrink-0">
+        <div className="px-4 py-3 bg-white dark:bg-[#131A2E] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => {
                 if (step > 1 && step < 4) setStep((step - 1) as any);
                 else if (step === 4) {
-                  if (confirm('Szkic inwentaryzacji zostanie zachowany. Czy chcesz wyjść do wyboru trybu?')) {
-                    saveDraftLocally();
-                    setStep(3);
-                  }
+                  saveDraftLocally();
+                  setStep(3);
                 } else onClose();
               }}
               className="p-1.5 rounded-lg bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-[#2A3B4C] dark:hover:text-white transition-colors cursor-pointer"
@@ -362,7 +360,7 @@ export default function StockCountWorkflow({
             {step === 4 && (
               <button 
                 onClick={saveDraftLocally}
-                className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer"
+                className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg bg-white dark:bg-[#0E1321] hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer"
                 title="Zapisz szkic lokalnie"
               >
                 <Save className="h-3.5 w-3.5" />
@@ -371,12 +369,12 @@ export default function StockCountWorkflow({
             )}
 
             {isOnline ? (
-              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30">
+              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400">
                 <Wifi className="h-3 w-3 animate-pulse" />
                 <span>ONLINE</span>
               </span>
             ) : (
-              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30 animate-pulse">
+              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-450 animate-pulse">
                 <WifiOff className="h-3 w-3" />
                 <span>OFFLINE (SZKIC)</span>
               </span>
@@ -384,7 +382,7 @@ export default function StockCountWorkflow({
 
             <button 
               onClick={() => {
-                if (step === 4 && confirm('Czy na pewno chcesz anulować inwentaryzację? Niezapisane dane przepadną.')) {
+                if (step === 4) {
                   onClose();
                 } else if (step < 4) {
                   onClose();
@@ -421,10 +419,10 @@ export default function StockCountWorkflow({
                 <div className="grid grid-cols-1 gap-3">
                   {vendors.map(vendor => {
                     const colorMap: { [key: string]: string } = {
-                      blue: 'border-l-blue-500 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 border border-[#E1E3E6] dark:border-gray-800 shadow-sm',
-                      orange: 'border-l-orange-500 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 border border-[#E1E3E6] dark:border-gray-800 shadow-sm',
-                      green: 'border-l-green-500 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 border border-[#E1E3E6] dark:border-gray-800 shadow-sm',
-                      red: 'border-l-red-500 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 border border-[#E1E3E6] dark:border-gray-800 shadow-sm'
+                      blue: 'bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm',
+                      orange: 'bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm',
+                      green: 'bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm',
+                      red: 'bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm'
                     };
 
                     return (
@@ -435,8 +433,8 @@ export default function StockCountWorkflow({
                           setStep(2);
                         }}
                         className={cn(
-                          "w-full text-left p-4 rounded-xl border-l-4 transition-all hover:scale-[1.01] flex items-center justify-between cursor-pointer",
-                          colorMap[vendor.accentColor] || "border-l-gray-500 bg-white dark:bg-[#0E1321]/50 border border-[#E1E3E6] dark:border-gray-800"
+                          "w-full text-left p-4 rounded-xl transition-all hover:scale-[1.01] flex items-center justify-between cursor-pointer",
+                          colorMap[vendor.accentColor] || "bg-white dark:bg-[#0E1321]/50"
                         )}
                       >
                         <div>
@@ -480,10 +478,10 @@ export default function StockCountWorkflow({
                           setStep(3);
                         }}
                         className={cn(
-                          "w-full text-left p-4 rounded-xl border transition-all flex items-start justify-between cursor-pointer",
+                          "w-full text-left p-4 rounded-xl transition-all flex items-start justify-between cursor-pointer",
                           isSelected 
-                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20" 
-                            : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
+                            ? "bg-blue-50/50 dark:bg-blue-950/20" 
+                            : "bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
                         )}
                       >
                         <div>
@@ -493,8 +491,8 @@ export default function StockCountWorkflow({
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{loc.address}</p>
                         </div>
                         <div className={cn(
-                          "w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5",
-                          isSelected ? "border-blue-500 bg-blue-500 text-white" : "border-gray-300 dark:border-gray-700"
+                          "w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                          isSelected ? "bg-blue-500 text-white" : ""
                         )}>
                           {isSelected && <div className="w-2.5 h-2.5 bg-white rounded-full" />}
                         </div>
@@ -536,8 +534,8 @@ export default function StockCountWorkflow({
                   <button
                     onClick={() => setCountingMode('requested')}
                     className={cn(
-                      "w-full text-left p-4 rounded-xl border transition-all flex items-start gap-4 cursor-pointer",
-                      countingMode === 'requested' ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20" : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
+                      "w-full text-left p-4 rounded-xl transition-all flex items-start gap-4 cursor-pointer",
+                      countingMode === 'requested' ? "bg-blue-50/50 dark:bg-blue-950/20" : "bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
                     )}
                   >
                     <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 shrink-0">
@@ -555,8 +553,8 @@ export default function StockCountWorkflow({
                   <button
                     onClick={() => setCountingMode('low_stock')}
                     className={cn(
-                      "w-full text-left p-4 rounded-xl border transition-all flex items-start gap-4 cursor-pointer",
-                      countingMode === 'low_stock' ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20" : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
+                      "w-full text-left p-4 rounded-xl transition-all flex items-start gap-4 cursor-pointer",
+                      countingMode === 'low_stock' ? "bg-blue-50/50 dark:bg-blue-950/20" : "bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
                     )}
                   >
                     <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-450 shrink-0">
@@ -574,8 +572,8 @@ export default function StockCountWorkflow({
                   <button
                     onClick={() => setCountingMode('full_assortment')}
                     className={cn(
-                      "w-full text-left p-4 rounded-xl border transition-all flex items-start gap-4 cursor-pointer",
-                      countingMode === 'full_assortment' ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20" : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
+                      "w-full text-left p-4 rounded-xl transition-all flex items-start gap-4 cursor-pointer",
+                      countingMode === 'full_assortment' ? "bg-blue-50/50 dark:bg-blue-950/20" : "bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/10 shadow-sm"
                     )}
                   >
                     <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-450 shrink-0">
@@ -592,7 +590,7 @@ export default function StockCountWorkflow({
 
                 {/* Check for existing draft */}
                 {localStorage.getItem(`vmi_draft_${selectedVendorId}_${selectedLocationId}`) && (
-                  <div className="bg-amber-50 dark:bg-amber-950/15 border border-amber-200 dark:border-amber-900/30 rounded-xl p-3 text-xs text-amber-800 dark:text-amber-400 flex items-center justify-between">
+                  <div className="bg-amber-50 dark:bg-amber-950/15 rounded-xl p-3 text-xs text-amber-800 dark:text-amber-400 flex items-center justify-between">
                     <span>Zintegrowany moduł offline wykrył zapisany lokalnie szkic dla tego dostawcy!</span>
                     <span className="font-semibold text-amber-700 dark:text-amber-400 underline decoration-dotted">Zostanie automatycznie wczytany</span>
                   </div>
@@ -626,7 +624,7 @@ export default function StockCountWorkflow({
                 className="h-full flex flex-col md:grid md:grid-cols-12 gap-6"
               >
                 {/* Progress bar and index tracker - Desktop (Left column, span 4) */}
-                <div className="hidden md:col-span-4 md:flex flex-col border-r border-[#E1E3E6] dark:border-gray-800 pr-6 h-full overflow-y-auto space-y-4">
+                <div className="hidden md:col-span-4 md:flex flex-col pr-6 h-full overflow-y-auto space-y-4">
                   <div>
                     <h4 className="text-sm font-semibold tracking-wider text-gray-500 dark:text-gray-400 uppercase">Lista produktów ({countedCount}/{totalItems})</h4>
                     <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Kliknij element, aby przejść bezpośrednio.</p>
@@ -640,19 +638,19 @@ export default function StockCountWorkflow({
                       let statusBg = "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400";
                       let label = "Brak odczytu";
                       if (sessItem?.status === 'counted') {
-                        statusBg = "bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-450 border border-blue-200 dark:border-blue-900/30";
+                        statusBg = "bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-450";
                         label = `${sessItem.countedQty} ${prod.unitOfMeasure}`;
                       } else if (sessItem?.status === 'zero_stock') {
-                        statusBg = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/30";
+                        statusBg = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400";
                         label = "STAN: 0";
                       } else if (sessItem?.status === 'unable_to_count') {
                         statusBg = "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400";
                         label = "Nieliczony";
                       } else if (sessItem?.status === 'recount') {
-                        statusBg = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30";
+                        statusBg = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400";
                         label = "Ponowne liczenie";
                       } else if (sessItem?.status === 'note_added') {
-                        statusBg = "bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-900/30";
+                        statusBg = "bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400";
                         label = "Notatka";
                       }
 
@@ -661,10 +659,10 @@ export default function StockCountWorkflow({
                           key={prod.id}
                           onClick={() => setCurrentIndex(idx)}
                           className={cn(
-                            "w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between gap-3 cursor-pointer",
+                            "w-full text-left p-3 rounded-xl transition-all flex items-center justify-between gap-3 cursor-pointer",
                             isCurrent 
-                              ? "border-blue-500 bg-blue-50/30 dark:bg-blue-950/10 font-medium" 
-                              : "border-[#E1E3E6] dark:border-gray-800 bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50 dark:hover:bg-gray-800/10 shadow-sm"
+                              ? "bg-blue-50/30 dark:bg-blue-950/10 font-medium" 
+                              : "bg-white dark:bg-[#0E1321]/50 hover:bg-gray-50 dark:hover:bg-gray-800/10 shadow-sm"
                           )}
                         >
                           <div className="min-w-0">
@@ -678,7 +676,7 @@ export default function StockCountWorkflow({
                             {photoAdded[prod.id] && (
                               <Camera className="h-3 w-3 text-emerald-600 dark:text-emerald-450" />
                             )}
-                            <span className={cn("text-[10px] px-2 py-0.5 rounded-full font-semibold border-transparent", statusBg)}>
+                            <span className={cn("text-[10px] px-2 py-0.5 rounded-full font-semibold", statusBg)}>
                               {label}
                             </span>
                           </div>
@@ -687,7 +685,7 @@ export default function StockCountWorkflow({
                     })}
                   </div>
 
-                  <div className="pt-4 border-t border-[#E1E3E6] dark:border-gray-800">
+                  <div className="pt-4">
                     <button
                       onClick={saveDraftLocally}
                       className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-medium cursor-pointer"
@@ -711,19 +709,19 @@ export default function StockCountWorkflow({
                         const sessItem = sessionItems.find(i => i.productId === prod.id);
                         const isCurrent = idx === currentIndex;
                         
-                        let dotColor = "bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400";
+                        let dotColor = "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400";
                         if (isCurrent) {
                           dotColor = "bg-blue-600 dark:bg-blue-500 text-white ring-2 ring-blue-500/20";
                         } else if (sessItem?.status === 'counted') {
-                          dotColor = "bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/30";
+                          dotColor = "bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400";
                         } else if (sessItem?.status === 'zero_stock') {
-                          dotColor = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/30";
+                          dotColor = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400";
                         } else if (sessItem?.status === 'unable_to_count') {
                           dotColor = "bg-gray-100 dark:bg-gray-850 text-gray-400 dark:text-gray-500";
                         } else if (sessItem?.status === 'recount') {
-                          dotColor = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/30";
+                          dotColor = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400";
                         } else if (sessItem?.status === 'note_added') {
-                          dotColor = "bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-900/30";
+                          dotColor = "bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400";
                         }
 
                         return (
@@ -756,18 +754,18 @@ export default function StockCountWorkflow({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-xl p-3 text-xs text-blue-700 dark:text-blue-400 text-center font-medium animate-pulse"
+                      className="bg-blue-50 dark:bg-blue-950/20 rounded-xl p-3 text-xs text-blue-700 dark:text-blue-400 text-center font-medium animate-pulse"
                     >
                       {scanMessage}
                     </motion.div>
                   )}
 
                   {/* ACTIVE ITEM DISPLAY CARD */}
-                  <div className="bg-white dark:bg-[#0E1321]/30 rounded-2xl border border-[#E1E3E6] dark:border-gray-800 p-4 flex-1 flex flex-col justify-between space-y-4 shadow-sm">
+                  <div className="bg-white dark:bg-[#0E1321]/30 rounded-2xl p-4 flex-1 flex flex-col justify-between space-y-4 shadow-sm">
                     
                     {/* Item header */}
                     <div className="flex gap-4 items-start">
-                      <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden relative shrink-0 border border-gray-200 dark:border-gray-700">
+                      <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden relative shrink-0">
                         <img 
                           src={activeProduct.imageUrl} 
                           alt={activeProduct.name}
@@ -775,7 +773,7 @@ export default function StockCountWorkflow({
                         />
                       </div>
                       <div className="space-y-1 min-w-0">
-                        <span className="text-[10px] px-2 py-0.5 font-bold uppercase rounded bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
+                        <span className="text-[10px] px-2 py-0.5 font-bold uppercase rounded bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400">
                           {activeProduct.category}
                         </span>
                         <h4 className="font-bold text-sm text-[#1A1C1E] dark:text-white leading-snug">{activeProduct.name}</h4>
@@ -787,7 +785,7 @@ export default function StockCountWorkflow({
                     </div>
 
                     {/* Stock comparison info */}
-                    <div className="grid grid-cols-3 gap-2 py-2.5 px-3 bg-[#F0F2F5] dark:bg-gray-800/55 rounded-xl border border-[#E1E3E6] dark:border-gray-800 text-center text-xs">
+                    <div className="grid grid-cols-3 gap-2 py-2.5 px-3 bg-[#F0F2F5] dark:bg-gray-800/55 rounded-xl text-center text-xs">
                       <div>
                         <div className="text-gray-500 dark:text-gray-400 text-[11px]">Ostatni stan</div>
                         <div className="font-bold text-gray-800 dark:text-gray-200 mt-1 font-mono">
@@ -843,7 +841,7 @@ export default function StockCountWorkflow({
                               const val = e.target.value === '' ? null : parseInt(e.target.value);
                               updateCountedQty(val);
                             }}
-                            className="w-full text-center py-2 bg-white dark:bg-[#0E1321] border border-[#E1E3E6] dark:border-gray-800 rounded-xl text-xl font-bold font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                            className="w-full text-center py-2 bg-white dark:bg-[#0E1321] rounded-xl text-xl font-bold font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
                           />
                           <span className="text-[10px] text-gray-400 block mt-1 uppercase font-mono">{activeProduct.unitOfMeasure}</span>
                         </div>
@@ -872,10 +870,10 @@ export default function StockCountWorkflow({
                         <button
                           onClick={handleSetZero}
                           className={cn(
-                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium border transition-colors cursor-pointer",
+                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium transition-colors cursor-pointer",
                             activeSessionItem?.status === 'zero_stock'
-                              ? "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-300 dark:border-red-900/30"
-                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border-transparent"
+                              ? "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400"
+                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           )}
                         >
                           Wyzeruj (Brak)
@@ -883,10 +881,10 @@ export default function StockCountWorkflow({
                         <button
                           onClick={handleUnableToCount}
                           className={cn(
-                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium border transition-colors cursor-pointer",
+                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium transition-colors cursor-pointer",
                             activeSessionItem?.status === 'unable_to_count'
-                              ? "bg-gray-600 dark:bg-gray-700 text-white border-gray-500"
-                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border-transparent"
+                              ? "bg-gray-600 dark:bg-gray-700 text-white"
+                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           )}
                         >
                           Brak dostępu
@@ -894,10 +892,10 @@ export default function StockCountWorkflow({
                         <button
                           onClick={handleMarkRecount}
                           className={cn(
-                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium border transition-colors cursor-pointer",
+                            "py-2 px-1 text-center rounded-xl text-[11px] font-medium transition-colors cursor-pointer",
                             activeSessionItem?.status === 'recount'
-                              ? "bg-amber-500 dark:bg-amber-600 text-white border-amber-400 font-semibold"
-                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border-transparent"
+                              ? "bg-amber-500 dark:bg-amber-600 text-white font-semibold"
+                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           )}
                         >
                           Do weryfikacji
@@ -916,7 +914,7 @@ export default function StockCountWorkflow({
                           placeholder="Dodaj notatkę (np. uszkodzone op.)..."
                           value={activeSessionItem?.note || ''}
                           onChange={(e) => updateNote(e.target.value)}
-                          className="w-full pl-9 pr-2.5 py-2 bg-white dark:bg-[#0E1321]/60 border border-[#E1E3E6] dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400"
+                          className="w-full pl-9 pr-2.5 py-2 bg-white dark:bg-[#0E1321]/60 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400"
                         />
                       </div>
 
@@ -924,10 +922,10 @@ export default function StockCountWorkflow({
                         <button
                           onClick={() => togglePhoto(activeProduct.id)}
                           className={cn(
-                            "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 border rounded-xl text-xs font-medium cursor-pointer transition-colors",
+                            "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-medium cursor-pointer transition-colors",
                             photoAdded[activeProduct.id]
-                              ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/30"
-                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border-transparent"
+                              ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400"
+                              : "bg-[#F0F2F5] dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           )}
                         >
                           <Camera className="h-4 w-4" />
@@ -947,7 +945,7 @@ export default function StockCountWorkflow({
                   </div>
 
                   {/* Navigation controls */}
-                  <div className="flex items-center justify-between shrink-0 pt-4 border-t border-[#E1E3E6] dark:border-gray-800">
+                  <div className="flex items-center justify-between shrink-0 pt-4">
                     <button
                       onClick={() => {
                         if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
