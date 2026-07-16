@@ -370,7 +370,8 @@ const baseProducts: PublicProduct[] = [
       'Zastosowanie': 'Silniki benzynowe i Diesla z filtrem DPF',
       'Technologia': 'Fluid TITANIUM'
     },
-    isNew: true
+    isNew: true,
+    sellMode: 'piece'
   },
   {
     id: 'mp-2',
@@ -394,7 +395,8 @@ const baseProducts: PublicProduct[] = [
       'Wysokość': '71.4 mm',
       'System hamulcowy': 'Teves',
       'Oś': 'Przednia'
-    }
+    },
+    sellMode: 'package'
   },
   {
     id: 'mp-3',
@@ -417,7 +419,8 @@ const baseProducts: PublicProduct[] = [
       'Opakowanie zbiorcze': 'Karton 12 szt.',
       'Kolor': 'Bezbarwny',
       'Baza chemiczna': 'Nafta alifatyczna'
-    }
+    },
+    sellMode: 'both'
   },
   {
     id: 'mp-4',
@@ -442,7 +445,8 @@ const baseProducts: PublicProduct[] = [
       'Nośność max': '300 kg',
       'Wymiary szafki': '975 x 765 x 465 mm',
       'Materiał': 'Blacha stalowa lakierowana proszkowo'
-    }
+    },
+    sellMode: 'piece'
   },
   {
     id: 'mp-5',

@@ -60,6 +60,7 @@ interface VendorDashboardViewProps {
   onCheckout: (deliveryLocationId: string, requestedDeliveryDate: string, poReference: string, comments: string) => void;
   onOpenFlyer: (flyer: DigitalFlyer) => void;
   onAskVendorQuestion: (productId: string, subject: string) => void;
+  initialNewsId?: string;
 }
 
 const VENDOR_CONTACTS: Record<string, Array<{ name: string; role: string; phone: string; email: string; status: 'online' | 'busy' | 'offline' }>> = {
@@ -182,6 +183,107 @@ const VENDOR_PORTFOLIOS: Record<string, {
     website: 'www.safecut.pl',
     gallery: ['https://picsum.photos/seed/safe1/400/250', 'https://picsum.photos/seed/safe2/400/250', 'https://picsum.photos/seed/safe3/400/250']
   }
+};
+
+export const VENDOR_ANNOUNCEMENTS: Record<string, Array<{
+  id: string;
+  title: string;
+  type: 'announcement' | 'offer' | 'info';
+  content: string;
+  badgeText: string;
+}>> = {
+  'v-1': [
+    {
+      id: 'v1-news-1',
+      title: 'Limitowana Oferta: Dodatkowy rabat 15% na wybrane elementy złączne VMI',
+      type: 'offer',
+      content: 'Specjalny pakiet rabatowy przygotowany dla Twoich oddziałów handlowych. Wszystkie zamówienia na wybrane śruby, nakrętki oraz podkładki ocynkowane złożone do końca tego tygodnia za pośrednictwem portalu VMI zostaną zrabatowane o dodatkowe 15% netto!',
+      badgeText: 'PROMOCJA -15%'
+    },
+    {
+      id: 'v1-news-2',
+      title: 'Wdrożenie zautomatyzowanych regałów logistycznych VMI Express',
+      type: 'info',
+      content: 'W przyszłym miesiącu planujemy montaż inteligentnych, zautomatyzowanych regałów magazynowych bezpośrednio w Twoich halach warsztatowych. System będzie zintegrowany ze skanerem kodów kreskowych, dzięki czemu stany inwentaryzacji będą raportowane w czasie rzeczywistym.',
+      badgeText: 'NOWOŚĆ TECHNICZNA'
+    },
+    {
+      id: 'v1-news-3',
+      title: 'Zasady BHP przy odbiorze dostaw interwencyjnych',
+      type: 'announcement',
+      content: 'Przypominamy wszystkim kierownikom oddziałów o bezwzględnym obowiązku używania kamizelek odblaskowych oraz obuwia ochronnego podczas rozładunku dostaw realizowanych przez spedycję VMI Express.',
+      badgeText: 'BHP I LOGISTYKA'
+    }
+  ],
+  'v-2': [
+    {
+      id: 'v2-news-1',
+      title: 'Wyprzedaż zestawów narzędziowych Beta: do -25% do końca miesiąca!',
+      type: 'offer',
+      content: 'Uzupełnij wyposażenie stanowisk pracy o legendarne zestawy kluczy i wkrętaków marki Beta. Zamówienia składane przez system VMI automatycznie otrzymują 25% upustu. Oferta ważna do wyczerpania zapasów magazynowych.',
+      badgeText: 'WYPRZEDAŻ -25%'
+    },
+    {
+      id: 'v2-news-2',
+      title: 'Mobilna kalibracja kluczy dynamometrycznych w Twoim warsztacie',
+      type: 'info',
+      content: 'Nasz mobilny autobus techniczny odwiedzi Twoje serwisy w przyszły wtorek. Oferujemy bezpłatną kalibrację i certyfikację wszystkich kluczy dynamometrycznych używanych na stanowiskach naprawczych. Zapisz się już dziś!',
+      badgeText: 'MOBILNY SERWIS'
+    },
+    {
+      id: 'v2-news-3',
+      title: 'Prezentacja nowej serii szaf narzędziowych ToolBox VMI',
+      type: 'announcement',
+      content: 'Wprowadzamy nową generację inteligentnych szaf warsztatowych ToolBox z wbudowaną wagą RFID. Automatyczna ewidencja wydawania i zwrotu narzędzi pozwoli wyeliminować straty operacyjne o ponad 40%.',
+      badgeText: 'INNOWACJA'
+    }
+  ],
+  'v-3': [
+    {
+      id: 'v3-news-1',
+      title: 'Premiera: Ekologiczny zmywacz BioClean-15 wolny od LZO',
+      type: 'info',
+      content: 'Przedstawiamy w pełni biodegradowalny, bezpieczny dla skóry zmywacz montażowy serii BioClean-15. Wyprodukowany na bazie ekstraktów cytrusowych, nie wydziela szkodliwych oparów i doskonale czyści tarcze hamulcowe.',
+      badgeText: 'EKO NOWOŚĆ'
+    },
+    {
+      id: 'v3-news-2',
+      title: 'Bezpłatna dzierżawa automatycznych stacji dozujących chemię',
+      type: 'offer',
+      content: 'Chcesz obniżyć zużycie koncentratów myjących? Zainstaluj bezpłatną, automatyczną stację dozującą CleanChem Eco-Mix. Urządzenie precyzyjnie miesza wodę z preparatem, redukując koszty chemii o 35%.',
+      badgeText: 'ZYSKAJ OSZCZĘDNOŚĆ'
+    },
+    {
+      id: 'v3-news-3',
+      title: 'Odbiór i utylizacja pustych beczek i opakowań VMI',
+      type: 'announcement',
+      content: 'W ramach naszej polityki zero waste, kierowcy dostarczający chemię VMI mogą bezpłatnie odebrać zużyte opakowania i beczki plastikowe w celu ich ponownego napełnienia lub ekologicznej utylizacji.',
+      badgeText: 'UTYLIZACJA BEZPŁATNA'
+    }
+  ],
+  'v-4': [
+    {
+      id: 'v4-news-1',
+      title: 'Szybka personalizacja odzieży: Haft komputerowy z logo gratis!',
+      type: 'offer',
+      content: 'Dla wszystkich nowych zamówień na kurtki i spodnie robocze marki SafetyCore oferujemy wykonanie haftu komputerowego z logo Twojego serwisu zupełnie za darmo. Promocja obowiązuje przy zamówieniach powyżej 10 kpl.',
+      badgeText: 'HAFT GRATIS'
+    },
+    {
+      id: 'v4-news-2',
+      title: 'Nowa norma ochrony EN ISO 20345 S3 dla obuwia roboczego',
+      type: 'info',
+      content: 'Wszystkie modele butów ochronnych z naszej najnowszej kolekcji posiadają już pełne akredytacje nowej, zaostrzonej normy EN ISO 20345:2022. Wybierz maksymalną stabilność stopy i ochronę antyprzebiciową.',
+      badgeText: 'NORMA BHP 2022'
+    },
+    {
+      id: 'v4-news-3',
+      title: 'Montaż automatów vendingowych BHP-omat VMI na Twojej hali',
+      type: 'announcement',
+      content: 'Uruchomiliśmy program pilotażowy montażu automatów BHP-omat. Twoi mechanicy mogą pobierać rękawice robocze, maski i okulary ochronne za pomocą kart pracowniczych. Pełna kontrola zużycia BHP 24/7.',
+      badgeText: 'BHP VENDING'
+    }
+  ]
 };
 
 function ProductCartControl({
@@ -332,48 +434,66 @@ export default function VendorDashboardView({
   onUpdateCartQty,
   onCheckout,
   onOpenFlyer,
-  onAskVendorQuestion
+  onAskVendorQuestion,
+  initialNewsId
 }: VendorDashboardViewProps) {
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'catalog' | 'promotions' | 'quotations' | 'cart' | 'contact'>('overview');
   const [activeNewsIndex, setActiveNewsIndex] = useState<number>(0);
   const [tileSize, setTileSize] = useState<number>(200);
   
   // Full-screen News & Announcements Gallery States
-  const [isNewsOpen, setIsNewsOpen] = useState<boolean>(false);
-  const [activeNewsId, setActiveNewsId] = useState<string>('news-1');
-  const [newsList, setNewsList] = useState<Array<{
+  const [isNewsOpen, setIsNewsOpen] = useState<boolean>(!!initialNewsId);
+  const [activeNewsId, setActiveNewsId] = useState<string>(initialNewsId || '');
+  const [prevInitialNewsId, setPrevInitialNewsId] = useState<string | undefined>(initialNewsId);
+  const [customNewsByVendor, setCustomNewsByVendor] = useState<Record<string, Array<{
     id: string;
     title: string;
     type: 'announcement' | 'offer' | 'info';
     content: string;
     date: string;
     badgeText?: string;
-  }>>([
-    {
-      id: 'news-1',
-      title: 'Limitowana Oferta: Dodatkowy rabat 15% na wybrane elementy złączne VMI',
-      type: 'offer',
-      content: 'Specjalny pakiet rabatowy przygotowany dla Twoich oddziałów handlowych. Wszystkie zamówienia na wybrane śruby, nakrętki oraz podkładki ocynkowane złożone do końca tego tygodnia za pośrednictwem portalu VMI zostaną zrabatowane o dodatkowe 15% netto! Rabat nalicza się automatycznie.',
-      date: '2026-07-13',
-      badgeText: 'PROMOCJA -15%'
-    },
-    {
-      id: 'news-2',
-      title: 'Wdrożenie zautomatyzowanych regałów logistycznych VMI Express',
-      type: 'info',
-      content: 'W przyszłym miesiącu planujemy montaż inteligentnych, zautomatyzowanych regałów magazynowych bezpośrednio w Twoich halach warsztatowych. System będzie zintegrowany ze skanerem kodów kreskowych, dzięki czemu stany inwentaryzacji będą raportowane w czasie rzeczywistym bezpośrednio do bazy VMI.',
-      date: '2026-07-11',
-      badgeText: 'NOWOŚĆ TECHNICZNA'
-    },
-    {
-      id: 'news-3',
-      title: 'Zasady BHP przy odbiorze dostaw interwencyjnych',
-      type: 'announcement',
-      content: 'Przypominamy wszystkim kierownikom oddziałów o bezwzględnym obowiązku używania kamizelek odblaskowych oraz obuwia ochronnego podczas rozładunku dostaw realizowanych przez spedycję VMI Express. Bezpieczeństwo pracy jest naszym wspólnym priorytetem.',
-      date: '2026-07-08',
-      badgeText: 'BHP I LOGISTYKA'
+  }>>>({});
+
+  if (initialNewsId !== prevInitialNewsId) {
+    setPrevInitialNewsId(initialNewsId);
+    if (initialNewsId) {
+      setActiveNewsId(initialNewsId);
+      setIsNewsOpen(true);
     }
-  ]);
+  }
+
+  const newsList = useMemo(() => {
+    const list = VENDOR_ANNOUNCEMENTS[vendor.id] || [];
+    const baseList = list.map((item, idx) => ({
+      ...item,
+      date: `2026-07-${15 - idx}`
+    }));
+    const customList = customNewsByVendor[vendor.id] || [];
+    return [...customList, ...baseList];
+  }, [vendor.id, customNewsByVendor]);
+
+  const allAnnouncements = useMemo(() => {
+    const portfolio = VENDOR_PORTFOLIOS[vendor.id];
+    return [
+      {
+        id: 'slide-about',
+        title: `O nas: ${vendor.name}`,
+        type: 'portfolio_about' as const,
+        content: portfolio?.about || 'Wiodący dostawca w systemie VMI.',
+        date: 'PORTFOLIO',
+        badgeText: portfolio ? `Partner od ${portfolio.since}` : undefined
+      },
+      {
+        id: 'slide-specs',
+        title: 'Nasze specjalizacje i certyfikaty jakości',
+        type: 'portfolio_specialties' as const,
+        content: `Główne obszary działania: ${portfolio?.specialties.join(', ') || ''}. Posiadane standardy i akredytacje: ${portfolio?.certifications.join(', ') || ''}.`,
+        date: 'STANDARDY',
+        badgeText: 'STANDARDY JAKOŚCI'
+      },
+      ...newsList
+    ];
+  }, [vendor.id, vendor.name, newsList]);
 
   // Form states for posting announcements
   const [newNewsTitle, setNewNewsTitle] = useState('');
@@ -519,7 +639,10 @@ export default function VendorDashboardView({
       date: new Date().toISOString().substring(0, 10),
       badgeText: newNewsBadge.trim() ? newNewsBadge.trim().toUpperCase() : undefined
     };
-    setNewsList([newAnn, ...newsList]);
+    setCustomNewsByVendor(prev => ({
+      ...prev,
+      [vendor.id]: [newAnn, ...(prev[vendor.id] || [])]
+    }));
     setActiveNewsId(newAnn.id);
     
     // Clear inputs
@@ -624,8 +747,11 @@ export default function VendorDashboardView({
                   badge: 'PORTFOLIO MARKI',
                   badgeText: portfolio ? `Partner od ${portfolio.since}` : undefined,
                   content: portfolio?.about || 'Wiodący dostawca w systemie VMI.',
-                  ctaText: 'Zobacz pełne portfolio',
-                  ctaAction: () => setActiveSubTab('contact')
+                  ctaText: 'Szczegóły',
+                  ctaAction: () => {
+                    setActiveNewsId('slide-about');
+                    setIsNewsOpen(true);
+                  }
                 },
                 {
                   id: 'slide-specs',
@@ -634,8 +760,11 @@ export default function VendorDashboardView({
                   badge: 'PORTFOLIO MARKI',
                   badgeText: 'STANDARDY JAKOŚCI',
                   content: `Główne obszary działania: ${portfolio?.specialties.join(', ') || ''}. Posiadane standardy i akredytacje: ${portfolio?.certifications.join(', ') || ''}.`,
-                  ctaText: 'Dane kontaktowe i wsparcie',
-                  ctaAction: () => setActiveSubTab('contact')
+                  ctaText: 'Szczegóły',
+                  ctaAction: () => {
+                    setActiveNewsId('slide-specs');
+                    setIsNewsOpen(true);
+                  }
                 },
                 ...newsList.map(item => ({
                   id: item.id,
@@ -644,7 +773,7 @@ export default function VendorDashboardView({
                   badge: item.type === 'offer' ? 'OFERTA SPECJALNA' : item.type === 'announcement' ? 'OGŁOSZENIE' : 'KOMUNIKAT',
                   badgeText: item.badgeText,
                   content: item.content,
-                  ctaText: 'Otwórz galerię ogłoszeń',
+                  ctaText: 'Szczegóły',
                   ctaAction: () => {
                     setActiveNewsId(item.id);
                     setIsNewsOpen(true);
@@ -658,7 +787,7 @@ export default function VendorDashboardView({
               return (
                 <div 
                   onClick={() => currentSlide?.ctaAction()}
-                  className="relative group w-full bg-gradient-to-br from-[#1E2B38] to-slate-900 rounded-2xl shadow-lg overflow-hidden h-[240px] sm:h-[190px] md:h-[170px] flex flex-col justify-between cursor-pointer transition-all hover:shadow-xl"
+                  className="relative group w-full bg-gradient-to-br from-[#1E2B38] to-slate-900 rounded-2xl shadow-lg overflow-hidden h-[280px] sm:h-[220px] md:h-[200px] flex flex-col justify-between cursor-pointer transition-all hover:shadow-xl"
                 >
                   {/* Decorative glowing background elements */}
                   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full translate-x-12 -translate-y-12 group-hover:scale-110 transition-transform duration-500 pointer-events-none" />
@@ -689,7 +818,7 @@ export default function VendorDashboardView({
 
                   {/* Active Slide Content */}
                   {currentSlide && (
-                    <div className="p-4 sm:p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-6 relative z-10 flex-1">
+                    <div className="p-4 sm:p-5 md:p-6 flex flex-col justify-between gap-3 relative z-10 flex-1">
                       <div className="space-y-1.5 sm:space-y-2 max-w-3xl text-left">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className={cn(
@@ -716,10 +845,10 @@ export default function VendorDashboardView({
                         </p>
                       </div>
 
-                      {/* Interactive Action Button */}
-                      <div className="shrink-0">
+                      {/* Interactive Action Button at bottom left */}
+                      <div className="flex items-center justify-start shrink-0">
                         <div
-                          className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-550 text-white font-extrabold text-[10px] sm:text-xs rounded-xl transition-all active:scale-95 cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-550 text-white font-extrabold text-[10px] sm:text-xs rounded-xl transition-all active:scale-95 cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                         >
                           <span>{currentSlide.ctaText}</span>
                           <ChevronRight className="h-3.5 w-3.5" />
@@ -1716,10 +1845,9 @@ export default function VendorDashboardView({
             {/* Header */}
             <div className="bg-gray-50 dark:bg-[#131A2E] px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping" />
                 <div>
-                  <h3 className="font-extrabold text-sm text-[#1A1C1E] dark:text-white">Tablica Ogłoszeń i Ofert Partnera VMI</h3>
-                  <p className="text-[10px] text-gray-400">Bieżące nowości handlowe dostawcy: {vendor.name}</p>
+                  <p className="text-[9px] font-extrabold text-gray-400 dark:text-gray-500 uppercase tracking-widest leading-none">Tablica Ogłoszeń</p>
+                  <h3 className="text-base font-black text-[#1A1C1E] dark:text-white mt-1 leading-tight">{vendor.name}</h3>
                 </div>
               </div>
               <button
@@ -1736,7 +1864,7 @@ export default function VendorDashboardView({
               {/* Left pane: Active Announcement detail */}
               <div className="flex-1 p-6 md:p-8 flex flex-col justify-between overflow-y-auto bg-[#F8F9FA]/30 dark:bg-[#0E1321]">
                 {(() => {
-                  const activeNews = newsList.find(n => n.id === activeNewsId) || newsList[0];
+                  const activeNews = allAnnouncements.find(n => n.id === activeNewsId) || allAnnouncements[0];
                   if (!activeNews) return <div className="text-gray-400">Brak aktywnego ogłoszenia</div>;
 
                   return (
@@ -1746,10 +1874,13 @@ export default function VendorDashboardView({
                           <span className={cn(
                             "px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider text-white",
                             activeNews.type === 'offer' ? "bg-red-500" :
-                            activeNews.type === 'announcement' ? "bg-orange-500" : "bg-blue-600"
+                            activeNews.type === 'announcement' ? "bg-orange-500" :
+                            activeNews.type.startsWith('portfolio') ? "bg-blue-600" : "bg-emerald-600"
                           )}>
                             {activeNews.type === 'offer' ? 'OFERTA SPECJALNA' :
-                             activeNews.type === 'announcement' ? 'OGŁOSZENIE' : 'KOMUNIKAT'}
+                             activeNews.type === 'announcement' ? 'OGŁOSZENIE' :
+                             activeNews.type === 'portfolio_about' ? 'O NAS' :
+                             activeNews.type === 'portfolio_specialties' ? 'SPECJALIZACJE I NORMY' : 'KOMUNIKAT'}
                           </span>
                           {activeNews.badgeText && (
                             <span className="px-2 py-0.5 bg-gray-150 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold text-[8px] rounded uppercase font-mono tracking-wider">
@@ -1763,7 +1894,9 @@ export default function VendorDashboardView({
                         </h2>
 
                         <p className="text-[10px] text-gray-400 font-mono">
-                          Opublikowano: {activeNews.date} przez administratora VMI
+                          {activeNews.type.startsWith('portfolio') 
+                            ? 'Profil marki dostawcy VMI' 
+                            : `Opublikowano: ${activeNews.date} przez administratora VMI`}
                         </p>
                       </div>
 
@@ -1781,7 +1914,7 @@ export default function VendorDashboardView({
                             onAskVendorQuestion(activeNews.id, `Pytanie o ofertę: ${activeNews.title}`);
                             setIsNewsOpen(false);
                           }}
-                          className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs rounded-xl transition-transform active:scale-95 cursor-pointer shadow-sm flex items-center gap-1 shrink-0"
+                          className="px-3.5 py-2 bg-blue-600 hover:bg-blue-550 text-white font-extrabold text-xs rounded-xl transition-transform active:scale-95 cursor-pointer shadow-sm flex items-center gap-1 shrink-0"
                         >
                           <MessageSquare className="h-3.5 w-3.5" />
                           <span>Wyślij zapytanie</span>
@@ -1797,9 +1930,9 @@ export default function VendorDashboardView({
                 
                 {/* News list */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                  <p className="text-[9px] font-black uppercase tracking-wider text-gray-400 px-1">Galeria ogłoszeń ({newsList.length})</p>
+                  <p className="text-[9px] font-black uppercase tracking-wider text-gray-400 px-1">Galeria ogłoszeń ({allAnnouncements.length})</p>
                   <div className="space-y-1.5">
-                    {newsList.map(item => {
+                    {allAnnouncements.map(item => {
                       const isActive = item.id === activeNewsId;
                       return (
                         <div
@@ -1816,9 +1949,13 @@ export default function VendorDashboardView({
                             <span className={cn(
                               "text-[8px] font-bold px-1 rounded text-white",
                               item.type === 'offer' ? "bg-red-500" :
-                              item.type === 'announcement' ? "bg-orange-500" : "bg-blue-600"
+                              item.type === 'announcement' ? "bg-orange-500" :
+                              item.type.startsWith('portfolio') ? "bg-blue-600" : "bg-emerald-600"
                             )}>
-                              {item.type === 'offer' ? 'Oferta' : item.type === 'announcement' ? 'Ogł.' : 'Info'}
+                              {item.type === 'offer' ? 'Oferta' :
+                               item.type === 'announcement' ? 'Ogł.' :
+                               item.type === 'portfolio_about' ? 'O nas' :
+                               item.type === 'portfolio_specialties' ? 'Specj.' : 'Info'}
                             </span>
                             <span className="text-[8px] font-mono text-gray-400">{item.date}</span>
                           </div>
@@ -1829,63 +1966,6 @@ export default function VendorDashboardView({
                       );
                     })}
                   </div>
-                </div>
-
-                {/* Form to Post New Announcement */}
-                <div className="p-4 bg-white dark:bg-[#0E1321]">
-                  <p className="text-[9px] font-black uppercase tracking-wider text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1">
-                    <span>✍️ Dodaj ogłoszenie VMI</span>
-                    <span className="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-400 px-1 py-0.5 rounded text-[7px] font-black tracking-normal lowercase">specjalista</span>
-                  </p>
-                  
-                  <form onSubmit={handleAddNews} className="space-y-2 text-[11px]">
-                    <div>
-                      <input 
-                        type="text" 
-                        placeholder="Tytuł oferty lub ogłoszenia..."
-                        value={newNewsTitle}
-                        onChange={(e) => setNewNewsTitle(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900 dark:text-white placeholder-gray-400"
-                      />
-                    </div>
-                    
-                    <div className="flex gap-1.5">
-                      <select
-                        value={newNewsType}
-                        onChange={(e: any) => setNewNewsType(e.target.value)}
-                        className="flex-1 bg-gray-50 dark:bg-gray-850 p-1.5 rounded-lg text-[10px] focus:outline-none text-gray-900 dark:text-white"
-                      >
-                        <option value="announcement">Ogłoszenie</option>
-                        <option value="offer">Oferta limitowana</option>
-                        <option value="info">Komunikat techniczny</option>
-                      </select>
-
-                      <input 
-                        type="text" 
-                        placeholder="Tag (np. -15%)"
-                        value={newNewsBadge}
-                        onChange={(e) => setNewNewsBadge(e.target.value)}
-                        className="w-16 px-1.5 py-1 bg-gray-50 dark:bg-gray-850 rounded-lg text-[9px] font-mono text-center focus:outline-none text-gray-900 dark:text-white"
-                      />
-                    </div>
-
-                    <div>
-                      <textarea
-                        placeholder="Szczegółowa treść ogłoszenia, warunki rabatowe..."
-                        rows={2}
-                        value={newNewsContent}
-                        onChange={(e) => setNewNewsContent(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-gray-850 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none leading-relaxed text-gray-900 dark:text-white placeholder-gray-400"
-                      ></textarea>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-[10px] rounded-lg transition-colors cursor-pointer text-center uppercase tracking-wider"
-                    >
-                      Opublikuj dla oddziałów
-                    </button>
-                  </form>
                 </div>
 
               </div>

@@ -30,7 +30,9 @@ import {
   Phone,
   Mail,
   Navigation,
-  X
+  X,
+  Building2,
+  ShoppingBag
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -439,8 +441,10 @@ export default function MarketplaceSearch({
             <div className="space-y-4">
               <h3 className="text-xs font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Dostawcy w Twojej okolicy ({filteredVendors.length})</h3>
               {filteredVendors.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl space-y-2">
-                  <span className="text-2xl">🏭</span>
+                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl shadow-md space-y-2">
+                  <div className="flex justify-center">
+                    <Building2 className="h-8 w-8 text-gray-400" />
+                  </div>
                   <p className="text-xs text-gray-500 font-bold">Brak dostawców spełniających kryteria wyszukiwania.</p>
                 </div>
               ) : (
@@ -465,8 +469,10 @@ export default function MarketplaceSearch({
             <div className="space-y-4">
               <h3 className="text-xs font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Katalog produktów ({filteredProducts.length})</h3>
               {filteredProducts.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl space-y-2">
-                  <span className="text-2xl">📦</span>
+                <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl shadow-md space-y-2">
+                  <div className="flex justify-center">
+                    <ShoppingBag className="h-8 w-8 text-gray-400" />
+                  </div>
                   <p className="text-xs text-gray-500 font-bold">Brak produktów spełniających wybrane kryteria.</p>
                 </div>
               ) : (
@@ -609,7 +615,7 @@ function VendorResultCard({ vendor, isSaved, onSave, onSelect, onHoverEnter, onH
     <div 
       onMouseEnter={onHoverEnter}
       onMouseLeave={onHoverLeave}
-      className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col justify-between hover:shadow-md dark:hover:border-blue-900/50 transition-all group text-left"
+      className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col justify-between shadow-md hover:shadow-lg transition-all group text-left"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
@@ -670,7 +676,7 @@ interface ProductResultCardProps {
 function ProductResultCard({ product, isSaved, onSave, onSelect, onQuickAdd, addedProductId }: ProductResultCardProps) {
   const vendor = mockVendors.find(v => v.id === product.vendorId);
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl p-3.5 flex flex-col justify-between hover:shadow-md transition-all group text-left">
+    <div className="bg-white dark:bg-gray-900 rounded-xl p-3.5 flex flex-col justify-between shadow-md hover:shadow-lg transition-all group text-left">
       <div>
         {/* Photo + badge & save */}
         <div className="aspect-square relative bg-gray-50 dark:bg-gray-950 rounded-lg overflow-hidden mb-3">

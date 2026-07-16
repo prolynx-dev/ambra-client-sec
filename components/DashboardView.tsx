@@ -17,7 +17,11 @@ import {
   ShoppingBag, 
   TrendingUp, 
   Truck, 
-  User 
+  User,
+  Heart,
+  Globe,
+  MessageSquare,
+  FileText
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { 
@@ -29,6 +33,7 @@ import {
   ClientLocation, 
   Vendor 
 } from '../lib/types';
+import { mockProducts as publicMockProducts, mockVendors as publicMockVendors } from './marketplace/mockData';
 
 interface DashboardViewProps {
   locations: ClientLocation[];
@@ -42,12 +47,13 @@ interface DashboardViewProps {
   vendors: Vendor[];
   
   // Navigation helpers to open specific panels
-  onNavigateTab: (tab: 'vendors' | 'inventory' | 'orders' | 'messages' | 'settings') => void;
+  onNavigateTab: (tab: 'vendors' | 'inventory' | 'orders' | 'messages' | 'settings' | 'marketplace') => void;
   onOpenProposal: (id: string) => void;
   onOpenOrder: (id: string) => void;
   onOpenQuotation: (id: string) => void;
   onOpenStockCount: () => void;
   onOpenVendor: (vendorId: string, tab?: any) => void;
+  onNavigateToMarketplace?: (path: string) => void;
 }
 
 export default function DashboardView({
@@ -65,9 +71,48 @@ export default function DashboardView({
   onOpenOrder,
   onOpenQuotation,
   onOpenStockCount,
-  onOpenVendor
+  onOpenVendor,
+  onNavigateToMarketplace
 }: DashboardViewProps) {
   
+  // Load Marketplace Activity from localStorage
+  const [savedItems, setSavedItems] = React.useState<any[]>([]);
+  const [rfqs, setRfqs] = React.useState<any[]>([]);
+  const [questions, setQuestions] = React.useState<any[]>([]);
+  const [activeMarketplaceTab, setActiveMarketplaceTab] = React.useState<'rfqs' | 'questions' | 'products' | 'vendors'>('rfqs');
+
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem('ambra-marketplace-saved');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (saved) setSavedItems(JSON.parse(saved));
+
+      const rfqList = localStorage.getItem('ambra-marketplace-rfqs');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (rfqList) setRfqs(JSON.parse(rfqList));
+
+      const questionList = localStorage.getItem('ambra-marketplace-questions');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (questionList) setQuestions(JSON.parse(questionList));
+    } catch (e) {
+      console.error('Error reading localStorage for dashboard', e);
+    }
+  }, []);
+
+  const favoriteProducts = React.useMemo(() => {
+    return savedItems
+      .filter(i => i.type === 'product')
+      .map(i => publicMockProducts.find(p => p.id === i.id))
+      .filter(Boolean);
+  }, [savedItems]);
+
+  const favoriteVendors = React.useMemo(() => {
+    return savedItems
+      .filter(i => i.type === 'vendor')
+      .map(i => publicMockVendors.find(v => v.id === i.id))
+      .filter(Boolean);
+  }, [savedItems]);
+
   // Calculate specific figures for active location
   const activeLocation = locations.find(l => l.id === activeLocationId);
   
@@ -434,6 +479,332 @@ export default function DashboardView({
 
         </div>
 
+      </div>
+
+      {/* 3. B2B MARKETPLACE ACTIVITY SECTION */}
+      <div className="bg-white dark:bg-[#0E1321] rounded-2xl p-6 shadow-sm shadow-[0_2px_12px_rgba(0,0,0,0.02)] space-y-6 text-xs text-left">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div className="space-y-1">
+            <h3 className="text-base font-black font-display uppercase tracking-tight text-gray-900 dark:text-white flex items-center gap-2">
+              <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <span>Twoja aktywność w Marketplace B2B</span>
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Przeglądaj swoje zapytania ofertowe, pytania do dostawców oraz zapisane produkty i firmy z katalogu publicznego.
+            </p>
+          </div>
+          
+          <button
+            onClick={() => onNavigateTab('marketplace')}
+            className="self-start sm:self-center py-2 px-4 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-extrabold text-xs uppercase tracking-wide rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>Otwórz Marketplace</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-gray-50 dark:border-gray-850 pb-3">
+          {[
+            { id: 'rfqs', name: `Zapytania ofertowe (${rfqs.length})`, icon: FileText },
+            { id: 'questions', name: `Wysłane pytania (${questions.length})`, icon: MessageSquare },
+            { id: 'products', name: `Ulubione produkty (${favoriteProducts.length})`, icon: Heart },
+            { id: 'vendors', name: `Ulubieni dostawcy (${favoriteVendors.length})`, icon: Layers }
+          ].map(tab => {
+            const IconComponent = tab.icon;
+            const isActive = activeMarketplaceTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveMarketplaceTab(tab.id as any)}
+                className={cn(
+                  "py-2 px-3.5 rounded-xl font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer",
+                  isActive 
+                    ? "bg-blue-600 text-white shadow-sm" 
+                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-850"
+                )}
+              >
+                <IconComponent className="h-3.5 w-3.5" />
+                <span>{tab.name}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tab Content Panels */}
+        <div className="min-h-40 text-xs">
+          {activeMarketplaceTab === 'rfqs' && (
+            <div className="space-y-3">
+              {rfqs.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 text-gray-400">
+                  <FileText className="h-10 w-10 text-gray-300 dark:text-gray-700" />
+                  <div className="space-y-1">
+                    <p className="font-extrabold text-xs text-gray-700 dark:text-gray-350">Brak wysłanych zapytań ofertowych</p>
+                    <p className="text-[10px] text-gray-400">Dodaj wybrane towary dostawców do zapytania w Marketplace i wyślij je w kilka chwil.</p>
+                  </div>
+                  <button 
+                    onClick={() => onNavigateTab('marketplace')}
+                    className="py-1.5 px-4 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg text-xs font-bold hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Szukaj produktów i stwórz RFQ
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {rfqs.map(rfq => {
+                    const vendor = publicMockVendors.find(v => v.id === rfq.vendorId);
+                    return (
+                      <div 
+                        key={rfq.id} 
+                        className="bg-gray-50/50 dark:bg-gray-950/20 rounded-xl p-4 flex flex-col justify-between hover:shadow-sm transition-all"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-[10px] font-black text-blue-600 dark:text-blue-400">
+                              {rfq.enquiryNumber}
+                            </span>
+                            <span className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                              {rfq.status}
+                            </span>
+                          </div>
+                          <div>
+                            <h4 className="font-extrabold text-xs text-gray-900 dark:text-white">
+                              Zapytanie do: {vendor?.name || 'Zweryfikowany Dystrybutor'}
+                            </h4>
+                            <p className="text-[10px] text-gray-400">Wysłano dnia: {rfq.date} • Wybrany kontakt: {rfq.contactPreference}</p>
+                          </div>
+                          
+                          <div className="bg-white dark:bg-gray-900/60 p-2.5 rounded-lg border border-gray-100 dark:border-gray-850">
+                            <p className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 mb-1 font-sans">Pozycje asortymentowe ({rfq.items.length}):</p>
+                            <div className="space-y-1 max-h-24 overflow-y-auto">
+                              {rfq.items.map((line: any, idx: number) => {
+                                const prod = publicMockProducts.find(p => p.id === line.productId);
+                                return (
+                                  <div key={idx} className="flex justify-between text-[10px] text-gray-500">
+                                    <span className="truncate max-w-[70%] font-medium">{prod?.name || 'Produkt'}</span>
+                                    <span className="font-bold shrink-0">{line.quantity} {line.unit}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="pt-3 flex justify-end">
+                          <button
+                            onClick={() => onNavigateToMarketplace?.('/zapytanie-ofertowe')}
+                            className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <span>Otwórz podgląd RFQ</span>
+                            <ChevronRight className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeMarketplaceTab === 'questions' && (
+            <div className="space-y-3 text-xs text-left">
+              {questions.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 text-gray-400">
+                  <MessageSquare className="h-10 w-10 text-gray-300 dark:text-gray-700" />
+                  <div className="space-y-1">
+                    <p className="font-extrabold text-xs text-gray-700 dark:text-gray-350">Brak wysłanych pytań lub zgłoszeń</p>
+                    <p className="text-[10px] text-gray-400">Wyślij zapytanie handlowe z poziomu profilu dowolnego dostawcy, aby nawiązać współpracę.</p>
+                  </div>
+                  <button 
+                    onClick={() => onNavigateTab('marketplace')}
+                    className="py-1.5 px-4 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg text-xs font-bold hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Przeglądaj Dostawców
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {questions.map((quest, index) => {
+                    const vendor = publicMockVendors.find(v => v.id === quest.vendorId);
+                    return (
+                      <div 
+                        key={quest.id || index} 
+                        className="bg-gray-50/50 dark:bg-gray-950/20 rounded-xl p-4 space-y-3"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5 text-left">
+                            <h4 className="font-extrabold text-xs text-gray-900 dark:text-white">
+                              Zapytanie o współpracę do: {quest.vendorName || vendor?.name}
+                            </h4>
+                            <p className="text-[10px] text-gray-400">Niewiążący kontakt B2B • Wysłano: {quest.date}</p>
+                          </div>
+                          <span className={cn(
+                            "text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider",
+                            quest.urgency === 'Wysoki' ? "bg-red-50 dark:bg-red-950/25 text-red-600 dark:text-red-400" :
+                            quest.urgency === 'Średni' ? "bg-amber-50 dark:bg-amber-950/25 text-amber-600 dark:text-amber-400" :
+                            "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                          )}>
+                            Pilność: {quest.urgency}
+                          </span>
+                        </div>
+                        
+                        <div className="bg-white dark:bg-gray-900/60 p-3 rounded-lg border border-gray-100 dark:border-gray-850 text-left">
+                          <p className="text-[11px] italic text-gray-600 dark:text-gray-400 leading-relaxed font-sans font-semibold">
+                            &quot;{quest.message}&quot;
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center justify-between text-[10px] text-gray-400">
+                          <p>Osoba kontaktowa: <strong>{quest.name}</strong> ({quest.email})</p>
+                          {vendor && (
+                            <button
+                              onClick={() => onNavigateToMarketplace?.(`/dostawcy/${vendor.slug}`)}
+                              className="text-blue-600 dark:text-blue-400 font-extrabold hover:underline flex items-center gap-0.5 cursor-pointer"
+                            >
+                              <span>Otwórz profil dostawcy</span>
+                              <ChevronRight className="h-3 w-3" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeMarketplaceTab === 'products' && (
+            <div>
+              {favoriteProducts.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 text-gray-400">
+                  <Heart className="h-10 w-10 text-gray-300 dark:text-gray-700" />
+                  <div className="space-y-1">
+                    <p className="font-extrabold text-xs text-gray-700 dark:text-gray-350">Brak ulubionych produktów</p>
+                    <p className="text-[10px] text-gray-400">Kliknij ikonę serca na dowolnej karcie produktu w Marketplace, aby dodać go do szybkiej listy.</p>
+                  </div>
+                  <button 
+                    onClick={() => onNavigateTab('marketplace')}
+                    className="py-1.5 px-4 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg text-xs font-bold hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Otwórz katalog produktów
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {favoriteProducts.map(prod => {
+                    if (!prod) return null;
+                    const vendor = publicMockVendors.find(v => v.id === prod.vendorId);
+                    return (
+                      <div 
+                        key={prod.id} 
+                        className="bg-gray-50/50 dark:bg-gray-950/20 rounded-xl p-3.5 hover:shadow-sm transition-all flex flex-col justify-between"
+                      >
+                        <div className="space-y-2.5">
+                          <div className="aspect-video relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-950">
+                            <img src={prod.imageUrl} alt={prod.name} className="w-full h-full object-cover" />
+                            <div className="absolute top-2 left-2 bg-white/90 dark:bg-gray-900/95 px-2 py-0.5 rounded text-[9px] font-black text-gray-500 font-mono">
+                              SKU: {prod.sku}
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-1 text-left">
+                            <span className="text-[9px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase font-mono">
+                              {prod.brand}
+                            </span>
+                            <h4 className="font-extrabold text-xs text-gray-900 dark:text-white line-clamp-1">
+                              {prod.name}
+                            </h4>
+                            <p className="text-[10px] text-gray-400">Dostawca: {vendor?.name}</p>
+                          </div>
+                        </div>
+
+                        <div className="pt-3.5 border-t border-gray-100 dark:border-gray-850/50 mt-3 flex items-center justify-between">
+                          <span className="text-[10px] font-mono font-black text-gray-700 dark:text-gray-300">
+                            {prod.priceValue ? `${prod.priceValue} PLN / {prod.unit}` : 'Zapytaj o cenę'}
+                          </span>
+                          
+                          <button
+                            onClick={() => onNavigateToMarketplace?.(`/produkty/${prod.slug}`)}
+                            className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <span>Szczegóły</span>
+                            <ChevronRight className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeMarketplaceTab === 'vendors' && (
+            <div>
+              {favoriteVendors.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 text-gray-400">
+                  <Layers className="h-10 w-10 text-gray-300 dark:text-gray-700" />
+                  <div className="space-y-1">
+                    <p className="font-extrabold text-xs text-gray-700 dark:text-gray-350">Brak zapisanych dostawców</p>
+                    <p className="text-[10px] text-gray-400">Oznacz sercem wybrane hurtownie regionalne w wyszukiwarce B2B, by mieć do nich natychmiastowy dostęp.</p>
+                  </div>
+                  <button 
+                    onClick={() => onNavigateTab('marketplace')}
+                    className="py-1.5 px-4 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white rounded-lg text-xs font-bold hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Wyszukaj Dostawców
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {favoriteVendors.map(vend => {
+                    if (!vend) return null;
+                    return (
+                      <div 
+                        key={vend.id} 
+                        className="bg-gray-50/50 dark:bg-gray-950/20 rounded-xl p-3.5 hover:shadow-sm transition-all flex flex-col justify-between"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-white p-1 shadow-sm border border-gray-100 dark:border-gray-850 shrink-0">
+                              <img src={vend.logoUrl} alt={vend.name} className="w-full h-full object-contain rounded-lg" />
+                            </div>
+                            <div className="text-left min-w-0">
+                              <h4 className="font-extrabold text-xs text-gray-900 dark:text-white truncate">
+                                {vend.name}
+                              </h4>
+                              <p className="text-[10px] text-gray-400">{vend.city} • {vend.distanceKm} km</p>
+                            </div>
+                          </div>
+                          
+                          <p className="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed text-left">
+                            {vend.shortDescription}
+                          </p>
+                        </div>
+
+                        <div className="pt-3.5 border-t border-gray-100 dark:border-gray-850/50 mt-3 flex items-center justify-between">
+                          <span className="text-[9px] font-black uppercase text-gray-400 font-sans">
+                            {vend.category}
+                          </span>
+                          
+                          <button
+                            onClick={() => onNavigateToMarketplace?.(`/dostawcy/${vend.slug}`)}
+                            className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <span>Otwórz Profil</span>
+                            <ChevronRight className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
     </div>

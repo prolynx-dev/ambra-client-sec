@@ -23,7 +23,10 @@ import {
   Building,
   Sparkles,
   Search,
-  ChevronRight
+  ChevronRight,
+  Package,
+  Check,
+  Clock
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -36,6 +39,8 @@ interface MarketplaceRFQProps {
   submittedRfqs: PublicQuotationRequest[];
   onGoToVendor: (slug: string) => void;
   onGoToHome: () => void;
+  isLoggedIn?: boolean;
+  onLoginClick?: () => void;
 }
 
 export default function MarketplaceRFQ({
@@ -46,7 +51,9 @@ export default function MarketplaceRFQ({
   onSubmitRFQ,
   submittedRfqs,
   onGoToVendor,
-  onGoToHome
+  onGoToHome,
+  isLoggedIn,
+  onLoginClick
 }: MarketplaceRFQProps) {
   // RFQ Submission state
   const [formData, setFormData] = useState({
@@ -80,6 +87,10 @@ export default function MarketplaceRFQ({
   // Handle Submit RFQ for the selected vendor group
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      onLoginClick?.();
+      return;
+    }
     if (!activeGroup || !activeVendor) return;
 
     const rfqNumber = `AMB-RFQ-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -123,8 +134,8 @@ export default function MarketplaceRFQ({
       {/* SUCCESS POPUP MODAL STATE */}
       {successRequest && (
         <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl space-y-6 max-w-2xl mx-auto text-center animate-scale-up relative">
-          <div className="w-14 h-14 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center text-3xl mx-auto mb-2">
-            ✓
+          <div className="w-14 h-14 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center mx-auto mb-2">
+            <Check className="h-6 w-6" />
           </div>
           
           <div className="space-y-1.5">
@@ -219,7 +230,7 @@ export default function MarketplaceRFQ({
           {/* RIGHT VIEW: ACTIVE BASKET ITEMS & CONTACT FORM */}
           <div className="lg:col-span-8 space-y-6">
             {/* Group Active Items List */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-md space-y-4">
               <div className="flex items-center justify-between pb-2">
                 <div>
                   <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight">Asortyment zapytania: {activeVendor.name}</h3>
@@ -297,7 +308,27 @@ export default function MarketplaceRFQ({
             </div>
 
             {/* Client RFQ Company Form details */}
-            <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-2xl p-6 space-y-6 shadow-sm">
+            {!isLoggedIn ? (
+              <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-md text-center space-y-4 max-w-xl mx-auto">
+                <div className="flex justify-center">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                    <User className="h-6 w-6" />
+                  </div>
+                </div>
+                <h3 className="font-extrabold text-sm text-gray-800 dark:text-gray-200">Wymagane logowanie do wysłania RFQ</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                  Twoje zapytanie ofertowe jest przygotowane i oczekuje w koszyku. Aby przesłać je bezpośrednio do wybranego dostawcy ({activeVendor?.name}), musisz najpierw zalogować się do swojego konta handlowego.
+                </p>
+                <button 
+                  type="button"
+                  onClick={onLoginClick}
+                  className="py-3 px-8 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md uppercase tracking-wide cursor-pointer mx-auto block"
+                >
+                  Zaloguj się, aby wysłać zapytanie
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-md space-y-6">
               <div className="space-y-1">
                 <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight">Dane nadawcy i dane warsztatu</h3>
                 <p className="text-[10px] text-gray-400">Podaj oficjalne dane rejestrowe firmy. Przyspieszy to automatyczną weryfikację i przypisanie rabatów handlowych.</p>
@@ -430,14 +461,17 @@ export default function MarketplaceRFQ({
                 </button>
               </div>
             </form>
+            )}
           </div>
         </div>
       )}
 
       {/* FALLBACK: BASKET IS EMPTY */}
       {basket.length === 0 && !successRequest && (
-        <div className="bg-white dark:bg-gray-900 rounded-3xl py-16 px-4 text-center max-w-lg mx-auto space-y-4">
-          <span className="text-4xl">🛍️</span>
+        <div className="bg-white dark:bg-gray-900 rounded-3xl py-16 px-4 shadow-md text-center max-w-lg mx-auto space-y-4">
+          <div className="flex justify-center pb-2">
+            <ShoppingBag className="h-10 w-10 text-gray-400" />
+          </div>
           <h2 className="text-base font-bold text-gray-800 dark:text-gray-200">Twój koszyk zapytań jest pusty</h2>
           <p className="text-xs text-gray-400 leading-relaxed">Aby wysłać zapytanie o wycenę, dodaj paczki produktów do koszyka za pomocą przycisku „Zapytaj +” w wyszukiwarce lub na profilu wybranego dystrybutora.</p>
           <div className="pt-2">
@@ -460,7 +494,7 @@ export default function MarketplaceRFQ({
             {submittedRfqs.map(rfq => {
               const vendor = mockVendors.find(v => v.id === rfq.vendorId);
               return (
-                <div key={rfq.id} className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm space-y-3">
+                <div key={rfq.id} className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-md space-y-3">
                   <div className="flex items-center justify-between pb-2">
                     <div>
                       <span className="text-[9px] font-black tracking-widest text-blue-600 dark:text-blue-400 font-mono uppercase">
@@ -468,15 +502,15 @@ export default function MarketplaceRFQ({
                       </span>
                       <h4 className="font-extrabold text-xs text-gray-900 dark:text-white mt-0.5">{rfq.enquiryNumber}</h4>
                     </div>
-                    <span className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider font-mono">
-                      Wysłane ✓
+                    <span className="bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider font-mono flex items-center gap-1">
+                      Wysłane <Check className="h-3 w-3" />
                     </span>
                   </div>
 
-                  <div className="text-[11px] text-gray-500 space-y-1.5 leading-relaxed text-left">
-                    <p>📅 Data wysłania: <span className="text-gray-800 dark:text-gray-200 font-mono font-bold">{rfq.date}</span></p>
-                    <p>📦 Pozycje: <span className="text-gray-800 dark:text-gray-200 font-bold">{rfq.items.length} linie produktowe</span></p>
-                    <p>⌛ Oczekiwany termin: <span className="text-gray-800 dark:text-gray-200 font-mono">{rfq.expectedDeliveryDate}</span></p>
+                  <div className="text-[11px] text-gray-500 space-y-1.5 leading-relaxed text-left flex flex-col">
+                    <p className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5 text-gray-400" /> Data wysłania: <span className="text-gray-800 dark:text-gray-200 font-mono font-bold">{rfq.date}</span></p>
+                    <p className="flex items-center gap-1.5"><Package className="h-3.5 w-3.5 text-gray-400" /> Pozycje: <span className="text-gray-800 dark:text-gray-200 font-bold">{rfq.items.length} linie produktowe</span></p>
+                    <p className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-gray-400" /> Oczekiwany termin: <span className="text-gray-800 dark:text-gray-200 font-mono">{rfq.expectedDeliveryDate}</span></p>
                   </div>
                 </div>
               );

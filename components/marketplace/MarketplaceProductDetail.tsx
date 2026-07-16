@@ -31,6 +31,8 @@ interface MarketplaceProductDetailProps {
   isSaved: boolean;
   onAddToEnquiry: (productId: string, qty: number, unit: 'szt' | 'paczka') => void;
   onSelectProduct: (slug: string) => void;
+  isLoggedIn?: boolean;
+  onLoginClick?: () => void;
 }
 
 export default function MarketplaceProductDetail({
@@ -41,7 +43,9 @@ export default function MarketplaceProductDetail({
   onToggleSave,
   isSaved,
   onAddToEnquiry,
-  onSelectProduct
+  onSelectProduct,
+  isLoggedIn,
+  onLoginClick
 }: MarketplaceProductDetailProps) {
   // Package Quantity state
   const [packageQty, setPackageQty] = useState<number>(product.minEnquiryQty > 0 ? Math.max(1, Math.ceil(product.minEnquiryQty / product.packSize)) : 1);
@@ -68,6 +72,10 @@ export default function MarketplaceProductDetail({
   };
 
   const handleAddToBasket = () => {
+    if (!isLoggedIn) {
+      onLoginClick?.();
+      return;
+    }
     onAddToEnquiry(product.id, packageQty, 'paczka');
     setAddedSuccess(true);
     setTimeout(() => setAddedSuccess(false), 2500);
@@ -88,7 +96,7 @@ export default function MarketplaceProductDetail({
       {/* 2. PRODUCT LAYOUT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* LEFT COLUMN: IMAGE PORTRAIT */}
-        <div className="lg:col-span-5 bg-white dark:bg-gray-900 rounded-3xl p-6 relative flex items-center justify-center shadow-sm">
+        <div className="lg:col-span-5 bg-white dark:bg-gray-900 rounded-3xl p-6 relative flex items-center justify-center shadow-md">
           <div className="aspect-square relative w-full overflow-hidden rounded-2xl bg-gray-50 dark:bg-gray-950">
             <img 
               src={product.imageUrl} 
@@ -204,7 +212,7 @@ export default function MarketplaceProductDetail({
           </div>
 
           {/* PACKAGE ADDER ACCELERATOR (satisfies package detail guidelines) */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 space-y-4 shadow-sm text-xs text-left">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-md space-y-4 text-xs text-left">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-tight">Formularz dodawania do zapytania</h3>
@@ -279,7 +287,7 @@ export default function MarketplaceProductDetail({
         <div className="lg:col-span-5 space-y-4">
           <h3 className="text-sm font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Dane techniczne B2B</h3>
           
-          <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md">
             <table className="w-full text-[11px] text-left border-collapse">
               <tbody>
                 <tr className="">
@@ -312,7 +320,7 @@ export default function MarketplaceProductDetail({
         {/* Detailed Description right side */}
         <div className="lg:col-span-7 space-y-4">
           <h3 className="text-sm font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Opis i specyfikacja asortymentu</h3>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-md">
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
               {product.description}
             </p>
@@ -330,7 +338,7 @@ export default function MarketplaceProductDetail({
               <div 
                 key={relProduct.id}
                 onClick={() => onSelectProduct(relProduct.slug)}
-                className="bg-white dark:bg-gray-900 rounded-xl p-3.5 flex flex-col justify-between hover:shadow-md transition-all group cursor-pointer text-left"
+                className="bg-white dark:bg-gray-900 rounded-xl p-3.5 flex flex-col justify-between shadow-md hover:shadow-lg transition-all group cursor-pointer text-left"
               >
                 <div>
                   <div className="aspect-square bg-gray-50 dark:bg-gray-950 rounded-lg overflow-hidden mb-3">

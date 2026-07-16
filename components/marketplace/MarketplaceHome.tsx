@@ -25,8 +25,50 @@ import {
   Zap,
   ShoppingBag,
   Clock,
-  BookOpen
+  BookOpen,
+  Cpu,
+  FlaskConical,
+  Wrench,
+  Hammer,
+  Shirt,
+  Disc,
+  Package,
+  Droplet,
+  Plug,
+  Settings,
+  Check
 } from 'lucide-react';
+
+const getCategoryIcon = (categoryName: string) => {
+  switch (categoryName) {
+    case 'Części samochodowe':
+      return <Cpu className="h-5 w-5 text-blue-500 mx-auto" />;
+    case 'Chemia warsztatowa':
+      return <FlaskConical className="h-5 w-5 text-indigo-500 mx-auto" />;
+    case 'Narzędzia':
+      return <Wrench className="h-5 w-5 text-amber-500 mx-auto" />;
+    case 'Wyposażenie warsztatu':
+      return <Hammer className="h-5 w-5 text-teal-500 mx-auto" />;
+    case 'Odzież robocza':
+      return <Shirt className="h-5 w-5 text-orange-500 mx-auto" />;
+    case 'Bezpieczeństwo i BHP':
+      return <ShieldCheck className="h-5 w-5 text-green-500 mx-auto" />;
+    case 'Materiały lakiernicze':
+      return <Sparkles className="h-5 w-5 text-pink-500 mx-auto" />;
+    case 'Opony i akcesoria':
+      return <Disc className="h-5 w-5 text-rose-500 mx-auto" />;
+    case 'Materiały eksploatacyjne':
+      return <Package className="h-5 w-5 text-purple-500 mx-auto" />;
+    case 'Elektryka pojazdowa':
+      return <Zap className="h-5 w-5 text-yellow-500 mx-auto" />;
+    case 'Kosmetyki samochodowe':
+      return <Droplet className="h-5 w-5 text-sky-500 mx-auto" />;
+    case 'Łączniki i pneumatyka':
+      return <Plug className="h-5 w-5 text-emerald-500 mx-auto" />;
+    default:
+      return <Settings className="h-5 w-5 text-gray-500 mx-auto" />;
+  }
+};
 import { cn } from '../../lib/utils';
 
 interface MarketplaceHomeProps {
@@ -173,16 +215,15 @@ export default function MarketplaceHome({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {mockCategories.slice(0, 6).map((cat, idx) => {
-            const emojis = ['⚙️', '🧪', '🔧', '🏗️', '🦺', '🚨', '🎨', '🛞', '📦', '⚡', '🧼', '🔌'];
+          {mockCategories.slice(0, 6).map((cat) => {
             return (
               <div 
                 key={cat}
                 onClick={() => onSelectCategory(cat)}
-                className="bg-white dark:bg-gray-900 rounded-xl p-4 text-center hover:shadow-md cursor-pointer group transition-all"
+                className="bg-white dark:bg-gray-900 rounded-xl p-4 text-center shadow-md hover:shadow-lg cursor-pointer group transition-all"
               >
-                <div className="text-xl mb-2.5 group-hover:scale-110 transition-transform">
-                  {emojis[idx % emojis.length]}
+                <div className="mb-2.5 group-hover:scale-110 transition-transform flex justify-center">
+                  {getCategoryIcon(cat)}
                 </div>
                 <h4 className="font-extrabold text-[11px] text-gray-800 dark:text-gray-200 line-clamp-1 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
                   {cat}
@@ -212,7 +253,7 @@ export default function MarketplaceHome({
           {featuredVendors.map(vendor => (
             <div 
               key={vendor.id}
-              className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden hover:shadow-lg transition-all group flex flex-col h-full"
+              className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all group flex flex-col h-full"
             >
               {/* Cover photo */}
               <div className="h-28 relative bg-gray-50 dark:bg-gray-950 overflow-hidden">
@@ -310,7 +351,7 @@ export default function MarketplaceHome({
                 <div 
                   key={flyer.id}
                   onClick={() => onSelectFlyer(flyer.slug)}
-                  className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all group cursor-pointer"
+                  className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all group cursor-pointer"
                 >
                   <div className="aspect-[3/4] relative overflow-hidden bg-gray-50 dark:bg-gray-950">
                     <img 
@@ -341,7 +382,8 @@ export default function MarketplaceHome({
         </div>
       </section>
 
-      {/* 5. NEW ARRIVALS PRODUCTS / CARDS */}
+      {/* 5. NEW ARRIVALS PRODUCTS / CARDS - Hidden for MVP */}
+      {false && (
       <section className="max-w-7xl mx-auto px-4 space-y-6">
         <div>
           <h2 className="text-base font-black font-display text-gray-900 dark:text-white uppercase tracking-tight">Nowości produktowe</h2>
@@ -466,14 +508,15 @@ export default function MarketplaceHome({
           })}
         </div>
       </section>
+      )}
 
       {/* 6. ADVANTAGES BANNER */}
       <section className="bg-gradient-to-br from-[#2A3B4C] to-[#1E2B38] text-white py-12 px-4 rounded-3xl max-w-7xl mx-auto w-full shadow-xl relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px)] bg-[size:16px_16px]" />
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left relative z-10">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center font-black text-blue-400 mx-auto md:mx-0">
-              ✓
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 mx-auto md:mx-0">
+              <Check className="h-5 w-5" />
             </div>
             <h3 className="font-extrabold text-xs uppercase tracking-wider text-blue-300">Weryfikacja Kontrahentów</h3>
             <p className="text-[11px] text-gray-300 leading-relaxed">
@@ -482,8 +525,8 @@ export default function MarketplaceHome({
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center font-black text-blue-400 mx-auto md:mx-0">
-              📦
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 mx-auto md:mx-0">
+              <Package className="h-5 w-5" />
             </div>
             <h3 className="font-extrabold text-xs uppercase tracking-wider text-blue-300">Koszyk Wielodostawców</h3>
             <p className="text-[11px] text-gray-300 leading-relaxed">
@@ -492,8 +535,8 @@ export default function MarketplaceHome({
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center font-black text-blue-400 mx-auto md:mx-0">
-              ⚡
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 mx-auto md:mx-0">
+              <Zap className="h-5 w-5" />
             </div>
             <h3 className="font-extrabold text-xs uppercase tracking-wider text-blue-300">Integracja VMI (Vendor Managed Inventory)</h3>
             <p className="text-[11px] text-gray-300 leading-relaxed">

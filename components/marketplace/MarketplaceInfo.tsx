@@ -13,7 +13,9 @@ import {
   Layers,
   Sparkles,
   Zap,
-  Users
+  Users,
+  TrendingUp,
+  Lock
 } from 'lucide-react';
 
 interface MarketplaceInfoProps {
@@ -37,32 +39,32 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
 
         {/* Steps Flow Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-sm text-xs leading-relaxed">
-            <span className="text-2xl">1️⃣</span>
+          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md text-xs leading-relaxed">
+            <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs">1</div>
             <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Wyszukaj dostawców</h3>
             <p className="text-gray-500 dark:text-gray-400">
               Przeszukuj setki produktów, marek oraz firm w promieniu Poznania i okolic za pomocą filtrów lokalizacji i odległości.
             </p>
           </div>
 
-          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-sm text-xs leading-relaxed">
-            <span className="text-2xl">2️⃣</span>
+          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md text-xs leading-relaxed">
+            <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs">2</div>
             <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Dodaj do zapytania</h3>
             <p className="text-gray-500 dark:text-gray-400">
               Skonfiguruj zapotrzebowanie asortymentowe. Nasz system poprowadzi Cię przez bezpieczną kalkulację opakowań zbiorczych.
             </p>
           </div>
 
-          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-sm text-xs leading-relaxed">
-            <span className="text-2xl">3️⃣</span>
+          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md text-xs leading-relaxed">
+            <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs">3</div>
             <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Odbierz wyceny B2B</h3>
             <p className="text-gray-500 dark:text-gray-400">
               Twój wniosek RFQ trafia bezpośrednio do opiekuna. Wycena pojawi się na Twoim e-mailu w deklarowanym czasie reakcji.
             </p>
           </div>
 
-          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-sm text-xs leading-relaxed">
-            <span className="text-2xl">4️⃣</span>
+          <div className="space-y-3 bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md text-xs leading-relaxed">
+            <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black text-xs">4</div>
             <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Aktywuj system VMI</h3>
             <p className="text-gray-500 dark:text-gray-400">
               Uruchom pełną automatyzację. Otrzymaj konto w portalu i pozwól dostawcy zarządzać uzupełnianiem stanów w warsztacie.
@@ -75,21 +77,21 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
           <h2 className="text-base font-black font-display uppercase tracking-tight text-gray-900 dark:text-white">Często zadawane pytania (FAQ)</h2>
           
           <div className="space-y-4 text-xs leading-relaxed">
-            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-2">
+            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-2">
               <h4 className="font-extrabold text-sm text-gray-800 dark:text-gray-200">Czy korzystanie z wyszukiwarki jest płatne?</h4>
               <p className="text-gray-500 dark:text-gray-400">
                 Nie, publiczny katalog dostawców oraz możliwość wysyłania zapytań ofertowych (RFQ) są całkowicie bezpłatne dla wszystkich warsztatów mechanicznych, wulkanizacji oraz lakierni.
               </p>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-2">
+            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-2">
               <h4 className="font-extrabold text-sm text-gray-800 dark:text-gray-200">Kim są zweryfikowani dostawcy?</h4>
               <p className="text-gray-500 dark:text-gray-400">
                 To certyfikowani przez Ambra partnerzy logistyczni (hurtownie regionalne, producenci i importerzy części), którzy zobowiązali się do zachowania standardów dostaw B2B (błyskawiczny transport, oryginalne produkty i ustrukturyzowane cenniki).
               </p>
             </div>
 
-            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-2">
+            <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-2">
               <h4 className="font-extrabold text-sm text-gray-800 dark:text-gray-200">Co oznacza skrót VMI?</h4>
               <p className="text-gray-500 dark:text-gray-400">
                 <strong>VMI (Vendor Managed Inventory)</strong> to nowoczesny model, w którym dostawca monitoruje stan kluczowych części (np. oleje, filtry, klocki hamulcowe, sorbenty) w Twoim warsztacie i automatycznie planuje ich dostawy przed wyczerpaniem zapasów.
@@ -125,9 +127,9 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
 
       {/* Benefits grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-3">
+        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-3">
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm font-bold">
-            📈
+            <TrendingUp className="h-4 w-4" />
           </div>
           <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Nowy kanał sprzedaży</h3>
           <p className="text-gray-500 dark:text-gray-400">
@@ -135,9 +137,9 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-3">
+        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-3">
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm font-bold">
-            🔒
+            <Lock className="h-4 w-4" />
           </div>
           <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Lojalność klientów</h3>
           <p className="text-gray-500 dark:text-gray-400">
@@ -145,9 +147,9 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl space-y-3">
+        <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-md space-y-3">
           <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm font-bold">
-            ⚡
+            <Zap className="h-4 w-4 text-amber-500 fill-amber-500/10" />
           </div>
           <h3 className="font-extrabold text-sm uppercase text-gray-800 dark:text-white">Cyfryzacja i automaty</h3>
           <p className="text-gray-500 dark:text-gray-400">
@@ -157,7 +159,7 @@ export default function MarketplaceInfo({ activeView, onGoToSearch }: Marketplac
       </div>
 
       {/* Register application form */}
-      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 space-y-6 shadow-sm max-w-xl mx-auto">
+      <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 space-y-6 shadow-md max-w-xl mx-auto">
         <div className="space-y-1">
           <h3 className="text-base font-bold text-gray-900 dark:text-white">Zgłoszenie rejestracyjne hurtowni B2B</h3>
           <p className="text-[10px] text-gray-400">Zgłoś swoją firmę do procesu weryfikacji. Nasz koordynator skontaktuje się w ciągu 48h roboczych.</p>

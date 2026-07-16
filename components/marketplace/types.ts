@@ -46,6 +46,7 @@ export interface PublicProduct {
   description: string;
   specifications: Record<string, string>;
   isNew?: boolean;
+  sellMode?: 'package' | 'piece' | 'both';
 }
 
 export interface PublicCatalog {

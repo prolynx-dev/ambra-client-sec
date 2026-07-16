@@ -45,7 +45,8 @@ import {
   ExternalLink,
   ChevronLeft,
   Moon,
-  Sun
+  Sun,
+  Home
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -64,6 +65,7 @@ interface MarketplaceContainerProps {
   onGoToPortal: () => void;
   theme?: 'light' | 'dark';
   setTheme?: (theme: 'light' | 'dark') => void;
+  initialPath?: string;
 }
 
 export default function MarketplaceContainer({ 
@@ -71,10 +73,12 @@ export default function MarketplaceContainer({
   isLoggedIn, 
   onGoToPortal,
   theme = 'light',
-  setTheme
+  setTheme,
+  initialPath
 }: MarketplaceContainerProps) {
   // Navigation Path Router State (Client side) - initialize synchronously from current location
   const [activePath, setActivePath] = useState<string>(() => {
+    if (initialPath) return initialPath;
     if (typeof window !== 'undefined') {
       return window.location.pathname;
     }
@@ -82,6 +86,9 @@ export default function MarketplaceContainer({
   });
 
   const [selectedVendorSlug, setSelectedVendorSlug] = useState<string | null>(() => {
+    if (initialPath && initialPath.startsWith('/dostawcy/')) {
+      return initialPath.split('/dostawcy/')[1] || null;
+    }
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       if (path.startsWith('/dostawcy/')) {
@@ -92,6 +99,9 @@ export default function MarketplaceContainer({
   });
 
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(() => {
+    if (initialPath && initialPath.startsWith('/produkty/')) {
+      return initialPath.split('/produkty/')[1] || null;
+    }
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       if (path.startsWith('/produkty/')) {
@@ -102,6 +112,9 @@ export default function MarketplaceContainer({
   });
 
   const [selectedFlyerSlug, setSelectedFlyerSlug] = useState<string | null>(() => {
+    if (initialPath && initialPath.startsWith('/gazetki/')) {
+      return initialPath.split('/gazetki/')[1] || null;
+    }
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       if (path.startsWith('/gazetki/')) {
@@ -110,7 +123,7 @@ export default function MarketplaceContainer({
     }
     return null;
   });
-  
+
   const parsePathAndSlugs = (path: string) => {
     if (path.startsWith('/dostawcy/')) {
       const slug = path.split('/dostawcy/')[1];
@@ -127,6 +140,14 @@ export default function MarketplaceContainer({
       setSelectedFlyerSlug(null);
     }
   };
+
+  useEffect(() => {
+    if (initialPath) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActivePath(initialPath);
+      parsePathAndSlugs(initialPath);
+    }
+  }, [initialPath]);
 
   // Navigation sync with back/forward browser buttons
   useEffect(() => {
@@ -160,6 +181,8 @@ export default function MarketplaceContainer({
     }
     return [];
   });
+
+  const activeSavedItems = isLoggedIn ? savedItems : [];
 
   // State: Enquiry Basket (localStorage: ambra-marketplace-enquiry)
   const [basket, setBasket] = useState<EnquiryBasketGroup[]>(() => {
@@ -211,6 +234,10 @@ export default function MarketplaceContainer({
 
   // Saved Interaction
   const handleToggleSave = (type: 'vendor' | 'product' | 'catalog' | 'promotion' | 'flyer', id: string) => {
+    if (!isLoggedIn) {
+      onLoginClick();
+      return;
+    }
     const exists = savedItems.find(item => item.type === type && item.id === id);
     if (exists) {
       saveSavedItems(savedItems.filter(item => !(item.type === type && item.id === id)));
@@ -326,6 +353,8 @@ export default function MarketplaceContainer({
 
   // Rendering Routing Views
   const renderContent = () => {
+    const activeSavedItems = isLoggedIn ? savedItems : [];
+
     if (activePath === '/') {
       return (
         <MarketplaceHome 
@@ -338,7 +367,7 @@ export default function MarketplaceContainer({
           onSelectProduct={(slug) => navigateTo(`/produkty/${slug}`)}
           onSelectFlyer={(slug) => navigateTo(`/gazetki/${slug}`)}
           onToggleSaveProduct={(id) => handleToggleSave('product', id)}
-          savedProductIds={savedItems.filter(i => i.type === 'product').map(i => i.id)}
+          savedProductIds={activeSavedItems.filter(i => i.type === 'product').map(i => i.id)}
           onAddToEnquiry={handleAddToEnquiry}
         />
       );
@@ -362,8 +391,8 @@ export default function MarketplaceContainer({
           onSelectFlyer={(slug) => navigateTo(`/gazetki/${slug}`)}
           onToggleSaveProduct={(id) => handleToggleSave('product', id)}
           onToggleSaveVendor={(id) => handleToggleSave('vendor', id)}
-          savedProductIds={savedItems.filter(i => i.type === 'product').map(i => i.id)}
-          savedVendorIds={savedItems.filter(i => i.type === 'vendor').map(i => i.id)}
+          savedProductIds={activeSavedItems.filter(i => i.type === 'product').map(i => i.id)}
+          savedVendorIds={activeSavedItems.filter(i => i.type === 'vendor').map(i => i.id)}
           onAddToEnquiry={handleAddToEnquiry}
         />
       );
@@ -386,11 +415,20 @@ export default function MarketplaceContainer({
           onSelectProduct={(slug) => navigateTo(`/produkty/${slug}`)}
           onSelectFlyer={(slug) => navigateTo(`/gazetki/${slug}`)}
           onToggleSaveVendor={() => handleToggleSave('vendor', vendor.id)}
-          isSaved={savedItems.some(i => i.type === 'vendor' && i.id === vendor.id)}
-          savedProductIds={savedItems.filter(i => i.type === 'product').map(i => i.id)}
+          isSaved={activeSavedItems.some(i => i.type === 'vendor' && i.id === vendor.id)}
+          savedProductIds={activeSavedItems.filter(i => i.type === 'product').map(i => i.id)}
           onToggleSaveProduct={(id) => handleToggleSave('product', id)}
           onAddToEnquiry={handleAddToEnquiry}
           basket={basket}
+          isLoggedIn={isLoggedIn}
+          onLoginClick={onLoginClick}
+          onSelectVendor={(slug) => navigateTo(`/dostawcy/${slug}`)}
+          onAddSubmittedRfq={(rfq) => {
+            const nextRfqs = [rfq, ...submittedRfqs];
+            saveRfqs(nextRfqs);
+            // Trigger storage sync so all components get it
+            window.dispatchEvent(new Event('storage'));
+          }}
         />
       );
     }
@@ -416,9 +454,11 @@ export default function MarketplaceContainer({
           }}
           onGoToVendor={() => navigateTo(`/dostawcy/${vendor.slug}`)}
           onToggleSave={() => handleToggleSave('product', product.id)}
-          isSaved={savedItems.some(i => i.type === 'product' && i.id === product.id)}
+          isSaved={activeSavedItems.some(i => i.type === 'product' && i.id === product.id)}
           onAddToEnquiry={handleAddToEnquiry}
           onSelectProduct={(slug) => navigateTo(`/produkty/${slug}`)}
+          isLoggedIn={isLoggedIn}
+          onLoginClick={onLoginClick}
         />
       );
     }
@@ -545,6 +585,8 @@ export default function MarketplaceContainer({
           submittedRfqs={submittedRfqs}
           onGoToVendor={(slug) => navigateTo(`/dostawcy/${slug}`)}
           onGoToHome={() => navigateTo('/')}
+          isLoggedIn={isLoggedIn}
+          onLoginClick={onLoginClick}
         />
       );
     }
@@ -552,7 +594,7 @@ export default function MarketplaceContainer({
     if (activePath === '/zapisane') {
       return (
         <MarketplaceSavedItems
-          savedItems={savedItems}
+          savedItems={activeSavedItems}
           onRemoveItem={(type, id) => handleToggleSave(type, id)}
           onSelectVendor={(slug) => navigateTo(`/dostawcy/${slug}`)}
           onSelectProduct={(slug) => navigateTo(`/produkty/${slug}`)}
@@ -598,23 +640,20 @@ export default function MarketplaceContainer({
           {/* Links */}
           <nav className="flex items-center gap-6 font-medium text-xs text-gray-600 dark:text-gray-300">
             <button 
-              onClick={() => navigateTo('/')} 
-              className={cn("hover:text-blue-600 dark:hover:text-blue-400 py-2 cursor-pointer transition-colors font-bold", activePath === '/' && "text-blue-600 dark:text-blue-400")}
-            >
-              Start
-            </button>
-            <button 
               onClick={() => navigateTo('/wyszukiwarka')} 
               className={cn("hover:text-blue-600 dark:hover:text-blue-400 py-2 cursor-pointer transition-colors font-bold", activePath === '/wyszukiwarka' && "text-blue-600 dark:text-blue-400")}
             >
               Szukaj
             </button>
+            {/* Hidden for MVP */}
+            {false && (
             <button 
               onClick={() => navigateTo('/promocje')} 
               className={cn("hover:text-blue-600 dark:hover:text-blue-400 py-2 cursor-pointer transition-colors font-bold", (activePath === '/promocje' || activePath === '/gazetki') && "text-blue-600 dark:text-blue-400")}
             >
               Promocje & Gazetki
             </button>
+            )}
             <button 
               onClick={() => navigateTo('/jak-to-dziala')} 
               className={cn("hover:text-blue-600 dark:hover:text-blue-400 py-2 cursor-pointer transition-colors font-bold", activePath === '/jak-to-dziala' && "text-blue-600 dark:text-blue-400")}
@@ -627,46 +666,52 @@ export default function MarketplaceContainer({
             >
               Dla dostawców
             </button>
-          </nav>
-
-          {/* Right side actions */}
-          <div className="flex items-center gap-4">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme && setTheme(theme === 'light' ? 'dark' : 'light')}
-              className="p-2 rounded-lg bg-gray-50 dark:bg-gray-850 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-              title={theme === 'light' ? "Przełącz na tryb ciemny" : "Przełącz na tryb jasny"}
-            >
-              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4 text-amber-400" />}
-            </button>
-
-            {/* Saved items */}
             <button 
-              onClick={() => navigateTo('/zapisane')}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-450 relative cursor-pointer"
-              title="Zapisane"
+              onClick={() => navigateTo('/zapytanie-ofertowe')} 
+              className={cn("hover:text-blue-600 dark:hover:text-blue-400 py-2 cursor-pointer transition-colors font-bold flex items-center gap-1.5", activePath === '/zapytanie-ofertowe' && "text-blue-600 dark:text-blue-400")}
             >
-              <Heart className={cn("h-4 w-4", savedItems.length > 0 && "fill-rose-500 text-rose-500")} />
-              {savedItems.length > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full" />
-              )}
-            </button>
-
-            {/* RFQ Basket */}
-            <button 
-              onClick={() => navigateTo('/zapytanie-ofertowe')}
-              className="py-1.5 px-3.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-xs font-bold text-[#2A3B4C] dark:text-white flex items-center gap-2 relative cursor-pointer"
-            >
-              <ShoppingBag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-              <span>Zapytanie</span>
+              <span>Zapytania</span>
               {totalBasketItems > 0 && (
-                <span className="bg-blue-600 text-white text-[9px] font-black rounded-full h-4 min-w-4 px-1 flex items-center justify-center font-mono shadow-sm">
+                <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full px-1.5 py-0.5 text-[9px] font-black font-mono">
                   {totalBasketItems}
                 </span>
               )}
             </button>
+          </nav>
 
-            <span className="h-4 w-px bg-gray-200 dark:bg-gray-800" />
+          {/* Right side actions */}
+          <div className="flex items-center gap-4">
+            {/* Zapytania (Koszyk RFQ) */}
+            {isLoggedIn && (
+              <button 
+                onClick={() => navigateTo('/zapytanie-ofertowe')}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-450 relative cursor-pointer"
+                title="Zapytania ofertowe (Koszyk)"
+              >
+                <ShoppingBag className={cn("h-4 w-4", activePath === '/zapytanie-ofertowe' && "text-blue-600 dark:text-blue-400")} />
+                {totalBasketItems > 0 && (
+                  <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white bg-blue-600 flex items-center justify-center font-mono">
+                    {totalBasketItems}
+                  </span>
+                )}
+              </button>
+            )}
+
+            {/* Saved items */}
+            {isLoggedIn && (
+              <button 
+                onClick={() => navigateTo('/zapisane')}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-450 relative cursor-pointer"
+                title="Zapisane"
+              >
+                <Heart className={cn("h-4 w-4", activeSavedItems.length > 0 && "fill-rose-500 text-rose-500")} />
+                {activeSavedItems.length > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full" />
+                )}
+              </button>
+            )}
+
+            {isLoggedIn && <span className="h-4 w-px bg-gray-200 dark:bg-gray-800" />}
 
             {/* Authenticated redirect portal link */}
             {isLoggedIn ? (
@@ -703,15 +748,6 @@ export default function MarketplaceContainer({
         </div>
 
         <div className="flex items-center gap-2.5">
-          {/* Mobile Theme Toggle Button */}
-          <button
-            onClick={() => setTheme && setTheme(theme === 'light' ? 'dark' : 'light')}
-            className="p-1.5 rounded-lg bg-gray-50 dark:bg-gray-850 text-gray-500 dark:text-gray-450 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-            title={theme === 'light' ? "Przełącz na tryb ciemny" : "Przełącz na tryb jasny"}
-          >
-            {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4 text-amber-400" />}
-          </button>
-
           {/* Active portal shortcut */}
           {isLoggedIn && (
             <button 
@@ -722,19 +758,6 @@ export default function MarketplaceContainer({
               <span>Portal VMI</span>
             </button>
           )}
-
-          {/* Cart Icon Shortcut */}
-          <button 
-            onClick={() => navigateTo('/zapytanie-ofertowe')}
-            className="p-2 rounded-lg bg-gray-50 dark:bg-gray-850 hover:bg-gray-100 dark:hover:bg-gray-800 relative cursor-pointer"
-          >
-            <ShoppingBag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            {totalBasketItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] font-black rounded-full h-4 min-w-4 px-1 flex items-center justify-center font-mono shadow-sm">
-                {totalBasketItems}
-              </span>
-            )}
-          </button>
 
           {/* Toggle Menu */}
           <button 
@@ -754,56 +777,53 @@ export default function MarketplaceContainer({
             <div className="flex flex-col gap-3.5 text-sm font-bold">
               <button 
                 onClick={() => { setIsMobileMenuOpen(false); navigateTo('/'); }} 
-                className={cn("text-left py-1 hover:text-blue-600", activePath === '/' && "text-blue-600 dark:text-blue-400")}
+                className={cn("text-left py-1 hover:text-blue-600 flex items-center gap-2", activePath === '/' && "text-blue-600 dark:text-blue-400")}
               >
-                🏠 Strona główna
+                <Home className="h-4 w-4" /> Strona główna
               </button>
               <button 
                 onClick={() => { setIsMobileMenuOpen(false); navigateTo('/wyszukiwarka'); }} 
-                className={cn("text-left py-1 hover:text-blue-600", activePath === '/wyszukiwarka' && "text-blue-600 dark:text-blue-400")}
+                className={cn("text-left py-1 hover:text-blue-600 flex items-center gap-2", activePath === '/wyszukiwarka' && "text-blue-600 dark:text-blue-400")}
               >
-                🔍 Wyszukiwarka dostawców
+                <Search className="h-4 w-4" /> Wyszukiwarka dostawców
               </button>
-              <button 
-                onClick={() => { setIsMobileMenuOpen(false); navigateTo('/promocje'); }} 
-                className={cn("text-left py-1 hover:text-blue-600", (activePath === '/promocje' || activePath === '/gazetki') && "text-blue-600 dark:text-blue-400")}
-              >
-                🔥 Promocje i gazetki B2B
-              </button>
+              {/* Promocje i gazetki hidden for MVP */}
               <button 
                 onClick={() => { setIsMobileMenuOpen(false); navigateTo('/jak-to-dziala'); }} 
-                className={cn("text-left py-1 hover:text-blue-600", activePath === '/jak-to-dziala' && "text-blue-600 dark:text-blue-400")}
+                className={cn("text-left py-1 hover:text-blue-600 flex items-center gap-2", activePath === '/jak-to-dziala' && "text-blue-600 dark:text-blue-400")}
               >
-                ❓ Jak to działa
+                <HelpCircle className="h-4 w-4" /> Jak to działa
               </button>
               <button 
                 onClick={() => { setIsMobileMenuOpen(false); navigateTo('/dla-dostawcow'); }} 
-                className={cn("text-left py-1 hover:text-blue-600", activePath === '/dla-dostawcow' && "text-blue-600 dark:text-blue-400")}
+                className={cn("text-left py-1 hover:text-blue-600 flex items-center gap-2", activePath === '/dla-dostawcow' && "text-blue-600 dark:text-blue-400")}
               >
-                🤝 Strefa dostawców
+                <Building2 className="h-4 w-4" /> Strefa dostawców
               </button>
             </div>
           </div>
 
-          <div className="space-y-4 pt-4">
-            <h4 className="text-[10px] font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Konto i schowek</h4>
-            <div className="flex flex-col gap-3 text-xs font-bold">
-              <button 
-                onClick={() => { setIsMobileMenuOpen(false); navigateTo('/zapisane'); }} 
-                className="flex items-center gap-2 py-1 text-gray-700 dark:text-gray-300"
-              >
-                <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
-                <span>Zapisane pozycje ({savedItems.length})</span>
-              </button>
-              <button 
-                onClick={() => { setIsMobileMenuOpen(false); navigateTo('/zapytanie-ofertowe'); }} 
-                className="flex items-center gap-2 py-1 text-gray-700 dark:text-gray-300"
-              >
-                <ShoppingBag className="h-4 w-4 text-blue-500" />
-                <span>Koszyk zapytań ({totalBasketItems})</span>
-              </button>
+          {isLoggedIn && (
+            <div className="space-y-4 pt-4">
+              <h4 className="text-[10px] font-black tracking-widest text-gray-400 uppercase font-mono pb-1">Konto i schowek</h4>
+              <div className="flex flex-col gap-3 text-xs font-bold">
+                <button 
+                  onClick={() => { setIsMobileMenuOpen(false); navigateTo('/zapytanie-ofertowe'); }} 
+                  className={cn("flex items-center gap-2 py-1 text-gray-700 dark:text-gray-300", activePath === '/zapytanie-ofertowe' && "text-blue-600 dark:text-blue-400")}
+                >
+                  <ShoppingBag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span>Zapytania ofertowe ({totalBasketItems})</span>
+                </button>
+                <button 
+                  onClick={() => { setIsMobileMenuOpen(false); navigateTo('/zapisane'); }} 
+                  className="flex items-center gap-2 py-1 text-gray-700 dark:text-gray-300"
+                >
+                  <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
+                  <span>Zapisane pozycje ({savedItems.length})</span>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="pt-6">
             {isLoggedIn ? (
@@ -833,33 +853,38 @@ export default function MarketplaceContainer({
       </main>
 
       {/* MOBILE BOTTOM NAVIGATION BAR */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-14 bg-white dark:bg-[#0E1321] z-40 flex items-center justify-around text-[10px] font-bold text-gray-500 dark:text-gray-400 shadow-lg">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-14 bg-white dark:bg-[#0E1321] z-40 flex items-center justify-around text-[10px] font-bold text-gray-500 dark:text-gray-400 shadow-lg border-t border-gray-100 dark:border-gray-800">
         <button 
           onClick={() => navigateTo('/')}
           className={cn("flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer", activePath === '/' && "text-blue-600 dark:text-blue-400")}
         >
-          <span className="text-sm">🏠</span>
+          <Home className="h-4 w-4" />
           <span className="text-[9px]">Start</span>
         </button>
         <button 
           onClick={() => navigateTo('/wyszukiwarka')}
           className={cn("flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer", activePath === '/wyszukiwarka' && "text-blue-600 dark:text-blue-400")}
         >
-          <span className="text-sm">🔍</span>
+          <Search className="h-4 w-4" />
           <span className="text-[9px]">Szukaj</span>
         </button>
         <button 
-          onClick={() => { setActiveCategory('Wszystko'); navigateTo('/wyszukiwarka'); }}
-          className="flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer text-gray-500"
+          onClick={() => navigateTo('/zapytanie-ofertowe')}
+          className={cn("flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer relative", activePath === '/zapytanie-ofertowe' && "text-blue-600 dark:text-blue-400")}
         >
-          <span className="text-sm">🗺️</span>
-          <span className="text-[9px]">Mapa</span>
+          <ShoppingBag className="h-4 w-4" />
+          <span className="text-[9px]">Zapytania</span>
+          {totalBasketItems > 0 && (
+            <span className="absolute top-1.5 right-3 px-1 rounded-full text-[8px] font-bold text-white bg-blue-600 flex items-center justify-center font-mono scale-90 animate-pulse">
+              {totalBasketItems}
+            </span>
+          )}
         </button>
         <button 
           onClick={() => navigateTo('/zapisane')}
           className={cn("flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer relative", activePath === '/zapisane' && "text-blue-600 dark:text-blue-400")}
         >
-          <span className="text-sm">❤️</span>
+          <Heart className="h-4 w-4" />
           <span className="text-[9px]">Zapisane</span>
           {savedItems.length > 0 && (
             <span className="absolute top-2 right-3 w-1.5 h-1.5 bg-rose-500 rounded-full" />
@@ -869,23 +894,35 @@ export default function MarketplaceContainer({
           onClick={isLoggedIn ? onGoToPortal : onLoginClick}
           className="flex flex-col items-center justify-center gap-1 w-14 h-full cursor-pointer"
         >
-          <span className="text-sm">👤</span>
+          <User className="h-4 w-4" />
           <span className="text-[9px]">Konto</span>
         </button>
       </nav>
 
       {/* FOOTER */}
-      <footer className="hidden lg:block bg-white dark:bg-[#0E1321] py-8 text-xs text-gray-400 dark:text-gray-500 mt-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+      <footer className="bg-white dark:bg-[#0E1321] py-8 text-xs text-gray-400 dark:text-gray-500 mt-12 mb-14 lg:mb-0 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <span className="font-extrabold text-[#2A3B4C] dark:text-white uppercase font-display">Ambra VMI Marketplace</span>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <span>© 2026 Wszystkie prawa zastrzeżone</span>
           </div>
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigateTo('/jak-to-dziala')} className="hover:underline">Jak to działa</button>
-            <button onClick={() => navigateTo('/dla-dostawcow')} className="hover:underline">Dla dostawców</button>
-            <button onClick={onLoginClick} className="hover:underline font-bold text-blue-600 dark:text-blue-400">Portal partnerski</button>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <button onClick={() => navigateTo('/jak-to-dziala')} className="hover:underline cursor-pointer">Jak to działa</button>
+            <button onClick={() => navigateTo('/dla-dostawcow')} className="hover:underline cursor-pointer">Dla dostawców</button>
+            <button onClick={onLoginClick} className="hover:underline font-bold text-blue-600 dark:text-blue-400 cursor-pointer">Portal partnerski</button>
+            
+            <span className="hidden sm:inline h-4 w-px bg-gray-200 dark:bg-gray-800" />
+            
+            {/* Theme Toggle Button relocated from Header */}
+            <button
+              onClick={() => setTheme && setTheme(theme === 'light' ? 'dark' : 'light')}
+              className="p-1.5 px-2.5 rounded-lg bg-gray-50 dark:bg-gray-850 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center gap-1.5 border border-gray-150 dark:border-gray-800 shadow-sm"
+              title={theme === 'light' ? "Przełącz na tryb ciemny" : "Przełącz na tryb jasny"}
+            >
+              {theme === 'light' ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5 text-amber-400" />}
+              <span>{theme === 'light' ? 'Tryb ciemny' : 'Tryb jasny'}</span>
+            </button>
           </div>
         </div>
       </footer>
